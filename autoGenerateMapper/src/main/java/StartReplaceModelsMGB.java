@@ -38,13 +38,14 @@ public class StartReplaceModelsMGB {
 //        replaceParams.put("数据库链接地址","106.54.209.129:3306/eas?characterEncoding=utf8");
 //        replaceParams.put("数据库账号","root");
 //        replaceParams.put("数据库密码","A520131sjk");
-        replaceParams.put("域对象类名","PrintRecoder");
-        replaceParams.put("对象名","printRecoder");
+        //???BaseResultMap生成不完整。text的不会生成
+        replaceParams.put("域对象类名","DingMessageZjgy");
+        replaceParams.put("对象名","dingMessageZjgy");
 
-        replaceParams.put("包名","com.rongji.egov.doc");
-        replaceParams.put("表名","EGOV_PRINT_RECODER");
+        replaceParams.put("包名","com.rongji.egov.messageclient");
+        replaceParams.put("表名","DING_MESSAGE_ZJGY");
 
-        replaceParams.put("数据库链接地址","192.168.210.186:3306/zjgy-jz?characterEncoding=utf8");
+        replaceParams.put("数据库链接地址","192.168.210.186:3306/zjgy_real?characterEncoding=utf8");
         replaceParams.put("数据库账号","root");
         replaceParams.put("数据库密码","root");
     }

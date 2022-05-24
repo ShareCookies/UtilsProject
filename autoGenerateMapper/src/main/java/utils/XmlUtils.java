@@ -7,8 +7,10 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * @autor hecaigui
@@ -49,7 +51,7 @@ public class XmlUtils {
      */
     public static boolean writeToFile(Document document , File file) {
         OutputFormat format = OutputFormat.createPrettyPrint();
-        format.setTrimText(false);//设置text中是否要删除其中多余的空格
+        //format.setTrimText(false);//设置text中是否要删除其中多余的空格
         format.setEncoding("UTF-8");// 指定XML编码
         try {
             XMLWriter writer = new XMLWriter(new FileWriter(file),format);
@@ -60,5 +62,34 @@ public class XmlUtils {
             return false;
         }
         return true;
+    }
+
+    public static void main(String[] args) throws Exception{
+        String filePath = "C:\\Users\\Administrator\\Desktop\\stepByStep\\UtilsProject\\autoGenerateMapper\\src\\main\\resources\\MGB_Replace_Models_Results\\PrintRecoderMapper.xml";
+        File file = new File(filePath);
+        Document document = XmlUtils.loadXmlFile(file);
+        Element root = document.getRootElement();
+
+//        for (Iterator i = root.elementIterator(); i.hasNext();) {
+//            Element el = (Element) i.next();
+//            if (catNameEn.equals(el.elementTextTrim("engName"))) {
+//                flag = false;
+//                break;
+//            }
+//        }
+
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        format.setEncoding("utf-8");// 设置XML文件的编码格式
+//        format.setLineSeparator("\n");
+        format.setTrimText(false);
+//        format.setIndent(false);
+        //format.setPadText(false);
+        format.setNewlines(true);
+        format.setNewLineAfterDeclaration(false);
+       // format.setPadText();
+//        format.setIndent("	");
+        XMLWriter writer = new XMLWriter(new FileOutputStream("output.xml"),format);
+        writer.write(document);
+        writer.close();
     }
 }

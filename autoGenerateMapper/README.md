@@ -8,6 +8,6 @@
     2. 运行StartSimpleMGB类
 - 模板替换版一键生成mybatis代码（StartReplaceModelsMGB），
  先使用MybatisGenerator生成model层和mapper层代码，然后service层等则替换模板内容来生成。（模板是自定义的）
-    1. resources/MGB_Replace_Models/ 下自定义模板，resources/generatorConfig.xml进行数据库相关配置
-    2. StartReplaceModelsMGB的static{}中定义替换规则
+    1. resources/MGB_Replace_Models/ 下自定义模板
+    2. StartReplaceModelsMGB的static{}中定义替换规则、数据库配置
     3. 运行StartReplaceModelsMGB类

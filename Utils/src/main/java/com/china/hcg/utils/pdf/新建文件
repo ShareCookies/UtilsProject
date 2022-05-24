@@ -1,0 +1,96 @@
+java准确读取word文件页数
+    https://wllfengshu.blog.csdn.net/article/details/71298406?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-3.essearch_pc_relevant&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-3.essearch_pc_relevant
+
+
+ttf与ttc与字体的区别
+    https://blog.csdn.net/TI321/article/details/79055549
+
+OpenHtmlToPdf实现html转pdf
+    https://blog.csdn.net/hgx2014/article/details/88849482?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-2.essearch_pc_relevant&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-2.essearch_pc_relevant
+    https://www.cnblogs.com/hhq365/p/5612073.html
+    https://blog.csdn.net/luyangbin01/article/details/87881052?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-7.essearch_pc_relevant&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-7.essearch_pc_relevant
+    目前html片段 不支持js，支持图片、部分css3样式、部分h5样式。下面演示简单用法。
+
+    依赖包：
+        <properties>
+            <openhtml.version>1.0.1-SNAPSHOT</openhtml.version>
+        </properties>
+
+        <dependency>
+          <!-- ALWAYS required. -->
+          <groupId>com.openhtmltopdf</groupId>
+          <artifactId>openhtmltopdf-core</artifactId>
+          <version>${openhtml.version}</version>
+        </dependency>
+
+        <dependency>
+          <!-- Required for PDF output. -->
+          <groupId>com.openhtmltopdf</groupId>
+          <artifactId>openhtmltopdf-pdfbox</artifactId>
+          <version>${openhtml.version}</version>
+        </dependency>
+
+        <dependency>
+          <!-- Required for image output only. -->
+          <groupId>com.openhtmltopdf</groupId>
+          <artifactId>openhtmltopdf-java2d</artifactId>
+          <version>${openhtml.version}</version>
+        </dependency>
+
+        <dependency>
+          <!-- Optional, leave out if you do not need right-to-left or bi-directional text support. -->
+          <groupId>com.openhtmltopdf</groupId>
+          <artifactId>openhtmltopdf-rtl-support</artifactId>
+          <version>${openhtml.version}</version>
+        </dependency>
+
+        <dependency>
+          <!-- Optional, leave out if you do not need HTML5 parsing support. -->
+          <groupId>com.openhtmltopdf</groupId>
+          <artifactId>openhtmltopdf-jsoup-dom-converter</artifactId>
+          <version>${openhtml.version}</version>
+        </dependency>
+
+        <dependency>
+          <!-- Optional, leave out if you do not need logging via slf4j. -->
+          <groupId>com.openhtmltopdf</groupId>
+          <artifactId>openhtmltopdf-slf4j</artifactId>
+          <version>${openhtml.version}</version>
+        </dependency>
+
+        <dependency>
+          <!-- Optional, leave out if you do not need logging via log4j. -->
+          <groupId>com.openhtmltopdf</groupId>
+          <artifactId>openhtmltopdf-log4j</artifactId>
+          <version>${openhtml.version}</version>
+        </dependency>
+
+        <dependency>
+          <!-- Optional, leave out if you do not need SVG support. -->
+          <groupId>com.openhtmltopdf</groupId>
+          <artifactId>openhtmltopdf-svg-support</artifactId>
+          <version>${openhtml.version}</version>
+        </dependency>
+
+        <dependency>
+          <!-- Optional, leave out if you do not need MathML support. -->
+          <!-- Introduced in RC-13. -->
+          <groupId>com.openhtmltopdf</groupId>
+          <artifactId>openhtmltopdf-mathml-support</artifactId>
+          <version>${openhtml.version}</version>
+        </dependency>
+Cpdetector编码识别
+
+    https://blog.csdn.net/tianshan2010/article/details/83043992
+    https://www.cnblogs.com/myfreefield/archive/2011/04/03/2004396.html
+
+        <dependency>
+          <groupId>未提供pom包，要下载上传到私服</groupId>
+          <artifactId>cpdetector</artifactId>
+          <version>1.0.10</version>
+        </dependency>
+        <dependency>
+          <groupId>org.mozilla.intl</groupId>
+          <artifactId>chardet</artifactId>
+          <version>1.0</version>
+        </dependency>

@@ -63,7 +63,7 @@ public  class JdbcUtil {
             rs = ps.executeQuery();
             //7.处理查询结果集
             while(rs.next()){
-                this.queryOverride(rs);
+                this.queryResultHandleOverride(rs);
             }
             //提交事务
             //conn.commit();
@@ -104,7 +104,10 @@ public  class JdbcUtil {
             }
         }
     }
-    public void queryOverride(ResultSet lastRowRS) throws SQLException{};
+    public void queryResultHandleOverride(ResultSet lastRowRS) throws SQLException{
+        //lastRowRS.geta
+        System.out.println(lastRowRS);
+    }
 
     public  Integer update(String updateSql) {
         Connection conn = null;
@@ -181,32 +184,14 @@ public  class JdbcUtil {
 
     public static void main(String[] args) {
         String driver = "com.mysql.jdbc.Driver";
-        String url = "jdbc:mysql://192.168.210.186:3306/zjgy-hsf?characterEncoding=utf8&useSSL=false";
+        String url = "jdbc:mysql://192.168.210.186:3306/zjgy_real?characterEncoding=utf8&useSSL=false";
         String user = "root";
         String password = "root";
 
+        //todo:数据源方式
 
-        final JdbcUtil allNoticeQuery = new JdbcUtil(driver,url,user,password) {
-            @Override
-            public void queryOverride(ResultSet lastRowRS) throws SQLException{
-                String recUnit = lastRowRS.getString("REC_UNIT");
-                //JSONArray jsonArray = JSONObject.parseArray(recUnit);
-            }
-        };
 
-        JdbcUtil alterTableQuery = new JdbcUtil(driver,url,user,password) {
-            @Override
-            public void queryOverride(ResultSet lastRowRS) {
-                try {
-                    lastRowRS.getString("HSF_USER_MOVE");
-                    System.err.println("HSF用户迁移------表已存在HSF_USER_MOVE字段,开始更新旧数据");
-                    allNoticeQuery.query("select * from EGOV_NOTICE WHERE HSF_USER_MOVE IS NULL OR HSF_USER_MOVE = '' OR HSF_USER_MOVE = 'failure'");
-                }catch (SQLException e){
-                    new JdbcUtil(driver,url,user,password).update("ALTER TABLE `EGOV_NOTICE` ADD COLUMN `HSF_USER_MOVE` varchar(12) NULL COMMENT 'HSF用户改造后，旧数据是否已迁移标识' AFTER `SYSTEM_NO`");
-                    System.err.println("HSF用户迁移------为表新增HSF_USER_MOVE字段");
-                }
-            }
-        };
+        JdbcUtil alterTableQuery = new JdbcUtil(driver,url,user,password);
         alterTableQuery.query("select * from EGOV_NOTICE limit 1");
     }
 

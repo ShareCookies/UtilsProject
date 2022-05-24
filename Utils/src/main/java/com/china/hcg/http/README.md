@@ -58,41 +58,24 @@ spring发起http请求：
 
 				ResponseEntity<String> responseEntity=restTemplate.exchange(url, HttpMethod.GET,requestEntity, String.class);
 				resultJsonStr=responseEntity.getBody();
-    RestTemplate原理：
-        1.连接创建
-            RestTemplate默认使用SimpleClientHttpRequestFactory(默认依赖jdk的HTTP连接工具),来处理HTTP的创建.
-            当然你也可以 通过setRequestFactory属性切换到不同的HTTP源，比如Apache HttpComponents、Netty和OkHttp。
-        2.请求与响应转换器
-            restTemplate 默认定义了几个通用的消息转换器,转换器作用是用来转换请求与相应数据。
-                详见RestTemplate()
-                Strategy interface that specifies a converter that can convert from and to HTTP requests and responses.
-            附：
-                注册其他的转换器：
-                    通过setMessageConverters注册其他的转换器。
-                responseType：
-                    很多方法有一个responseType 参数，它让你传入一个响应体所映射成的对象，然后底层用HttpMessageConverter将其做映射			
+
+附：
+    postForEntity方法发送带有xml类型的数据：
+        https://ask.csdn.net/questions/771239
+
+    Spring RestTemplete支持Https安全请求：
+        https://blog.csdn.net/weixin_33835103/article/details/86278376
+        https://blog.csdn.net/justry_deng/article/details/82531306#commentBox
         
-        3.响应错误处理：
-            RestTemplate默认使用DefaultResponseErrorHandler来响应错误，可以setErrorHandler来覆盖。
-		4.拦截器等：https://www.jianshu.com/p/90ec27b3b518
-		    
-	附：
-		postForEntity方法发送带有xml类型的数据：
-			https://ask.csdn.net/questions/771239
-
-        Spring RestTemplete支持Https安全请求：
-            https://blog.csdn.net/weixin_33835103/article/details/86278376
-            https://blog.csdn.net/justry_deng/article/details/82531306#commentBox
-            
-            附：
-            HttpClient 关于 https：	
-                https://blog.csdn.net/xiaoxian8023/article/details/49866397
-                https://blog.csdn.net/xiaoxian8023/article/details/49865335
+        附：
+        HttpClient 关于 https：	
+            https://blog.csdn.net/xiaoxian8023/article/details/49866397
+            https://blog.csdn.net/xiaoxian8023/article/details/49865335
 
 
-		超时设置：
-			https://blog.csdn.net/truelove12358/article/details/88838644?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.control
-			http://cn.voidcc.com/question/p-gjlkwpxr-gy.html
+    超时设置：
+        https://blog.csdn.net/truelove12358/article/details/88838644?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.control
+        http://cn.voidcc.com/question/p-gjlkwpxr-gy.html
 	
 附：
 	1.字符串编码
@@ -118,5 +101,9 @@ spring发起http请求：
 	3.uri与url
 		https://www.cnblogs.com/throwable/p/9740425.html
 		https://blog.csdn.net/qq_32595453/article/details/80563142
-	
+```
+
+```
+HttpClient:
+    https://blog.csdn.net/qianyiyiding/article/details/86558140
 ```

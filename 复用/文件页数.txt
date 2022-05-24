@@ -1,0 +1,25 @@
+https://www.iteye.com/blog/xiongzhenhui-1059368
+https://blog.csdn.net/c0987k/article/details/79239389
+五：利用POI提取Word总页数、总字符数...
+97-2003
+		WordExtractor doc = new WordExtractor(new FileInputStream(filePath));//.doc格式Word文件提取器
+		int pages = doc.getSummaryInformation().getPageCount();//总页数
+
+		(该方法是获取摘要信息中总页数,由于2003word摘要信息中的总页数是错误的,所以该方法获取的总页数始终为1是错误的)
+		int wordCount = doc.getSummaryInformation().getWordCount();//总字符数
+
+		或
+
+		  HWPFDocument doc= new HWPFDocument(new FileInputStream("c:\\d.doc"));
+		  int pages = doc.getSummaryInformation().getPageCount();//总页数
+
+		 (该方法是获取摘要信息中总页数,由于2003word摘要信息中的总页数是错误的,所以该方法获取的总页数始终为1是错误 的)
+		  int wordCount = doc.getSummaryInformation().getWordCount();//总字符数
+2007:
+	XWPFDocument docx = nnew XWPFDocument(POIXMLDocument.openPackage(filePath));
+	int pages = docx.getProperties().getExtendedProperties().getUnderlyingProperties().getPages();//总页数
+
+
+java读取PDF流的页数
+
+	https://blog.csdn.net/yhyjoker/article/details/108775279

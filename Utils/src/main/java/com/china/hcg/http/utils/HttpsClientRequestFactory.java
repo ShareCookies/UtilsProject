@@ -10,23 +10,33 @@ import java.net.Socket;
 import java.security.cert.X509Certificate;
 
 /**
- * 声明:此代码摘录自https://blog.csdn.net/wltsysterm/article/details/80977455
- * 声明:关于Socket的相关知识,本人会在后面的闲暇时间进行学习整理,请持续关注博客更新
- *
+ * https://blog.csdn.net/wltsysterm/article/details/80977455
+ * @description 使用Spring RestTemplete实现 Https需要自定义ClientHttpRequestFactory；
+ *  http请求 通常用httpclient
+ *  https请求 通常是基于httpclient的基础上自建信任中心
  * @author JustryDeng
  * @DATE 2018年9月8日 下午4:34:02
  */
 public class HttpsClientRequestFactory extends SimpleClientHttpRequestFactory {
 
+    /**
+     * 父类方法注释：
+         * Template method for preparing the given {@link HttpURLConnection}.
+         * 请求前准备
+         * <p>The default implementation prepares the connection for input and output, and sets the HTTP method.？
+     *
+     */
     @Override
     protected void prepareConnection(HttpURLConnection connection, String httpMethod) {
         try {
+            //为什么会是HttpsURLConnection的实例？
             if (!(connection instanceof HttpsURLConnection)) {
                 throw new RuntimeException("An instance of HttpsURLConnection is expected");
             }
 
+            //HttpsConnection原理？
             HttpsURLConnection httpsConnection = (HttpsURLConnection) connection;
-
+            //？
             TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
                         @Override
@@ -64,6 +74,7 @@ public class HttpsClientRequestFactory extends SimpleClientHttpRequestFactory {
      * see http://www.oracle.com/technetwork/java/javase/documentation/cve-2014-3566-2342133.html (Java 8 section)
      */
     // SSLSocketFactory用于创建 SSLSockets
+    // 以下方法的意义在于哪里为什么要重写？// 好像都是调默认的啊
     private static class MyCustomSSLSocketFactory extends SSLSocketFactory {
 
         private final SSLSocketFactory delegate;

@@ -1,5 +1,5 @@
 server:
-  port: 8001
+  port: 8811
 spring:
   application:
     name: spring-cloud-config-server
@@ -13,6 +13,15 @@ spring:
 #          password:                                              # git仓库的密码
   profiles:
     active: native #从本地加载配置文件，默认从应用的src/main/resource目录下检索配置文件。
+#  rabbitmq:
+#    host: 192.168.0.40
+#    port: 5672
+#    username: guest
+#    password: guest
 logging:
   level:
     root: debug
+wps-graph-sdk:
+  appId: 081b30bf-436b-488f-0000-000000000006
+  appSecret: 308rqVKAhEup
+  url: https://yundoc.zjsfgkw.cn/graph

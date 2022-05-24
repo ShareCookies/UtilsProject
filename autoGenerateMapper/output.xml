@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.rongji.egov.doc.business.mapper.PrintRecoderMapper">
+  <resultMap id="BaseResultMap" type="com.rongji.egov.doc.business.model.PrintRecoder">
+    <id column="ID" property="id" jdbcType="VARCHAR"/>
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    <result column="DOC_ID" property="docId" jdbcType="VARCHAR"/>
+    <result column="DOC_MODULE" property="docModule" jdbcType="VARCHAR"/>
+    <result column="SEND_USER_NAME" property="sendUserName" jdbcType="VARCHAR"/>
+    <result column="SEND_USER_NO" property="sendUserNo" jdbcType="VARCHAR"/>
+    <result column="SEND_ORG" property="sendOrg" jdbcType="VARCHAR"/>
+    <result column="SEND_TIME" property="sendTime" jdbcType="TIMESTAMP"/>
+    <result column="PICKUP_USER_NAME" property="pickupUserName" jdbcType="VARCHAR"/>
+    <result column="PICKUP_USER_NO" property="pickupUserNo" jdbcType="VARCHAR"/>
+    <result column="PICKUP_TIME" property="pickupTime" jdbcType="TIMESTAMP"/>
+    <result column="PRINT_NUM" property="printNum" jdbcType="INTEGER"/>
+    <result column="PRINT_COVER_NUM" property="printCoverNum" jdbcType="INTEGER"/>
+    <result column="PRINT_SUBJECT" property="printSubject" jdbcType="VARCHAR"/>
+    <result column="PRINT_PAGE_NUM" property="printPageNum" jdbcType="INTEGER"/>
+    <result column="PRINT_USER_NAME" property="printUserName" jdbcType="VARCHAR"/>
+    <result column="PRINT_USER_NO" property="printUserNo" jdbcType="VARCHAR"/>
+    <result column="LAYOUT_USER_NAME" property="layoutUserName" jdbcType="VARCHAR"/>
+    <result column="LAYOUT_USER_NO" property="layoutUserNo" jdbcType="VARCHAR"/>
+    <result column="BOOKBIND_USER_NAME" property="bookbindUserName" jdbcType="VARCHAR"/>
+    <result column="BOOKBIND_USER_NO" property="bookbindUserNo" jdbcType="VARCHAR"/>
+    <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+    <result column="NOTICE_PICKUP_TIME" property="noticePickupTime" jdbcType="TIMESTAMP"/>
+    <result column="SYSTEM_NO" property="systemNo" jdbcType="VARCHAR"/>
+    <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR"/>
+    <result column="CREATE_USER_NO" property="createUserNo" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CREATE_TIME, DOC_ID, DOC_MODULE, SEND_USER_NAME, SEND_USER_NO, SEND_ORG, SEND_TIME, 
+    PICKUP_USER_NAME, PICKUP_USER_NO, PICKUP_TIME, PRINT_NUM, PRINT_COVER_NUM, PRINT_SUBJECT, 
+    PRINT_PAGE_NUM, PRINT_USER_NAME, PRINT_USER_NO, LAYOUT_USER_NAME, LAYOUT_USER_NO, 
+    BOOKBIND_USER_NAME, BOOKBIND_USER_NO, REMARK, NOTICE_PICKUP_TIME, SYSTEM_NO, CREATE_USER, 
+    CREATE_USER_NO
+  </sql>
+  <insert id="insertPrintRecoder" parameterType="com.rongji.egov.doc.business.model.PrintRecoder">
+    insert into EGOV_PRINT_RECODER
+     
+     
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+       
+       
+      <if test="id != null">
+        ID,
+      </if>
+       
+       
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+       
+       
+      <if test="docId != null">
+        DOC_ID,
+      </if>
+       
+       
+      <if test="docModule != null">
+        DOC_MODULE,
+      </if>
+       
+       
+      <if test="sendUserName != null">
+        SEND_USER_NAME,
+      </if>
+       
+       
+      <if test="sendUserNo != null">
+        SEND_USER_NO,
+      </if>
+       
+       
+      <if test="sendOrg != null">
+        SEND_ORG,
+      </if>
+       
+       
+      <if test="sendTime != null">
+        SEND_TIME,
+      </if>
+       
+       
+      <if test="pickupUserName != null">
+        PICKUP_USER_NAME,
+      </if>
+       
+       
+      <if test="pickupUserNo != null">
+        PICKUP_USER_NO,
+      </if>
+       
+       
+      <if test="pickupTime != null">
+        PICKUP_TIME,
+      </if>
+       
+       
+      <if test="printNum != null">
+        PRINT_NUM,
+      </if>
+       
+       
+      <if test="printCoverNum != null">
+        PRINT_COVER_NUM,
+      </if>
+       
+       
+      <if test="printSubject != null">
+        PRINT_SUBJECT,
+      </if>
+       
+       
+      <if test="printPageNum != null">
+        PRINT_PAGE_NUM,
+      </if>
+       
+       
+      <if test="printUserName != null">
+        PRINT_USER_NAME,
+      </if>
+       
+       
+      <if test="printUserNo != null">
+        PRINT_USER_NO,
+      </if>
+       
+       
+      <if test="layoutUserName != null">
+        LAYOUT_USER_NAME,
+      </if>
+       
+       
+      <if test="layoutUserNo != null">
+        LAYOUT_USER_NO,
+      </if>
+       
+       
+      <if test="bookbindUserName != null">
+        BOOKBIND_USER_NAME,
+      </if>
+       
+       
+      <if test="bookbindUserNo != null">
+        BOOKBIND_USER_NO,
+      </if>
+       
+       
+      <if test="remark != null">
+        REMARK,
+      </if>
+       
+       
+      <if test="noticePickupTime != null">
+        NOTICE_PICKUP_TIME,
+      </if>
+       
+       
+      <if test="systemNo != null">
+        SYSTEM_NO,
+      </if>
+       
+       
+      <if test="createUser != null">
+        CREATE_USER,
+      </if>
+       
+       
+      <if test="createUserNo != null">
+        CREATE_USER_NO,
+      </if>
+    
+    
+    </trim>
+     
+     
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+       
+       
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+       
+       
+      <if test="docId != null">
+        #{docId,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="docModule != null">
+        #{docModule,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="sendUserName != null">
+        #{sendUserName,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="sendUserNo != null">
+        #{sendUserNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="sendOrg != null">
+        #{sendOrg,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="sendTime != null">
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+       
+       
+      <if test="pickupUserName != null">
+        #{pickupUserName,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="pickupUserNo != null">
+        #{pickupUserNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="pickupTime != null">
+        #{pickupTime,jdbcType=TIMESTAMP},
+      </if>
+       
+       
+      <if test="printNum != null">
+        #{printNum,jdbcType=INTEGER},
+      </if>
+       
+       
+      <if test="printCoverNum != null">
+        #{printCoverNum,jdbcType=INTEGER},
+      </if>
+       
+       
+      <if test="printSubject != null">
+        #{printSubject,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="printPageNum != null">
+        #{printPageNum,jdbcType=INTEGER},
+      </if>
+       
+       
+      <if test="printUserName != null">
+        #{printUserName,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="printUserNo != null">
+        #{printUserNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="layoutUserName != null">
+        #{layoutUserName,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="layoutUserNo != null">
+        #{layoutUserNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="bookbindUserName != null">
+        #{bookbindUserName,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="bookbindUserNo != null">
+        #{bookbindUserNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="noticePickupTime != null">
+        #{noticePickupTime,jdbcType=TIMESTAMP},
+      </if>
+       
+       
+      <if test="systemNo != null">
+        #{systemNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="createUserNo != null">
+        #{createUserNo,jdbcType=VARCHAR},
+      </if>
+    
+    
+    </trim>
+  
+  
+  </insert>
+  <!-- 根据ID集合删除 -->
+  <delete id="delPrintRecoder" parameterType="java.util.List">
+      <![CDATA[
+             DELETE from EGOV_PRINT_RECODER where ID in
+        ]]>
+    (
+     
+     
+    <foreach collection="list" item="id" separator=",">
+      #{id}
+    </foreach>
+    )
+  
+  
+  </delete>
+  <update id="updatePrintRecoder" parameterType="com.rongji.egov.doc.business.model.PrintRecoder">
+    update EGOV_PRINT_RECODER
+     
+     
+    <set>
+       
+       
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+       
+       
+      <if test="docId != null">
+        DOC_ID = #{docId,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="docModule != null">
+        DOC_MODULE = #{docModule,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="sendUserName != null">
+        SEND_USER_NAME = #{sendUserName,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="sendUserNo != null">
+        SEND_USER_NO = #{sendUserNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="sendOrg != null">
+        SEND_ORG = #{sendOrg,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="sendTime != null">
+        SEND_TIME = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+       
+       
+      <if test="pickupUserName != null">
+        PICKUP_USER_NAME = #{pickupUserName,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="pickupUserNo != null">
+        PICKUP_USER_NO = #{pickupUserNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="pickupTime != null">
+        PICKUP_TIME = #{pickupTime,jdbcType=TIMESTAMP},
+      </if>
+       
+       
+      <if test="printNum != null">
+        PRINT_NUM = #{printNum,jdbcType=INTEGER},
+      </if>
+       
+       
+      <if test="printCoverNum != null">
+        PRINT_COVER_NUM = #{printCoverNum,jdbcType=INTEGER},
+      </if>
+       
+       
+      <if test="printSubject != null">
+        PRINT_SUBJECT = #{printSubject,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="printPageNum != null">
+        PRINT_PAGE_NUM = #{printPageNum,jdbcType=INTEGER},
+      </if>
+       
+       
+      <if test="printUserName != null">
+        PRINT_USER_NAME = #{printUserName,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="printUserNo != null">
+        PRINT_USER_NO = #{printUserNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="layoutUserName != null">
+        LAYOUT_USER_NAME = #{layoutUserName,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="layoutUserNo != null">
+        LAYOUT_USER_NO = #{layoutUserNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="bookbindUserName != null">
+        BOOKBIND_USER_NAME = #{bookbindUserName,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="bookbindUserNo != null">
+        BOOKBIND_USER_NO = #{bookbindUserNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="noticePickupTime != null">
+        NOTICE_PICKUP_TIME = #{noticePickupTime,jdbcType=TIMESTAMP},
+      </if>
+       
+       
+      <if test="systemNo != null">
+        SYSTEM_NO = #{systemNo,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="createUser != null">
+        CREATE_USER = #{createUser,jdbcType=VARCHAR},
+      </if>
+       
+       
+      <if test="createUserNo != null">
+        CREATE_USER_NO = #{createUserNo,jdbcType=VARCHAR},
+      </if>
+    
+    
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  
+  
+  </update>
+  <select id="getPrintRecoder4Page" resultMap="BaseResultMap">
+    SELECT  
+     
+    <include refid="Base_Column_List"/>
+    FROM EGOV_PRINT_RECODER
+     
+     
+    <where>
+ 
+       
+      <!--      <if test="word!=null and word!=''">-->
+ 
+       
+      <!--        AND (TITLE like concat('%',#{word},'%'))-->
+ 
+       
+      <!--      </if>-->
+
+ 
+       
+      <!--            <if test="printRecoder.systemNo!=null">-->
+ 
+       
+      <!--                AND SYSTEM_NO = #{printRecoder.systemNo}-->
+ 
+       
+      <!--            </if>-->
+    
+    
+    </where>
+  
+  
+  </select>
+  <select id="getPrintRecoderById" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+     
+     
+    <include refid="Base_Column_List"/>
+    from EGOV_PRINT_RECODER
+    where ID = #{id,jdbcType=VARCHAR}
+  
+  
+  </select>
+  <select id="getPrintRecoderByModel" resultMap="BaseResultMap">
+    select
+     
+     
+    <include refid="Base_Column_List"/>
+    from EGOV_PRINT_RECODER
+     
+     
+    <where>
+       
+       
+      <if test="id!=null and id!=''">
+        AND ID = #{id,jdbcType=VARCHAR}
+      </if>
+    
+    
+    </where>
+  
+  
+  </select>
+</mapper>

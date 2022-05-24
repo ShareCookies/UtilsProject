@@ -32,14 +32,7 @@ import java.util.Map;
 public class HttpClientUtil {
     private static  RestTemplate rtSimpleFactory(){
         RestTemplate restTemplate = new RestTemplate();
-        // 修正返回乱码https://blog.csdn.net/myhAini/article/details/103276726
-        List<HttpMessageConverter<?>> httpMessageConverters = restTemplate.getMessageConverters();
-        httpMessageConverters.stream().forEach(httpMessageConverter -> {
-            if(httpMessageConverter instanceof StringHttpMessageConverter){
-                StringHttpMessageConverter messageConverter = (StringHttpMessageConverter) httpMessageConverter;
-                messageConverter.setDefaultCharset(Charset.forName("UTF-8"));
-            }
-        });
+        StringHttpMessageConverterDefaultUtf8Charset(restTemplate);
         return restTemplate;
     }
     private static  RestTemplate rtHttpsSimpleFactory(){
@@ -48,14 +41,22 @@ public class HttpClientUtil {
         httpRequestFactory.setReadTimeout(10 * 60 * 1000);
 
         RestTemplate restTemplate = new RestTemplate(httpRequestFactory);
+        StringHttpMessageConverterDefaultUtf8Charset(restTemplate);
+        return restTemplate;
+    }
+    /**
+     * @description 字符串消息转换器的编码设置为UTF-8
+     * 修正返回乱码https://blog.csdn.net/myhAini/article/details/103276726
+     */
+    private static  void StringHttpMessageConverterDefaultUtf8Charset(RestTemplate restTemplate){
         List<HttpMessageConverter<?>> httpMessageConverters = restTemplate.getMessageConverters();
         httpMessageConverters.stream().forEach(httpMessageConverter -> {
+            //字符串消息转换器的编码设置为UTF-8
             if(httpMessageConverter instanceof StringHttpMessageConverter){
                 StringHttpMessageConverter messageConverter = (StringHttpMessageConverter) httpMessageConverter;
                 messageConverter.setDefaultCharset(Charset.forName("UTF-8"));
             }
         });
-        return restTemplate;
     }
     /**
      * @description 发起get请求
@@ -225,11 +226,47 @@ public class HttpClientUtil {
         System.out.println("post请求结果："+body);
         return body;
     }
+    /**
+     * @description 发起post,get,put,delete请求，数据传输格式为x-www-form-urlencoded
+
+     * @author hecaigui
+     * @date 2020/6/13
+     * @param  url
+     * @param requestMap 请求参数  MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();
+     * @return String 字符串结果
+     */
+    public static String exchangeOfFormUrlencode(HttpMethod httpMethod,String url, MultiValueMap<String, String> requestMap){
+        RestTemplate restTemplate = new RestTemplate();
+
+        String resultJsonStr = "";
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+// 这样也行啊。什么样的接收请求头方式可以？为什么？，resttemplate原理是什么了？
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("clientId","11");
+//        HttpEntity<String> requestEntity = new HttpEntity<>(jsonObject.toJSONString(), requestHeaders);
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestMap, requestHeaders);
+        ResponseEntity<String> responseEntity=restTemplate.exchange(url, httpMethod,requestEntity, String.class);
+
+
+        HttpStatus statusCode = responseEntity.getStatusCode();
+        System.out.println("请求状态："+statusCode.value());
+        String body = responseEntity.getBody();
+        System.out.println("请求结果："+body);
+        return body;
+    }
     public static void main(String[] args){
-        //HttpClientUtil.get("https://www.amazon.com/");
+        HttpClientUtil.get("https://www.amazon.com/");
         //HttpClientUtil.getForHttps("https://www.amazon.com/robots.txt");
-        HttpClientUtil.getForHttpsAndCookie("https://www.amazon.com/");
+//        HttpClientUtil.getForHttpsAndCookie("https://www.amazon.com/");
         //HttpClientUtil.getForHttps("https://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel=15180411152");
+//        MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();
+//        requestMap.set("test","testt11");
+//        HttpClientUtil.exchangeOfFormUrlencode(HttpMethod.POST,"http://localhost:8888/openApi/wflow/getTodoAndToRead",requestMap);
+
+        double m = 2573550 / 1024.0 / 1024.0;
+        MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();
     }
 }
 // 以下为一些resttemplate原生demo

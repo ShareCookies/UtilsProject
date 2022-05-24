@@ -1,0 +1,108 @@
+RestTemplate原理：
+    1.连接创建
+        RestTemplate默认使用SimpleClientHttpRequestFactory(默认依赖jdk的HTTP连接工具),来处理HTTP的创建.
+        当然你也可以 通过setRequestFactory属性切换到不同的HTTP源，比如Apache HttpComponents、Netty和OkHttp。
+    2.请求与响应转换器
+        restTemplate 默认定义了几个通用的消息转换器,转换器作用是用来转换请求与相应数据。
+            详见RestTemplate()
+            Strategy interface that specifies a converter that can convert from and to HTTP requests and responses.
+        附：
+            注册其他的转换器：
+                通过setMessageConverters注册其他的转换器。
+            responseType：
+                很多方法有一个responseType 参数，它让你传入一个响应体所映射成的对象，然后底层用HttpMessageConverter将其做映射
+
+    3.响应错误处理：
+        RestTemplate默认使用DefaultResponseErrorHandler来响应错误，可以setErrorHandler来覆盖。
+    4.拦截器等：https://www.jianshu.com/p/90ec27b3b518
+RestTemplate执行原理分析：
+    https://www.cnblogs.com/sword-successful/p/13505610.html
+    RestTemplate构造方法：
+        //初始化UriTemplateHandler，实例化的是DefaultUriBuilderFactory类。
+        //通常用来生成URI的，例：  URI expanded = getUriTemplateHandler().expand(url, uriVariables);
+        private UriTemplateHandler uriTemplateHandler = new DefaultUriTemplateHandler();
+        public RestTemplate() {
+            //添加HttpMessageConvert实现类,顾名思义就是转换HTTP请求响应过程中的消息数据。
+            //那为什么要添加这么多个了，应用怎么知道要去用那个了 ，轮询 的话也不知道那个结果是对的啊、
+                //HttpMessageConverterExtractor#extractData，其实就是轮询然后根据响应体返回看适合那个消息转换类，就用那个消息转换类进行转换然后返回！
+                //MediaType contentType = getContentType(responseWrapper);
+                for (HttpMessageConverter<?> messageConverter : this.messageConverters) {
+                    ...
+                    messageConverter.canRead(this.responseClass, contentType)
+                    ...
+                }
+
+            this.messageConverters.add(new ByteArrayHttpMessageConverter());
+            this.messageConverters.add(new StringHttpMessageConverter());
+            ...
+        }
+
+    RestTemplate#getForObject()执行流程图:
+        ...
+    RestTemplate#getForObject()执行流程：
+        doExecute：
+            //resttemplate的请求方法最终都是调用到这个方法
+            @Nullable
+            protected <T> T doExecute(URI url, @Nullable HttpMethod method, @Nullable RequestCallback requestCallback,
+                        @Nullable ResponseExtractor<T> responseExtractor) throws RestClientException {
+                Assert.notNull(url, "URI is required");
+                Assert.notNull(method, "HttpMethod is required");
+                ClientHttpResponse response = null;
+                try {
+                    #1.生成请求
+                    ClientHttpRequest request = createRequest(url, method);
+                    if (requestCallback != null) {
+                        #2.设置header
+                        requestCallback.doWithRequest(request);
+                    }
+                    #3.执行请求
+                    response = request.execute();
+                    #4.处理响应
+                    handleResponse(url, method, response);
+                    #5.返回执行结果
+                    return (responseExtractor != null ? responseExtractor.extractData(response) : null);
+                }
+                ...
+            }
+            #1.生成请求
+            通过分析抽象父类InterceptingHttpAccessor和HttpAccessor， 我们得出结论，如果没有设置拦截器，
+            只是普通的RESTFUL调用，那么最终是调用SimpleClientHttpRequestFactory#createRequest().
+            分析：
+            InterceptingHttpAccessor:
+                #拦截HttpAccessor，这个类的关键在于重写了父类的getRequestFacotry()，该方法实现了：
+
+                public abstract class InterceptingHttpAccessor extends HttpAccessor {
+                    //拦截器属性
+                    //，可以自定义拦截器实现业务逻辑，当然玩过SpringCloud Ribbon调用，对这个属性再熟悉不过了。
+                    private final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+                    ...
+                    //如果有设置拦截属性则调用拦截属性的getRequestFacotry()，否则还是继续使用父类的getRequestFacotry()
+                    @Override
+                    public ClientHttpRequestFactory getRequestFactory() {
+                        List<ClientHttpRequestInterceptor> interceptors = getInterceptors();
+                        if (!CollectionUtils.isEmpty(interceptors)) {
+                            ClientHttpRequestFactory factory = this.interceptingRequestFactory;
+                            if (factory == null) {
+                                factory = new InterceptingClientHttpRequestFactory(super.getRequestFactory(), interceptors);
+                                this.interceptingRequestFactory = factory;
+                            }
+                            return factory;
+                        }
+                        else {
+                            return super.getRequestFactory();
+                        }
+                    }
+                }
+            HttpAccessor#createRequest:
+                //SimpleClientHttpRequestFactory默认依赖jdk的HTTP连接工具(?证明),来处理HTTP的创建.
+                private ClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+                //在这个方法里会创建ClientHttpRequest实例并且返回。
+                protected ClientHttpRequest createRequest(URI url, HttpMethod method) throws IOException {
+                    ClientHttpRequest request = getRequestFactory().createRequest(url, method);
+                    initialize(request);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("HTTP " + method.name() + " " + url);
+                    }
+                    return request;
+                }
+

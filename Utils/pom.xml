@@ -67,6 +67,48 @@
             <artifactId>poi-ooxml</artifactId>
             <version>4.0.1</version>
         </dependency>
+        <!--用于支持RabbitMQ。 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <!-- 用于测试包含库的Spring Boot应用程序的入门者JUnit，Hamcrest和Mockito -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <!--用于支持redis。 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+            <version>1.4.7.RELEASE</version>
+        </dependency>
+        <!--模板渲染，如先定义好html页面，把内容渲染进去。 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <!--xml解析等 -->
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+        </dependency>
+
+        <!-- aspectj注解。spring 注解aop使用 -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+        <!-- netty -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>5.0.0.Alpha2</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -90,7 +132,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.china.hcg.thread.ThreadPoolUtilsDemo</mainClass>
+                            <mainClass>com.china.hcg.java.thread.ThreadPoolUtilsDemo</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

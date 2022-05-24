@@ -21,7 +21,7 @@ public  class tokenidTest {
 //        for (String s : shortNames){
 //            System.out.println(tokenidTest.genericTokenid(s));
 //        }
-	    System.out.println(tokenidTest.genericTokenid("test"));
+	    System.out.println(tokenidTest.genericTokenid("1300-lvms"));
 
     }
     public static String genericTokenid(String shortName) throws UnsupportedEncodingException{
