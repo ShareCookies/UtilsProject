@@ -9,6 +9,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.china.hcg.http.utils.HttpUtil;
 import com.china.hcg.http.utils.HttpsClientRequestFactory;
 import com.china.hcg.http.utils.RestTemplateByteArrayResource;
+import com.china.hcg.utils.poi.excel.ExcelReader;
+import com.sun.org.apache.bcel.internal.generic.NEW;
+import org.apache.log4j.Logger;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -30,13 +35,25 @@ import java.util.Map;
  * </p>
  */
 public class HttpClientUtil {
+    private static Logger logger = Logger.getLogger(HttpClientUtil.class);
+
     private static  RestTemplate rtSimpleFactory(){
         RestTemplate restTemplate = new RestTemplate();
         StringHttpMessageConverterDefaultUtf8Charset(restTemplate);
         return restTemplate;
     }
+    /**
+     * @description 连接超时、读取超时、
+     * @author hecaigui
+     * @date 2022-7-26
+     * @param
+     * @return
+     */
     private static  RestTemplate rtHttpsSimpleFactory(){
         HttpsClientRequestFactory httpRequestFactory = new  HttpsClientRequestFactory();
+//        connect timeout 是建立连接的超时时间；
+//        read timeout， 是传递数据的超时时间。
+//        ConnectTimeout只有在网络正常的情况下才有效，而当网络不正常时，ReadTimeout才真正的起作用，?
         httpRequestFactory.setConnectTimeout(2 * 60 * 1000);
         httpRequestFactory.setReadTimeout(10 * 60 * 1000);
 
@@ -69,9 +86,9 @@ public class HttpClientUtil {
         RestTemplate restTemplate = HttpClientUtil.rtSimpleFactory();
         ResponseEntity<String> entity = restTemplate.getForEntity(url, String.class);
         HttpStatus statusCode = entity.getStatusCode();
-        System.out.println("get请求状态："+statusCode.value());
+        logger.debug("get请求状态："+statusCode.value());
         String body = entity.getBody();
-        System.out.println("get请求结果："+body);
+        logger.debug("get请求结果："+body);
         return body;
     }
     /**
@@ -85,9 +102,9 @@ public class HttpClientUtil {
         RestTemplate restTemplate = HttpClientUtil.rtHttpsSimpleFactory();
         ResponseEntity<String> entity = restTemplate.getForEntity(url, String.class);
         HttpStatus statusCode = entity.getStatusCode();
-        System.out.println("get请求状态："+statusCode.value());
+        logger.debug("get请求状态："+statusCode.value());
         String body = entity.getBody();
-        System.out.println("get请求结果："+body);
+        logger.debug("get请求结果："+body);
         return body;
     }
     /**
@@ -107,9 +124,31 @@ public class HttpClientUtil {
         ResponseEntity<String> entity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
 
         HttpStatus statusCode = entity.getStatusCode();
-        System.out.println("get请求状态："+statusCode.value());
+        logger.debug("get请求状态："+statusCode.value());
         String body = entity.getBody();
-        System.out.println("get请求结果："+body);
+        logger.debug("get请求结果："+body);
+        return body;
+    }
+    /**
+     * @description 发起get请求，该请求中携带了请求头
+     * @author hecaigui
+     * @date 2020-8-15
+     * @param   url
+     * @return
+     */
+    public static String getWithHeader(String url,HttpHeaders headers){
+        RestTemplate restTemplate = HttpClientUtil.rtHttpsSimpleFactory();
+
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set(HttpHeaders.USER_AGENT,"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:9.0) Gecko/20100101 Firefox/9.0");
+        HttpEntity<String> httpEntity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<String> entity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+
+        HttpStatus statusCode = entity.getStatusCode();
+        //logger.debug("get请求状态："+statusCode.value());
+        String body = entity.getBody();
+        //logger.debug("get请求结果："+body);
         return body;
     }
     /**
@@ -134,9 +173,9 @@ public class HttpClientUtil {
         HttpEntity request = new HttpEntity<>(postObj, headers);
         ResponseEntity<String> entity = restTemplate.postForEntity(url,request, String.class);
         HttpStatus statusCode = entity.getStatusCode();
-        //System.out.println("post请求状态："+statusCode.value());
+        //logger.debug("post请求状态："+statusCode.value());
         String body = entity.getBody();
-        //System.out.println("post请求结果："+body);
+        //logger.debug("post请求结果："+body);
         return body;
     }
     /**
@@ -154,9 +193,9 @@ public class HttpClientUtil {
         HttpEntity request = new HttpEntity<>(postObj, headers);
         ResponseEntity<String> entity = restTemplate.postForEntity(url,request, String.class);
         HttpStatus statusCode = entity.getStatusCode();
-        //System.out.println("post请求状态："+statusCode.value());
+        //logger.debug("post请求状态："+statusCode.value());
         String body = entity.getBody();
-        //System.out.println("post请求结果："+body);
+        //logger.debug("post请求结果："+body);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status",statusCode.value());
         jsonObject.put("body",body);
@@ -181,14 +220,14 @@ public class HttpClientUtil {
         HttpEntity request = new HttpEntity<>(requestMap, headers);
         ResponseEntity<String> entity = restTemplate.postForEntity(url,request, String.class);
         HttpStatus statusCode = entity.getStatusCode();
-        System.out.println("post请求状态："+statusCode.value());
+        logger.debug("post请求状态："+statusCode.value());
         String body = entity.getBody();
         // 网页重定向自动跳转
         if (statusCode.is3xxRedirection()){
             String url2 = HttpUtil.getPrefix(url)+entity.getHeaders().getLocation();
             body = HttpClientUtil.get(url2);
         }
-        System.out.println("post请求结果："+body);
+        logger.debug("post请求结果："+body);
 
         return body;
     }
@@ -221,9 +260,9 @@ public class HttpClientUtil {
         HttpEntity request = new HttpEntity<>(form, headers);
         ResponseEntity<String> entity = restTemplate.postForEntity(postUrl,request, String.class);
         HttpStatus statusCode = entity.getStatusCode();
-        System.out.println("post请求状态："+statusCode.value());
+        logger.debug("post请求状态："+statusCode.value());
         String body = entity.getBody();
-        System.out.println("post请求结果："+body);
+        logger.debug("post请求结果："+body);
         return body;
     }
     /**
@@ -251,9 +290,9 @@ public class HttpClientUtil {
 
 
         HttpStatus statusCode = responseEntity.getStatusCode();
-        System.out.println("请求状态："+statusCode.value());
+        logger.debug("请求状态："+statusCode.value());
         String body = responseEntity.getBody();
-        System.out.println("请求结果："+body);
+        logger.debug("请求结果："+body);
         return body;
     }
     public static void main(String[] args){
@@ -282,9 +321,9 @@ public class HttpClientUtil {
 //        RestTemplate restTemplate = new RestTemplate();
 //        ResponseEntity<String> entity = restTemplate.getForEntity("http://www.baidu.com/s?ie=UTF-8&wd=1", String.class);
 //        HttpStatus statusCode = entity.getStatusCode();
-//        System.out.println("statusCode.is2xxSuccessful()"+statusCode.is2xxSuccessful());
+//        logger.debug("statusCode.is2xxSuccessful()"+statusCode.is2xxSuccessful());
 //        String body = entity.getBody();
-//        System.out.println("entity.getBody()"+body);
+//        logger.debug("entity.getBody()"+body);
 //post：
 //		private JSONObject  postForObj (String postUrl , JSONObject postObj){
 //			RestTemplate restTemplate = new RestTemplate();
@@ -294,7 +333,7 @@ public class HttpClientUtil {
 //			headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
 //			HttpEntity request = new HttpEntity<>(postObj, headers);
 //			ResponseEntity<String> response = restTemplate.postForEntity( url, request , String.class );
-//			System.out.println(response.getBody());
+//			logger.debug(response.getBody());
 //			JSONObject jsonResult = JSON.parseObject(response.getBody());
 //			return jsonResult;
 //		}

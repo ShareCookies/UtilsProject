@@ -1,11 +1,14 @@
-HttpClientUtil.java 实现了get，post简易封装，基于spring的RestTemplate实现的。
+> HttpClientUtil.java 实现了get，post简易封装，基于spring的RestTemplate实现的。
 
+## spring发起http请求：
+>	https://www.cnblogs.com/javazhiyin/p/9851775.html
+	
+###	RestTemplate介绍：
 ```
-spring发起http请求：
-	https://www.cnblogs.com/javazhiyin/p/9851775.html
-	RestTemplate介绍：
-		RestTemplate是Spring提供的用于访问Rest服务的客户端.
-		RestTemplate提供了多种便捷访问远程Http服务的方法,能够大大提高客户端的编写效率。
+    RestTemplate是Spring提供的用于访问Rest服务的客户端.
+    RestTemplate提供了多种便捷访问远程Http服务的方法,能够大大提高客户端的编写效率。
+```
+```		
 	RestTemplate使用：
 		RestTemplate具有的方法主要是根据HTTP的六个方法制定的。
 		get：
@@ -106,4 +109,11 @@ spring发起http请求：
 ```
 HttpClient:
     https://blog.csdn.net/qianyiyiding/article/details/86558140
+```
+### RestTemplate分析
+#### RestTemplate类关系图
+![RestTemplate类关系图](http://qiniu.58xuejia.cn/RestTemplate.png)
+#### RestTemplate架构分析
+```text
+1. RestTemplate应用了模板模式，
 ```
