@@ -6,9 +6,12 @@ import com.alibaba.fastjson.JSONPObject;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.china.hcg.http.HttpClientUtil;
 import com.china.hcg.http.utils.HttpUtil;
+import com.china.hcg.io.file.FileUtils;
+import com.china.hcg.utils.date.DateUtil;
 import org.apache.commons.collections4.ListUtils;
 
 import javax.validation.constraints.NotNull;
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,20 +22,53 @@ import java.util.stream.Collectors;
  */
 public class minutes {
     public static void main(String[] args) {
-                //System.err.println(minute_data_price);
-        //JSONArray minute_data_price = minutes.getMinuteData("002415");
-        // 分众 002027
-//        JSONArray minute_data_price = minutes.getMinuteData("002027");
-        //京东方a
-        JSONArray minute_data_price = minutes.getMinuteData("000725");
-        minutes.standardJsonArrayPrint(minute_data_price);
 
+//        Map<String,String> guCodeNameInfo = new HashMap<>();
+//        guCodeNameInfo.put("000725","京东方a");
+//        guCodeNameInfo.put("002027","分众传媒");
+//        guCodeNameInfo.put("601377","兴业证券");
+//        guCodeNameInfo.put("601229","上海银行");
+//        guCodeNameInfo.put("002415","海康威视");
+//        outGuInfo(guCodeNameInfo);
+
+        //printGuInfo("002027","分众传媒");
+
+        JSONArray minute_data_price = minutes.getDayData("002027");
+        //System.err.println(guName);
+        TextTable textTable = minutes.standardJsonArrayPrint(minute_data_price);
+        System.err.println(textTable.printTable());
+    }
+    /**
+     * @description console打印stock分时table
+     */
+    static void printGuInfo(String guCode,String guName){
+        JSONArray minute_data_price = minutes.getMinuteData(guCode);
+        System.err.println(guName);
+        TextTable textTable = minutes.standardJsonArrayPrint(minute_data_price);
+        System.err.println(textTable.printTable());
 //        if (minute_data_price.size() > 10){
 //            minutes.standardJsonArrayPrint((JSONArray)minute_data_price.subList(minute_data_price.size() - 10,minute_data_price.size()));
 //        }else {
 //            minutes.standardJsonArrayPrint(minute_data_price);
 //        }
     }
+    /**
+     * @description 输出股票信息，当日分时json和分时table
+     */
+    static void outGuInfo(Map<String,String> guCodeNameInfo){
+        Set<String> guCodes = guCodeNameInfo.keySet();
+        for (String guCode : guCodes) {
+            JSONArray minute_data_price = minutes.getMinuteData(guCode);
+            TextTable textTable = minutes.standardJsonArrayPrint(minute_data_price);
+            String outFilePath = "D:/chaogu/";
+            FileUtils.writeToFile(new File(outFilePath),DateUtil.date2YmdString(new Date())+guCodeNameInfo.get(guCode)+"json.txt",minute_data_price.toJSONString());
+            FileUtils.writeToFile(new File(outFilePath),DateUtil.date2YmdString(new Date())+guCodeNameInfo.get(guCode)+".txt",textTable.printTable());
+        }
+    }
+    /**
+     * @description 获取分时数据
+     * @return
+     */
     static JSONArray getMinuteData(@NotNull String stockCode){
         String r = HttpClientUtil.getForHttpsAndCookie("https://gushitong.baidu.com/opendata?openapi=1&dspName=iphone&tn=tangram&client=app&query="+stockCode+"&code="+stockCode+"&word="+stockCode+"&resource_id=5429&ma_ver=4&finClientType=pc");
         //?
@@ -43,16 +79,31 @@ public class minutes {
         JSONArray minute_data_price = rj.getJSONArray("Result").getJSONObject(1).getJSONObject("DisplayData").getJSONObject("resultData").getJSONObject("tplData").getJSONObject("result").getJSONObject("minute_data").getJSONArray("priceinfo");
         return minute_data_price;
     }
+    static JSONArray getDayData(@NotNull String stockCode){
+        String r = HttpClientUtil.getForHttpsAndCookie("https://finance.pae.baidu.com/selfselect/getstockquotation?code="+stockCode+"&all=1&ktype=1&isIndex=false&isBk=false&isBlock=false&isFutures=false&stockType=ab&group=quotation_kline_ab&finClientType=pc");
+        ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
+        JSONObject rj = JSONObject.parseObject(r);
+
+        JSONArray minute_data_price = rj.getJSONArray("Result");
+        JSONArray newData = new JSONArray();
+        for (int i = 0; i < minute_data_price.size(); i++) {
+            JSONObject jsonObject = minute_data_price.getJSONObject(i);
+            JSONObject newJsonObject = jsonObject.getJSONObject("kline");
+            newJsonObject.put("date",jsonObject.getString("date"));
+            newData.add(newJsonObject);
+        }
+        return newData;
+    }
     /**
      * @description 标准json数组打印
      * 标准：所有的列数量要相同
      */
-    static void standardJsonArrayPrint(JSONArray minute_data_price){
-        //列
+    static TextTable standardJsonArrayPrint(JSONArray minute_data_price){
+        //列名
         Set<String> sets = minute_data_price.getJSONObject(0).keySet();
         List<String> columnNameList = new ArrayList<String>(sets);
 
-        //
+        //列值
         List<List<String>> allValues = new ArrayList<>();
         for (Object js : minute_data_price) {
             JSONObject  jsonObject = (JSONObject)js;
@@ -60,10 +111,8 @@ public class minutes {
             List<String> valueList = new ArrayList(values);
             allValues.add(valueList);
         }
-
-
         TextTable textTable = new TextTable(columnNameList,allValues);
-        System.err.println(textTable.printTable());
+        return textTable;
     }
     //https://zhidao.baidu.com/question/1576619087572264900.html
     // VOLUME在股票中叫做成交量，指一个时间单位内对某项交易成交的数量。

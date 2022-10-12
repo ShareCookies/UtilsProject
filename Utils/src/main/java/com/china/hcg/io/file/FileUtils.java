@@ -221,10 +221,18 @@ public class FileUtils {
     }
     /**
      * @description 往文本写入内容
+     * 文件夹创建：https://www.jb51.net/article/213368.htm
      * @param  * @param file
      * @return
      */
+    public static void writeToFile(File fileDir,String fileName,String content) {
+        if (!fileDir.exists()){
+            fileDir.mkdirs();
+        }
+        writeToFile(new File(fileDir.getPath()+File.separator+fileName),content);
+    }
     public static void writeToFile(File file,String content) {
+        //判断文件目录是否存在
         FileWriter fileWriter = null;
         BufferedWriter bufferedWriter = null;
         try {
@@ -233,7 +241,7 @@ public class FileUtils {
             bufferedWriter.write(content);
             bufferedWriter.flush(); // 把缓存区内容压入文件
         }catch (IOException exception){
-            System.err.println(exception);
+            exception.printStackTrace();
         }finally {
             try {
                 fileWriter.close();
