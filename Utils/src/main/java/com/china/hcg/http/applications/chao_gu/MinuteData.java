@@ -2,74 +2,83 @@ package com.china.hcg.http.applications.chao_gu;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPObject;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.china.hcg.http.HttpClientUtil;
-import com.china.hcg.http.utils.HttpUtil;
-import com.china.hcg.io.file.FileUtils;
-import com.china.hcg.utils.date.DateUtil;
-import org.apache.commons.collections4.ListUtils;
 
 import javax.validation.constraints.NotNull;
-import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @autor hecaigui
  * @date 2022-9-15
  * @description
  */
-public class minutes {
+public class MinuteData {
     public static void main(String[] args) {
 
 //        Map<String,String> guCodeNameInfo = new HashMap<>();
 //        guCodeNameInfo.put("000725","京东方a");
 //        guCodeNameInfo.put("002027","分众传媒");
+//        guCodeNameInfo.put("000776","广发证券");
+//        guCodeNameInfo.put("601377","兴业证券");
 //        guCodeNameInfo.put("601377","兴业证券");
 //        guCodeNameInfo.put("601229","上海银行");
 //        guCodeNameInfo.put("002415","海康威视");
 //        outGuInfo(guCodeNameInfo);
 
-        //printGuInfo("002027","分众传媒");
 
-        JSONArray minute_data_price = minutes.getDayData("002027");
-        //System.err.println(guName);
-        TextTable textTable = minutes.standardJsonArrayPrint(minute_data_price);
-        System.err.println(textTable.printTable());
+
+        printGuInfo("002027","分众传媒");
+        //printGuInfo("000776","广发证券");
+        //printGuInfo("000725","京东方a");
+        //printGuInfo("600383","金地集团");
+        //printGuInfo("600276","恒瑞医药");
+        //printGuInfo("601318","中国平安");
+        //printDayGuInfo("000725","京东方a");
     }
     /**
      * @description console打印stock分时table
      */
-    static void printGuInfo(String guCode,String guName){
-        JSONArray minute_data_price = minutes.getMinuteData(guCode);
-        System.err.println(guName);
-        TextTable textTable = minutes.standardJsonArrayPrint(minute_data_price);
+    public static void printGuInfo(String guCode,String guName){
+        JSONArray minute_data_price = MinuteData.getMinuteData(guCode);
+        System.err.println(minute_data_price.get(minute_data_price.size()-1));
+        System.err.println(guCode+guName);
+        GuDataUtils.minuteDataCustom(minute_data_price);
+        TextTable textTable = MinuteData.standardJsonArrayPrint(minute_data_price);
         System.err.println(textTable.printTable());
+
+        //System.err.println(guCode+guName);
 //        if (minute_data_price.size() > 10){
 //            minutes.standardJsonArrayPrint((JSONArray)minute_data_price.subList(minute_data_price.size() - 10,minute_data_price.size()));
 //        }else {
 //            minutes.standardJsonArrayPrint(minute_data_price);
 //        }
     }
+    public static void printDayGuInfo(String guCode,String guName){
+        JSONArray minute_data_price = MinuteData.getDayData(guCode);
+        System.err.println(guCode+guName);
+        TextTable textTable = MinuteData.standardJsonArrayPrint(minute_data_price);
+        System.err.println(textTable.printTable());
+        //System.err.println(guCode+guName);
+    }
     /**
      * @description 输出股票信息，当日分时json和分时table
      */
-    static void outGuInfo(Map<String,String> guCodeNameInfo){
-        Set<String> guCodes = guCodeNameInfo.keySet();
-        for (String guCode : guCodes) {
-            JSONArray minute_data_price = minutes.getMinuteData(guCode);
-            TextTable textTable = minutes.standardJsonArrayPrint(minute_data_price);
-            String outFilePath = "D:/chaogu/";
-            FileUtils.writeToFile(new File(outFilePath),DateUtil.date2YmdString(new Date())+guCodeNameInfo.get(guCode)+"json.txt",minute_data_price.toJSONString());
-            FileUtils.writeToFile(new File(outFilePath),DateUtil.date2YmdString(new Date())+guCodeNameInfo.get(guCode)+".txt",textTable.printTable());
-        }
-    }
+//    static void outGuInfo(Map<String,String> guCodeNameInfo){
+//        Set<String> guCodes = guCodeNameInfo.keySet();
+//        for (String guCode : guCodes) {
+//            JSONArray minute_data_price = minutes.getMinuteData(guCode);
+//            TextTable textTable = minutes.standardJsonArrayPrint(minute_data_price);
+//            String outFilePath = "D:/chaogu/";
+//            FileUtils.writeToFile(new File(outFilePath),DateUtil.date2YmdString(new Date())+guCodeNameInfo.get(guCode)+"json.txt",minute_data_price.toJSONString());
+//            FileUtils.writeToFile(new File(outFilePath),DateUtil.date2YmdString(new Date())+guCodeNameInfo.get(guCode)+".txt",textTable.printTable());
+//        }
+//    }
     /**
      * @description 获取分时数据
      * @return
      */
-    static JSONArray getMinuteData(@NotNull String stockCode){
+    public static JSONArray getMinuteData(@NotNull String stockCode){
         String r = HttpClientUtil.getForHttpsAndCookie("https://gushitong.baidu.com/opendata?openapi=1&dspName=iphone&tn=tangram&client=app&query="+stockCode+"&code="+stockCode+"&word="+stockCode+"&resource_id=5429&ma_ver=4&finClientType=pc");
         //?
         //https://blog.csdn.net/adsl624153/article/details/79562282
@@ -79,7 +88,7 @@ public class minutes {
         JSONArray minute_data_price = rj.getJSONArray("Result").getJSONObject(1).getJSONObject("DisplayData").getJSONObject("resultData").getJSONObject("tplData").getJSONObject("result").getJSONObject("minute_data").getJSONArray("priceinfo");
         return minute_data_price;
     }
-    static JSONArray getDayData(@NotNull String stockCode){
+    public static JSONArray getDayData(@NotNull String stockCode){
         String r = HttpClientUtil.getForHttpsAndCookie("https://finance.pae.baidu.com/selfselect/getstockquotation?code="+stockCode+"&all=1&ktype=1&isIndex=false&isBk=false&isBlock=false&isFutures=false&stockType=ab&group=quotation_kline_ab&finClientType=pc");
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
         JSONObject rj = JSONObject.parseObject(r);
@@ -98,7 +107,7 @@ public class minutes {
      * @description 标准json数组打印
      * 标准：所有的列数量要相同
      */
-    static TextTable standardJsonArrayPrint(JSONArray minute_data_price){
+    public static TextTable standardJsonArrayPrint(JSONArray minute_data_price){
         //列名
         Set<String> sets = minute_data_price.getJSONObject(0).keySet();
         List<String> columnNameList = new ArrayList<String>(sets);
