@@ -1,4 +1,4 @@
-package com.china.hcg.http.applications.chao_gu;
+package com.china.hcg.applications.chao_gu.utilsgu;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -10,18 +10,18 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class GuDataUtils {
     //1亿
-    final static int oneHundredMillion = 100000000;
+    public final static int oneHundredMillion = 100000000;
     //1千万
-    final static int tenMillion = 10000000;
+    public final static int tenMillion = 10000000;
     //1百万
-    final static int oneMillion = 1000000;
+    public final static int oneMillion = 1000000;
 
-    static void minuteDataCustom(JSONArray minuteData){
+    public static void minuteDataCustomZhangDieLiang(JSONArray minuteData){
         for (int i = 0; i < minuteData.size(); i++) {
-            GuDataUtils.minuteDataCustom(minuteData,i);
+            GuDataUtils.minuteDataCustomZhangDieLiang(minuteData,i);
         }
     }
-    static void minuteDataCustom(JSONArray minuteData, int i ){
+    public static void minuteDataCustomZhangDieLiang(JSONArray minuteData, int i ){
         // 自定义-跌涨放量
         JSONObject minute_data_price = minuteData.getJSONObject(i);
         minute_data_price.put("局势","");
@@ -44,10 +44,24 @@ public class GuDataUtils {
         minuteData.set(i,minute_data_price);
     }
     //计算交易总价
-    static float minuteComputeAmountValue(JSONObject minute_data_price){
+    public static float minuteComputeAmountValue(JSONObject minute_data_price){
         int  volume = minute_data_price.getInteger("volume");
         float  avgPrice = minute_data_price.getFloat("avgPrice");
         float amountValue = volume * avgPrice * 100;
         return amountValue;
     }
+    public static void minuteDataCustomFunds(JSONArray minuteData,String[] minuteFundsData){
+        for (int i = 0; i < minuteData.size(); i++) {
+            JSONObject minute_data_price = minuteData.getJSONObject(i);
+            try {
+                minute_data_price.put("资金净额趋势(大单、中单、小单)",minuteFundsData[i]);
+            }catch (ArrayIndexOutOfBoundsException e){
+                minute_data_price.put("资金趋势","");
+//                e.printStackTrace();
+//                System.err.println(minuteFundsData.length);
+//                System.err.println(minuteData.size());
+            }
+        }
+    }
+
 }

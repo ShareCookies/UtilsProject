@@ -1,7 +1,9 @@
-package com.china.hcg.http.applications.chao_gu;
+package com.china.hcg.applications.chao_gu;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.china.hcg.applications.chao_gu.model.GuInfo;
+import com.china.hcg.applications.chao_gu.utilsgu.GuDataUtils;
 import com.china.hcg.utils.timer.JavaTimer;
 import com.china.hcg.utils.windows.InfoUtil;
 
@@ -14,16 +16,16 @@ import java.util.concurrent.Executors;
  * @date 2022-10-21
  * @description
  */
-public class autMinuteData {
+public class AutoGuMinuteData {
 
 
     ExecutorService executorService = Executors.newSingleThreadExecutor();
     public static void main(String[] args) throws Exception{
         List<GuInfo> list = new ArrayList();
-        list.add(new GuInfo("000725","京东方a",2 * GuDataUtils.oneHundredMillion,3.65f));
-        list.add(new GuInfo("002027","分众传媒",3 * GuDataUtils.oneHundredMillion));
-        list.add(new GuInfo("000776","广发证券",2 * GuDataUtils.oneHundredMillion,14.4f));
-        list.add(new GuInfo("600383","金地集团",2 * GuDataUtils.oneHundredMillion,8.5f));
+//        list.add(new GuInfo("000725","京东方a",5 * GuDataUtils.oneHundredMillion));
+//        list.add(new GuInfo("002027","分众传媒",2 * GuDataUtils.oneHundredMillion));
+//        list.add(new GuInfo("000776","广发证券",4 * GuDataUtils.oneHundredMillion));
+        list.add(new GuInfo("600383","金地集团",10 * GuDataUtils.oneHundredMillion,null,8f));
         for (GuInfo s : list) {
             minuteGuInfoLoop(s.code,s.name,s.totalAmountReference,s);
         }
@@ -31,7 +33,7 @@ public class autMinuteData {
 
     static void minuteGuInfoLoop(String code,String name,double largeTotalAmountReference,GuInfo s) throws Exception{
         JavaTimer javaTimer = new JavaTimer();
-        javaTimer.loopTask(new Runnable() {
+        JavaTimer.loopTask(new Runnable() {
             @Override
             public void run() {
                 //开始条件判断
@@ -42,7 +44,7 @@ public class autMinuteData {
 //                }
 
 
-                JSONArray minuteData = MinuteData.getMinuteData(code);
+                JSONArray minuteData = GuMinuteData.getMinuteData(code);
                 s.priceNotice(minuteData);
 
                 int largeTotalAmount = 0;
@@ -53,7 +55,7 @@ public class autMinuteData {
                     JSONObject minute_data_price = minuteData.getJSONObject(i);
                     float amountValue = GuDataUtils.minuteComputeAmountValue(minute_data_price);
                     //原有数据改造
-                    GuDataUtils.minuteDataCustom(minuteData,i);
+                    GuDataUtils.minuteDataCustomZhangDieLiang(minuteData,i);
 
                     totalAmount += amountValue;
 

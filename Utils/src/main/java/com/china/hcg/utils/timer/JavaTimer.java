@@ -35,7 +35,7 @@ public class JavaTimer {
      * @param delaySeconds
      * @return
      */
-    public void loopTask(Runnable task,long delaySeconds){
+    public static void loopTask(Runnable task,long delaySeconds){
         executorService.scheduleWithFixedDelay(task,0L,delaySeconds,TimeUnit.SECONDS);
     }
 }
