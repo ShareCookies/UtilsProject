@@ -40,8 +40,8 @@ logging:
   file:
     path: logs
   # 改文件应放在resources/config下
-#  config: classpath:logback-spring.xml
-wps-graph-sdk:
-  appId:
-  appSecret:
-  url:
+  config: classpath:logback-spring.xml
+#wps-graph-sdk:
+#  appId:
+#  appSecret:
+#  url:

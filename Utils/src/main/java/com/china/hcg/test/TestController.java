@@ -30,6 +30,8 @@ public class TestController {
     public String dictDataMove() {
         LoggerUtils.getLoggerForCustomLogFileName("test").info("111");
         logger.error("error");
+        logger.info("info");
+        logger.warn("WARN");
         return "";
     }
 

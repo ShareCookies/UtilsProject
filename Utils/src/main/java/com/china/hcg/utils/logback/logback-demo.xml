@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" scan="true" scanPeriod="10 seconds">
-    <property name="logformat_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level  [%thread] %c  %logger  Line:%-4L - %msg%n"/>
+    <property name="logformat_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level  [%thread] %c  %logger  Line:%L - %msg%n"/>
     <property name="log_dir" value="logs"/>
 
 
@@ -22,18 +22,19 @@
             <pattern>${logformat_pattern}</pattern>
             <charset>utf-8</charset>
         </encoder>
+
         <!-- 此filter过滤debug级别以下的日志-->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
         </filter>
-        <!--  级别过滤器，根据日志级别进行过滤。-->
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <!--  表示不输出ERROR及以上日志-->
-            <onMatch>DENY</onMatch>
-            <!--  表示输出ERROR以下日志-->
-            <onMismatch>ACCEPT</onMismatch>
-        </filter>
+<!--        &lt;!&ndash;  级别过滤器，根据日志级别进行过滤。&ndash;&gt;-->
+<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+<!--            <level>ERROR</level>-->
+<!--            &lt;!&ndash;  表示不输出ERROR及以上日志&ndash;&gt;-->
+<!--            <onMatch>DENY</onMatch>-->
+<!--            &lt;!&ndash;  表示输出ERROR以下日志&ndash;&gt;-->
+<!--            <onMismatch>ACCEPT</onMismatch>-->
+<!--        </filter>-->
     </appender>
     <!-- 错误日志 error.log （error）-->
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -101,6 +102,7 @@
                     <!--定义文件滚动时的文件名的格式-->
                     <fileNamePattern>${log_dir}/customlog/${logFileName}-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
                     <maxFileSize>128MB</maxFileSize>
+                    <maxHistory>30</maxHistory>
                 </rollingPolicy>
             </appender>
         </sift>

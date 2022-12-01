@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration  scan="true" scanPeriod="10 seconds">
-    <springProperty name="rootlevel" source="logging.level.root" />
-    <springProperty name="log_dir" source="logging.file.filepath" />
-    <property name="logformat_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} null [%thread] %-5level %logger{36} -%msg%n"/>
+
+    <springProperty name="log_dir" source="logging.file.path" />
+    <property name="logformat_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [Line:%L] [%thread] %-5level %logger{36}  -%msg%n"/>
 
     <!-- 普通日志 info.log （INFO、WARN、DEBUG） -->
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -22,18 +22,19 @@
             <pattern>${logformat_pattern}</pattern>
             <charset>utf-8</charset>
         </encoder>
+
         <!-- 此filter过滤debug级别以下的日志-->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
         </filter>
-        <!--  级别过滤器，根据日志级别进行过滤。-->
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <!--  表示不输出ERROR及以上日志-->
-            <onMatch>DENY</onMatch>
-            <!--  表示输出ERROR以下日志-->
-            <onMismatch>ACCEPT</onMismatch>
-        </filter>
+<!--        &lt;!&ndash;  级别过滤器，根据日志级别进行过滤。&ndash;&gt;-->
+<!--        <filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+<!--            <level>ERROR</level>-->
+<!--            &lt;!&ndash;  表示不输出ERROR及以上日志&ndash;&gt;-->
+<!--            <onMatch>DENY</onMatch>-->
+<!--            &lt;!&ndash;  表示输出ERROR以下日志&ndash;&gt;-->
+<!--            <onMismatch>ACCEPT</onMismatch>-->
+<!--        </filter>-->
     </appender>
     <!-- 错误日志 error.log （error）-->
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -76,7 +77,7 @@
             <level>INFO</level>
         </filter>
     </appender>
-    <root level="${rootlevel}">
+    <root level="ALL">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="INFO_FILE"/>
         <appender-ref ref="ERROR_FILE"/>
@@ -101,13 +102,13 @@
                     <!--定义文件滚动时的文件名的格式-->
                     <fileNamePattern>${log_dir}/customlog/${logFileName}-%d{yyyy-MM-dd}-%i.log</fileNamePattern>
                     <maxFileSize>128MB</maxFileSize>
+                    <maxHistory>30</maxHistory>
                 </rollingPolicy>
             </appender>
         </sift>
     </appender>
-    <logger name="customlog" additivity="false" level="info">
+    <logger name="customlog" additivity="false" level="INFO">
         <appender-ref ref="customlog"/>
     </logger>
-
 
 </configuration>
