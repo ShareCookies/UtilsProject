@@ -36,7 +36,7 @@ spring:
             class: javax.net.ssl.SSLSocketFactory
 logging:
   level:
-    root: error
+    root: info
   file:
     path: logs
   # 改文件应放在resources/config下
