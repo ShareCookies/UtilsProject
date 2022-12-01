@@ -6,9 +6,9 @@ import com.alibaba.fastjson.JSONObject;
 /**
  * @autor hecaigui
  * @date 2022-10-27
- * @description
+ * @description 分钟数据重构-追加数据
  */
-public class GuDataUtils {
+public class GuMinuteDataUtils {
     //1亿
     public final static int oneHundredMillion = 100000000;
     //1千万
@@ -18,7 +18,7 @@ public class GuDataUtils {
 
     public static void minuteDataCustomZhangDieLiang(JSONArray minuteData){
         for (int i = 0; i < minuteData.size(); i++) {
-            GuDataUtils.minuteDataCustomZhangDieLiang(minuteData,i);
+            GuMinuteDataUtils.minuteDataCustomZhangDieLiang(minuteData,i);
         }
     }
     public static void minuteDataCustomZhangDieLiang(JSONArray minuteData, int i ){
@@ -27,7 +27,7 @@ public class GuDataUtils {
         minute_data_price.put("局势","");
         if (i>0){
             JSONObject pre_minute_data_price = minuteData.getJSONObject(i-1);
-            float amountValue = GuDataUtils.minuteComputeAmountValue(minute_data_price);
+            float amountValue = GuMinuteDataUtils.minuteComputeAmountValue(minute_data_price);
             if (amountValue > oneMillion * 4 & amountValue < oneMillion * 9){
                 minute_data_price.put("局势","跌放量");
                 if (minute_data_price.getFloat("increase") >= pre_minute_data_price.getFloat("increase")){
