@@ -36,8 +36,12 @@ spring:
             class: javax.net.ssl.SSLSocketFactory
 logging:
   level:
-    root: debug
+    root: error
+  file:
+    path: logs
+  # 改文件应放在resources/config下
+#  config: classpath:logback-spring.xml
 wps-graph-sdk:
-  appId: 081b30bf-436b-488f-0000-000000000006
-  appSecret: 308rqVKAhEup
-  url: https://yundoc.zjsfgkw.cn/graph
+  appId:
+  appSecret:
+  url:
