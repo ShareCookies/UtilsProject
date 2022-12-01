@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %c [%thread] %-5level %msg%n"/>
+    <!-- 日志文件存放目录 -->
+    <property name="log_dir" value="d:/lianxi"></property>
+
+    <!--控制日志输出位置的Appender-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--控制台输出的对象 默认System.out 改为System.err 就变为了红色字体-->
+        <target>System.err</target>
+        <!--日志消息格式的配置-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+    <!--日志拆分和归档Appender-->
+    <appender name="rolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志格式配置-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${pattern}</pattern>
+        </encoder>
+        <!--日志输出路径-->
+        <file>${log_dir}/roll_logback.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--指定具体实现规则-->
+            <!--按照时间和压缩格式声明拆分的文件名-->
+            <!--            <fileNamePattern>${log_dir}/rolling.%d{yyyy-MM-dd-HH-mm-ss}.log%i.gz</fileNamePattern>-->
+            <fileNamePattern>${log_dir}/rolling.%d{yyyy-MM-dd-HH}.log%i.gz</fileNamePattern>
+            <!--按照文件大小拆分1MB-->
+            <maxFileSize>1MB</maxFileSize>
+        </rollingPolicy>
+        <!--日志过滤规则-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <!--等于当前级别放行-->
+            <!--超过当前级别放行-->
+            <onMath>ACCEPT</onMath>
+            <!--小于当前级别拦截-->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <appender name="async" class="ch.qos.logback.classic.AsyncAppender">
+        <!--指定某个具体的Appender实现-->
+        <appender-ref ref="rolling"/>
+    </appender>
+    <root level="ALL">
+        <appender-ref ref="async"></appender-ref>
+    </root>
+</configuration>
