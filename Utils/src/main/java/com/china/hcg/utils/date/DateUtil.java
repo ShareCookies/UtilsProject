@@ -5,6 +5,7 @@ package com.china.hcg.utils.date;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -30,8 +31,21 @@ public class DateUtil {
 		return ymdSdf.format(date);
 	}
 
+	public static Date stringToDate(String dateStr, String dateFormat) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+		dateStr = dateStr.substring(0, dateFormat.length());
+		return sdf.parse(dateStr);
+	}
+
+	public static String dateToString(Date date, String dateFormat) {
+		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+		return sdf.format(date);
+	}
 
 	public static void main(String[] args) throws Exception{
+
+
+
         Set<String> msgSendTypes= new HashSet<>();
         msgSendTypes.add("1");
         msgSendTypes.add("1");
@@ -71,5 +85,11 @@ public class DateUtil {
 		df.setTimeZone(tz);
 		String nowAsISO = df.format(date);
 		return nowAsISO;
+	}
+	//最后一天
+	public static Date lastDay() throws ParseException{
+		Calendar rightCalendar = Calendar.getInstance();
+		String d = rightCalendar.get(Calendar.YEAR)+"12"+"31";
+		return  DateUtil.stringToDate(d,"yyyy-MM-dd");
 	}
 }

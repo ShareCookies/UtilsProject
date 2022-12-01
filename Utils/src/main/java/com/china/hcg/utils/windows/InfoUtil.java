@@ -30,6 +30,8 @@ import javax.swing.JDialog;
  *         test.show("弹窗", "这是一个弹窗测试！");
  */
 public class InfoUtil {
+    public static long infoDelay = 2000; // 提示时间
+
     private TipWindow tw = null; // 提示框
     private JPanel headPan = null;
     private JPanel feaPan = null;
@@ -45,13 +47,16 @@ public class InfoUtil {
     private Desktop desktop = null;
 
     //语言展示工具
-    public static String breakLine = "\n";
+    public static String breakLine = System.getProperty("line.separator");
     // private SimpleDateFormat sdf = new
     // SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static void main(String[] args) {
         InfoUtil test = new InfoUtil();
         test.show("","ftet" + breakLine + "亿");
     }
+
+
+
     public void init() {
         // 新建300x180的消息提示框
         tw = new TipWindow(300, 180);
@@ -217,7 +222,7 @@ class TipWindow extends JDialog {
         }
         // 此处代码用来实现让消息提示框6秒后自动消失
         try {
-            Thread.sleep(2000);
+            Thread.sleep(InfoUtil.infoDelay);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -243,5 +248,7 @@ class TipWindow extends JDialog {
         }
         dispose();
     }
- 
+
+
+
 }

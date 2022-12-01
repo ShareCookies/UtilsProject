@@ -2,6 +2,7 @@ package com.china.hcg.applications.chao_gu.model;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataUtils;
 import com.china.hcg.utils.windows.InfoUtil;
 
 /**
@@ -16,11 +17,16 @@ public class GuInfo {
     //总量提醒
     public double totalAmountReference;
     //价格涨到提醒
-    Float noticePriceRise;
+    public Float noticePriceRise;
     //价格跌到提醒
-    Float noticePriceFall;
+    public Float noticePriceFall;
     //todo:突然量提醒-提醒涨量
-
+    //大资金突然离场提醒
+    public Double noticeFundsInstantRun = -500d;
+    //大资金突然入场提醒
+    public Double noticeFundsInstantEnter = 100d;
+    //todo：大资金买入量达到多少提醒
+    //todo：大资金卖入量达到多少提醒
 
     public GuInfo(String code, String name, double totalAmountReference) {
         this.code = code;
@@ -34,18 +40,54 @@ public class GuInfo {
         this.noticePriceRise = noticePriceRise;
         this.noticePriceFall = noticePriceFall;
     }
-    public void priceNotice(JSONArray minuteData){
-        if (noticePriceRise == null && noticePriceFall == null){
-            return;
-        }
-        JSONObject minute_data_price = minuteData.getJSONObject(minuteData.size()-1);
-        if(minute_data_price.getFloat("price") >= noticePriceRise && noticePriceRise != null){
-            InfoUtil test = new InfoUtil();
-            test.show(name+"价格提醒","涨价提醒"+noticePriceRise+InfoUtil.breakLine+"当前价格"+minute_data_price.getFloat("price"));
-        }
-        if (minute_data_price.getFloat("price") <= noticePriceFall && noticePriceFall != null){
-            InfoUtil test = new InfoUtil();
-            test.show(name+"价格提醒","跌价提醒"+noticePriceFall+InfoUtil.breakLine+"当前价格"+minute_data_price.getFloat("price"));
-        }
+
+    public GuInfo(String code, String name, double totalAmountReference, Float noticePriceRise, Float noticePriceFall, Double noticeFundsInstantRun, Double noticeFundsInstantEnter) {
+        this.code = code;
+        this.name = name;
+        this.totalAmountReference = totalAmountReference;
+        this.noticePriceRise = noticePriceRise;
+        this.noticePriceFall = noticePriceFall;
+        this.noticeFundsInstantRun = noticeFundsInstantRun;
+        this.noticeFundsInstantEnter = noticeFundsInstantEnter;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getTotalAmountReference() {
+        return totalAmountReference;
+    }
+
+    public void setTotalAmountReference(double totalAmountReference) {
+        this.totalAmountReference = totalAmountReference;
+    }
+
+    public Float getNoticePriceRise() {
+        return noticePriceRise;
+    }
+
+    public void setNoticePriceRise(Float noticePriceRise) {
+        this.noticePriceRise = noticePriceRise;
+    }
+
+    public Float getNoticePriceFall() {
+        return noticePriceFall;
+    }
+
+    public void setNoticePriceFall(Float noticePriceFall) {
+        this.noticePriceFall = noticePriceFall;
     }
 }

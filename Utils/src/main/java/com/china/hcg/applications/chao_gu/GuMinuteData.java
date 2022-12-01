@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.china.hcg.http.HttpClientUtil;
 import com.china.hcg.applications.chao_gu.utilscommon.TextTable;
-import com.china.hcg.applications.chao_gu.utilsgu.GuDataUtils;
+import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataUtils;
 import com.china.hcg.io.file.FileUtils;
 import com.china.hcg.utils.date.DateUtil;
 
@@ -20,6 +20,7 @@ import java.util.concurrent.*;
  * @description
  */
 public class GuMinuteData {
+    //？核心线程是什么时候创建的
     static ExecutorService  executorService = new ThreadPoolExecutor(0,10,5,TimeUnit.SECONDS,new LinkedBlockingDeque());
 
     public static void main(String[] args) {
@@ -28,6 +29,7 @@ public class GuMinuteData {
 //        guCodeNameInfo.put("000725","京东方a");
 //        guCodeNameInfo.put("002027","分众传媒");
 //        guCodeNameInfo.put("000776","广发证券");
+//        guCodeNameInfo.put("601456","国联证券");
 //        guCodeNameInfo.put("600383","金地集团");
 //        guCodeNameInfo.put("002241","歌尔股份");
 //        guCodeNameInfo.put("601377","兴业证券");
@@ -35,18 +37,29 @@ public class GuMinuteData {
 //        guCodeNameInfo.put("002415","海康威视");
 //        guCodeNameInfo.put("600276","恒瑞医药");
 //        guCodeNameInfo.put("601318","中国平安");
+//        guCodeNameInfo.put("600741","华域汽车");
+//        guCodeNameInfo.put("002460","赣锋锂业");
+//        guCodeNameInfo.put("002466","天齐锂业");
+//        guCodeNameInfo.put("000012","南玻A");
+//        guCodeNameInfo.put("000792","盐湖股份");
 //        outGuInfo(guCodeNameInfo);
 
 
 
         //printGuInfo("0000001","上证指数");
+        //printGuInfo("000792","盐湖股份");
         //printGuInfo("002027","分众传媒");
         printGuInfo("000776","广发证券");
+        //printGuInfo("002241","歌尔股份");
+
+        //printGuInfo("601456","国联证券");
         //printGuInfo("000725","京东方a");
+        //printGuInfo("000012","南玻A");
         //printGuInfo("600383","金地集团");
+        //printGuInfo("600741","华域汽车");
         //printGuInfo("600276","恒瑞医药");
         //printGuInfo("601318","中国平安");
-        //printDayGuInfo("000725","京东方a");
+        //printGuInfo("000725","京东方a");
     }
     /**
      * @description console打印stock分时table
@@ -57,9 +70,13 @@ public class GuMinuteData {
 //        GuDataUtils.minuteDataCustom(minute_data_price);
 //        TextTable textTable = MinuteData.standardJsonArrayPrint(minute_data_price);
 //        System.err.println(textTable.printTable());
+        System.err.println("大单：大于等于6万股或者30万元以上的成交单。\n" +
+                "中单：大于等于1万股小于6万股或者大于等于5万元小于30万元的成交单。\n" +
+                "小单：小于1万股或5万元的成交单。");
         System.err.println(minuteData(guCode,guName));
     }
 
+    //?内部类的危害等
     static class MinuteData{
         JSONArray minutePriceData;
         String minutePriceDataTable;
@@ -73,10 +90,8 @@ public class GuMinuteData {
         public String toString() {
             return minutePriceDataTable;
         }
-
-
     }
-    static MinuteData minuteData(String guCode,String guName){
+    public static MinuteData minuteData(String guCode,String guName){
         //好处?
         StringBuilder stringBuilder = new StringBuilder();
         Future<JSONArray> minutePrice = GuMinuteData.asyncGetMinuteData(guCode);
@@ -87,8 +102,8 @@ public class GuMinuteData {
             JSONObject minuteFundsData = minuteFunds.get();
             JSONObject minuteFundDirectionData = minuteFundDirections.get();
 
-            GuDataUtils.minuteDataCustomZhangDieLiang(minutePriceData);
-            GuDataUtils.minuteDataCustomFunds(minutePriceData,minuteFundsData.getString("line").split("\\|"));
+            GuMinuteDataUtils.minuteDataCustomZhangDieLiang(minutePriceData);
+            GuMinuteDataUtils.minuteDataCustomFunds(minutePriceData,minuteFundsData.getString("line").split("\\|"));
 
             TextTable textTable = GuMinuteData.standardJsonArrayPrint(minutePriceData);
             stringBuilder.append(textTable.printTable());
@@ -160,7 +175,7 @@ public class GuMinuteData {
      * @description 获取分时数据
      * @return
      */
-    public static JSONArray getMinuteData(@NotNull String stockCode){
+    private static JSONArray getMinuteData(@NotNull String stockCode){
         String r = HttpClientUtil.getForHttpsAndCookie("https://gushitong.baidu.com/opendata?openapi=1&dspName=iphone&tn=tangram&client=app&query="+stockCode+"&code="+stockCode+"&word="+stockCode+"&resource_id=5429&ma_ver=4&finClientType=pc");
         //?
         //https://blog.csdn.net/adsl624153/article/details/79562282
@@ -179,7 +194,7 @@ public class GuMinuteData {
         });
         return future;
     }
-    public static JSONArray getDayData(@NotNull String stockCode){
+    private static JSONArray getDayData(@NotNull String stockCode){
         String r = HttpClientUtil.getForHttpsAndCookie("https://finance.pae.baidu.com/selfselect/getstockquotation?code="+stockCode+"&all=1&ktype=1&isIndex=false&isBk=false&isBlock=false&isFutures=false&stockType=ab&group=quotation_kline_ab&finClientType=pc");
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
         JSONObject rj = JSONObject.parseObject(r);
@@ -207,7 +222,7 @@ public class GuMinuteData {
      * @return
      */
 
-    public static JSONObject getMinuteFunds(@NotNull String stockCode){
+    private static JSONObject getMinuteFunds(@NotNull String stockCode){
         String r = HttpClientUtil.get("http://stockpage.10jqka.com.cn/spService/"+stockCode+"/Funds/lineFunds");
         JSONObject result = JSONObject.parseObject(r);
         return result;
@@ -226,7 +241,7 @@ public class GuMinuteData {
      * @date 2022-11-7
      * @return
      */
-    public static JSONObject getMinuteFundsDirection(@NotNull String stockCode){
+    private static JSONObject getMinuteFundsDirection(@NotNull String stockCode){
         String r = HttpClientUtil.get("http://stockpage.10jqka.com.cn/spService/"+stockCode+"/Funds/realFunds");
         JSONObject result = JSONObject.parseObject(r);
         return result;
