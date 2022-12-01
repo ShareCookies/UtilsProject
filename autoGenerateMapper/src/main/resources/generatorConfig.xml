@@ -13,7 +13,7 @@
         </commentGenerator>
         <!--数据库链接地址账号密码-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.210.186:3306/zjgy-jz2?characterEncoding=utf8"
+                        connectionURL="jdbc:mysql://192.168.210.186:3306/zjgy_real?characterEncoding=utf8"
                         userId="root"
                         password="root">
         </jdbcConnection>
@@ -40,6 +40,6 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!--生成对应表及类名-->
-        <table tableName="STZX_OFFICE" domainObjectName="stzxOffice" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+        <table tableName="EGOV_DOC_SJH_LOG" domainObjectName="docSjhLog" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>
 </generatorConfiguration>

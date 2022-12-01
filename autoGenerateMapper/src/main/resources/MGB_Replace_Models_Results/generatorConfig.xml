@@ -24,12 +24,12 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
         <!--生成Model类存放位置-->
-        <javaModelGenerator targetPackage="com.rongji.egov.messageclient.business.model" targetProject="src\main\resources\MGB_Replace_Models_Results">
+        <javaModelGenerator targetPackage="com.rongji.egov.majorurger.business.model" targetProject="src\main\resources\MGB_Replace_Models_Results">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
         <!--生成映射文件存放位置-->
-        <sqlMapGenerator targetPackage="com.rongji.egov.messageclient.business.mapper" targetProject="src\main\resources\MGB_Replace_Models_Results">
+        <sqlMapGenerator targetPackage="com.rongji.egov.majorurger.business.mapper" targetProject="src\main\resources\MGB_Replace_Models_Results">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
         <!--生成Dao类存放位置-->
@@ -38,11 +38,11 @@
                 type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
                 type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
         -->
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.rongji.egov.messageclient.business.dao" targetProject="src/main/resources/MGB_Replace_Models_Results">
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.rongji.egov.majorurger.business.dao" targetProject="src/main/resources/MGB_Replace_Models_Results">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
         <!--生成对应表及类名-->
-        <table tableName="DING_MESSAGE_ZJGY" domainObjectName="DingMessageZjgy" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
+        <table tableName="MAJOR_URGER_SOLICIT_OPINION_PROJECT_ITEM_TASK" domainObjectName="SolicitOpinionProjectItemTask" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"></table>
     </context>
 </generatorConfiguration>
