@@ -1,5 +1,7 @@
 package test;
 
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.nio.channels.Channel;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -8,7 +10,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,10 +35,15 @@ public class TEST {
         }
         return path;
     }
-
+    private static TimeZone GMT = TimeZone.getTimeZone("GMT");
+    private static FastDateFormat RFC1123=FastDateFormat.getInstance("EEE, dd MMM yyyy HH:mm:ss zzz",GMT, Locale.US);
     public static void main(String[] args) throws Exception {
-        ServerSocketChannel channel ;
-        SocketChannel channel2 ;
-        Selector selector ;
+        try {
+            int i = 1/0;
+        } catch (Exception e){
+          e.printStackTrace();
+          System.err.println(e.getMessage());
+        }
+
     }
 }

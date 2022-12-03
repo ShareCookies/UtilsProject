@@ -1,9 +1,14 @@
 package com.china.hcg.java.thread;
 
+import com.alibaba.fastjson.JSONObject;
+import com.china.hcg.http.utils.HttpUtil;
+import org.apache.commons.lang3.ThreadUtils;
+
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.concurrent.*;
+
 
 /**
  * @autor hecaigui
@@ -23,11 +28,44 @@ public class test {
 ////		}, 1, 3, TimeUnit.SECONDS); // 1s 后开始执行，每 3s 执行一次
 //
 //	}
+// post请求钉钉中心接口用的线程池
+static  ExecutorService postDingCenterApiThreadPool = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MICROSECONDS, new LinkedBlockingDeque<>(), new ThreadFactory() {
+	@Override
+	public Thread newThread(Runnable r) {
+		Thread t = new Thread(r);
+		t.setName("post请求钉钉中心接口用的线程池");
+		System.out.println("创建线程："+t);
+		return  t;
+	}
+});
+	static class postDingCenterApiRunnable implements Runnable{
+		String postUrl;
+		JSONObject postObj;
+		postDingCenterApiRunnable(String postUrl , JSONObject postObj){
+			this.postUrl = postUrl;
+			this.postObj = postObj;
+		}
+		@Override
+		public void run(){
+			try {
+				System.err.println(Thread.currentThread().getName()+postUrl);
+				Thread.sleep(3000);
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+	}
 	public static void main(String[] args) throws Exception{
+		List arr = new ArrayList();
+		arr.add(1);
+		arr.add(1);
+		List a2 = arr.subList(0,1);
+//		postDingCenterApiThreadPool.submit(new postDingCenterApiRunnable("1", null));
+//		postDingCenterApiThreadPool.submit(new postDingCenterApiRunnable("2", null));
+//		postDingCenterApiThreadPool.submit(new postDingCenterApiRunnable("3", null));
+//		postDingCenterApiThreadPool.submit(new postDingCenterApiRunnable(null, null));
 
-		fixedTimeNotice();
-
-
+		System.out.println("年: ");
 	}
 	/**
 	 * @description 默认下午5点定时(或6点，应用启动时间为5点则6点)

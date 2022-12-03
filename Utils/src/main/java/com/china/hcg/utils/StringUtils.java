@@ -230,22 +230,22 @@ public class StringUtils {
 	 * @param reg 例："D[0-9]"
 	 * @return
 	 */
-	public static String regReplace(String s,String reg){
-		String words = s;
+	public static String regReplace(String target,String reg,String replaceWith){
+		String words = target;
 		String newStr = "未找到任何结果";
 		Pattern pattern = Pattern.compile(reg);
 		Matcher matcher = pattern.matcher(words);
 		while (matcher.find()){
 			System.out.println(matcher.group());
-			//todo
-			String replaceWith= "要替换为";
 			newStr = matcher.replaceFirst(replaceWith);
 			matcher = pattern.matcher(newStr);
 		}
 		System.out.println(newStr);
 		return newStr;
 	}
+	public static void main(String[] args)throws Exception{
 
+	}
 //    public static void main(String[] args){
 //	    String userPos = "政治部主任 党组成员\n";
 //	    String[]  strs = userPos.split(";");
@@ -276,23 +276,5 @@ public class StringUtils {
 //
 //    }
 
-	public static void main(String[] args) {
-		System.err.println("1234567890".substring(0, 7));
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("status","已签收");
-		jsonObject.put("subject","ceshibiaoti");
-		jsonObject.put("signUser","吕敏淑");
-		jsonObject.put("signUserNo","1300B000210");
-		System.err.println(jsonObject);
-		//修正文件名C:\\Users\\Administrator\\Desktop\\11-6测试情况反馈2
-		//修正文件名C:\Users\Administrator\Desktop\11-6测试情况反馈2
-//		String s = "C:\\Users\\Administrator\\Desktop\\11-6测试情况反馈2";
-//		if (s.contains("\\")){
-//			String s1[] = s.split("\\\\");
-//			System.out.println(s1[s1.length-1]);
-//		}
-//		String sb = "dd";
-//		String[]  strs=sb.split(",");//结果："" "bbb" "dsaj" "j"
-//		System.out.println(strs);
-	}
+
 }
