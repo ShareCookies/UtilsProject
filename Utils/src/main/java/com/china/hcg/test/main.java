@@ -83,11 +83,7 @@ public static String handlePeriodDate;
 //        tokenId = tokenId.split("1014UserCenterNewTokenid;")[1];
 //        System.err.println(tokenId);
 
-        JSONArray fileIds = new JSONArray();
-        fileIds.add("11");
-        fileIds.add("2222");
-        fileIds.add("dsfdsf");
-       System.err.println(fileIds);
+
 
     }
     static void   test(HashConflictObj i,String string ){

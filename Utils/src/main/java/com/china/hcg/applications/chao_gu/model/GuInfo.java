@@ -13,6 +13,8 @@ import com.china.hcg.utils.windows.InfoUtil;
 public class GuInfo {
     public String code;
     public String name;
+    //sz、sh
+    public String area = "sz";
 
     //总量提醒
     public double totalAmountReference;
@@ -27,6 +29,18 @@ public class GuInfo {
     public Double noticeFundsInstantEnter = 100d;
     //todo：大资金买入量达到多少提醒
     //todo：大资金卖入量达到多少提醒
+
+
+    public GuInfo(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
+
+    public GuInfo(String code, String name, String area) {
+        this.code = code;
+        this.name = name;
+        this.area = area;
+    }
 
     public GuInfo(String code, String name, double totalAmountReference) {
         this.code = code;
@@ -65,6 +79,14 @@ public class GuInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public double getTotalAmountReference() {
