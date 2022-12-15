@@ -15,6 +15,8 @@ public class GuMinuteDataUtils {
     public final static int tenMillion = 10000000;
     //1百万
     public final static int oneMillion = 1000000;
+    //1万
+    public final static int tenThousand = 10000;
 
     public static void minuteDataCustomZhangDieLiang(JSONArray minuteData){
         for (int i = 0; i < minuteData.size(); i++) {

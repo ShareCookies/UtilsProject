@@ -10,10 +10,10 @@ import javax.validation.constraints.NotNull;
  * @date 2022-12-8
  * @description
  */
-public abstract class StockDataFactory<T> {
+public abstract class AbstractStockDataFactory<T> {
     GuInfo guInfo;
 
-    public StockDataFactory(GuInfo guInfo) {
+    public AbstractStockDataFactory(GuInfo guInfo) {
         this.guInfo = guInfo;
     }
     public  static  boolean isSupport(StockDataTypes[] wantGetStockDatas){

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.china.hcg.applications.chao_gu.dao.stockdata.MinuteFundDirectionsStockDataFactory;
 import com.china.hcg.applications.chao_gu.dao.stockdata.MinuteFundsStockDataFactory;
+import com.china.hcg.applications.chao_gu.dao.stockdata.ThsMinuteFundsStockDataFactory;
 import com.china.hcg.applications.chao_gu.dao.stockdata.StockDataTypes;
 import com.china.hcg.applications.chao_gu.model.GuInfo;
 import com.china.hcg.applications.chao_gu.utilscommon.StockThreadPoolUtil;
@@ -31,45 +32,43 @@ public class GuMinuteData {
 
     public static void main(String[] args) {
         List<GuInfo> list = new ArrayList();
-//        list.add(new GuInfo("002241","歌尔股份","sz"));
-//        list.add(new GuInfo("000792","盐湖股份"));
-//        list.add(new GuInfo("002027","分众传媒","sz"));
-//        list.add(new GuInfo("000776","广发证券","sz"));
-//        list.add(new GuInfo("600383","金地集团","sh"));
+        list.add(new GuInfo("002241","歌尔股份","sz"));
+        list.add(new GuInfo("002415","海康威视","sz"));
+        list.add(new GuInfo("002027","分众传媒","sz"));
 
-//        list.add(new GuInfo("601456","国联证券","sz"));
-//        list.add(new GuInfo("600383","金地集团","sz"));
-//        list.add(new GuInfo("002241","歌尔股份","sz"));
-//        list.add(new GuInfo("601377","兴业证券","sz"));
-//        list.add(new GuInfo("601229","上海银行","sz"));
-//        list.add(new GuInfo("002415","海康威视","sz"));
-//        list.add(new GuInfo("600276","恒瑞医药","sh"));
-//        list.add(new GuInfo("601318","中国平安","sz"));
-//        list.add(new GuInfo("600741","华域汽车","sz"));
-//        list.add(new GuInfo("002460","赣锋锂业","sz"));
-//        list.add(new GuInfo("002466","天齐锂业","sz"));
-//        list.add(new GuInfo("000012","南玻A","sz"));
-//        list.add(new GuInfo("000725","京东方a","sz"));
+        list.add(new GuInfo("000792","盐湖股份","sz"));
+        list.add(new GuInfo("000776","广发证券","sz"));
+        list.add(new GuInfo("600383","金地集团","sh"));
+
+        list.add(new GuInfo("601456","国联证券","sz"));
+        list.add(new GuInfo("601377","兴业证券","sz"));
+        list.add(new GuInfo("601229","上海银行","sz"));
+
+        list.add(new GuInfo("600276","恒瑞医药","sh"));
+        list.add(new GuInfo("601318","中国平安","sz"));
+        list.add(new GuInfo("600741","华域汽车","sz"));
+        list.add(new GuInfo("002460","赣锋锂业","sz"));
+        list.add(new GuInfo("002466","天齐锂业","sz"));
+        list.add(new GuInfo("000012","南玻A","sz"));
+        list.add(new GuInfo("000725","京东方a","sz"));
 
         //printLatestMinuteGuInfo(list);
-
-
-        //outGuInfo(list,"D:/chaogu/");
+        outGuInfo(list,"D:/chaogu/");
 
         //printMinuteGuInfo("0000001","上证指数");
-        printMinuteGuInfo(new GuInfo("000792","盐湖股份","sz"));
-//        printMinuteGuInfo(new GuInfo("002027","分众传媒","sz"));
+        //printMinuteGuInfo(new GuInfo("002415","海康威视","sz"));
+        //printMinuteGuInfo(new GuInfo("000792","盐湖股份","sz"));
+        //printMinuteGuInfo(new GuInfo("002027","分众传媒","sz"));
 //        printMinuteGuInfo(new GuInfo("000776","广发证券","sz"));
-//        printMinuteGuInfo(new GuInfo("002241","歌尔股份","sz"));
+        //printMinuteGuInfo(new GuInfo("002241","歌尔股份","sz"));
 //        printMinuteGuInfo(new GuInfo("601456","国联证券","sz"));
 //        printMinuteGuInfo(new GuInfo("600383","金地集团","sh"));
-//        printMinuteGuInfo(new GuInfo("600276","恒瑞医药","sh"));
+        //printMinuteGuInfo(new GuInfo("600276","恒瑞医药","sh"));
 //        printMinuteGuInfo(new GuInfo("600741","华域汽车","sz"));
 //        printMinuteGuInfo(new GuInfo("601318","中国平安","sz"));
 //        printMinuteGuInfo(new GuInfo("000725","京东方a","sz"));
 //        printMinuteGuInfo(new GuInfo("000012","南玻A","sz"));
 //        printMinuteGuInfo(new GuInfo("000725","京东方a","sz"));
-        //自定义列表
     }
     /**
      * @description console打印股票分时详细信息table
@@ -78,7 +77,7 @@ public class GuMinuteData {
         System.out.println("大单：大于等于6万股或者30万元以上的成交单。\n" +
                 "中单：大于等于1万股小于6万股或者大于等于5万元小于30万元的成交单。\n" +
                 "小单：小于1万股或5万元的成交单。");
-        MinuteData minuteData = minuteData(guInfo,new StockDataTypes[]{StockDataTypes.MinuteFunds,StockDataTypes.MinuteFundDirections});
+        MinuteData minuteData = minuteData(guInfo,new StockDataTypes[]{StockDataTypes.MinuteFundDirections,StockDataTypes.ThsMinuteFunds,StockDataTypes.MinuteFunds});
         System.err.println(minuteData);
 
     }
@@ -100,7 +99,7 @@ public class GuMinuteData {
 
         for (CompletableFuture completableFuture : allMinuteDatasFuture) {
             try {
-                Object object = completableFuture.get();
+                Object object = completableFuture.get(10,TimeUnit.SECONDS);
                 MinuteData minuteData = (MinuteData)object;
                 allMinuteDatas.put(minuteData.getGuCode(),minuteData);
             } catch (InterruptedException | ExecutionException e) {
@@ -116,6 +115,9 @@ public class GuMinuteData {
             LinkedHashMap<String,String> latestMinuteGuInfoTreeMap = new LinkedHashMap<>();
             System.err.println(guInfo);
             MinuteData minuteData = allMinuteDatas.get(guInfo.code);
+            if (minuteData == null){
+                continue;
+            }
             //
             JSONObject latestMinuteGuInfoJson = null;
             if (minuteData.minutePriceData.size() > 0){
@@ -143,7 +145,7 @@ public class GuMinuteData {
      */
     static void outGuInfo(List<GuInfo> list,String outFilePath){
         for (GuInfo guInfo : list) {
-            MinuteData minuteData = minuteData(guInfo,new StockDataTypes[]{StockDataTypes.MinuteFundDirections,StockDataTypes.MinuteFunds});
+            MinuteData minuteData = minuteData(guInfo,new StockDataTypes[]{StockDataTypes.MinuteFundDirections,StockDataTypes.ThsMinuteFunds,StockDataTypes.MinuteFunds});
             FileUtils.writeToFile(new File(outFilePath), DateUtil.dateToString(new Date(),"yyyy-MM-dd")+guInfo.name+"json.txt",minuteData.minutePriceData.toJSONString());
             FileUtils.writeToFile(new File(outFilePath),DateUtil.dateToString(new Date(),"yyyy-MM-dd")+guInfo.name+".txt",minuteData.minutePriceDataTable);
         }
@@ -212,35 +214,64 @@ public class GuMinuteData {
         StringBuilder stringBuilder = new StringBuilder();
 
         try {
+            // 1. 获取请求
             Future<JSONArray> minutePrice = GuMinuteData.asyncGetMinuteData(guInfo.getCode());
-
-            MinuteFundsStockDataFactory minuteFundsStockDataFactory = null;
-            MinuteFundDirectionsStockDataFactory minuteFundDirectionsStockDataFactory = null;
-            if (MinuteFundsStockDataFactory.isSupport(wantGetStockDatas)){
-                 minuteFundsStockDataFactory = new MinuteFundsStockDataFactory(guInfo);
+            //1.1 根据需求，自定义发起异步请求获取不同的分钟扩展数据
+            //1.2 自定义-分钟资金量
+            ThsMinuteFundsStockDataFactory thsMinuteFundsStockDataFactory = null;
+            if (ThsMinuteFundsStockDataFactory.isSupport(wantGetStockDatas)){
+                 thsMinuteFundsStockDataFactory = new ThsMinuteFundsStockDataFactory(guInfo);
             }
+            //1.3 自定义-分钟资金流势
+            MinuteFundDirectionsStockDataFactory minuteFundDirectionsStockDataFactory = null;
             if (MinuteFundDirectionsStockDataFactory.isSupport(wantGetStockDatas)){
                  minuteFundDirectionsStockDataFactory = new MinuteFundDirectionsStockDataFactory(guInfo);
             }
-
+            //1.4 自定义-分钟大单资金量
+            MinuteFundsStockDataFactory minuteFundsStockDataFactory = null;
+            if (MinuteFundsStockDataFactory.isSupport(wantGetStockDatas)){
+                minuteFundsStockDataFactory = new MinuteFundsStockDataFactory(guInfo);
+            }
+            //2. 分钟数据
             JSONArray minutePriceData = minutePrice.get();
-            if (minuteFundsStockDataFactory != null) minuteFundsStockDataFactory.getAsyncRequestResult();
-            if (minuteFundDirectionsStockDataFactory != null) minuteFundDirectionsStockDataFactory.getAsyncRequestResult();
-
-
+            if (thsMinuteFundsStockDataFactory != null) {
+                thsMinuteFundsStockDataFactory.getAsyncRequestResult();
+            }
+            //2.2
+            if (minuteFundDirectionsStockDataFactory != null) {
+                minuteFundDirectionsStockDataFactory.getAsyncRequestResult();
+            }
+            //2.4
+            if (minuteFundsStockDataFactory != null) {
+                minuteFundsStockDataFactory.getAsyncRequestResult();
+            }
+            //3.
             GuMinuteDataUtils.minuteDataCustomZhangDieLiang(minutePriceData);
-            //分钟资金量
-            if (minuteFundsStockDataFactory != null) minuteFundsStockDataFactory.decoratorData(minutePriceData);
+            //3.1 自定义-分钟资金量
+            if (thsMinuteFundsStockDataFactory != null) {
+                thsMinuteFundsStockDataFactory.decoratorData(minutePriceData);
+            }
+            //3.4 自定义-分钟大单资金量
+            if (minuteFundsStockDataFactory != null) {
+                minuteFundsStockDataFactory.decoratorData(minutePriceData);
+            }
+
+            //4. 分钟数据table
             TextTable textTable = TextTableExpand.standardJsonArrayTextTable(minutePriceData);
-
-
             stringBuilder.append(textTable.printTable());
             stringBuilder.append(System.getProperty("line.separator"));
-            //分钟资金量
-            if (minuteFundsStockDataFactory != null) minuteFundsStockDataFactory.decoratorDataTableString(stringBuilder);
-            //资金流势
-            if (minuteFundDirectionsStockDataFactory != null) minuteFundDirectionsStockDataFactory.decoratorDataTableString(stringBuilder);
-
+            //4.1 自定义-分钟资金量
+            if (thsMinuteFundsStockDataFactory != null) {
+                thsMinuteFundsStockDataFactory.decoratorDataTableString(stringBuilder);
+            }
+            //4.2 自定义-分钟资金流势
+            if (minuteFundDirectionsStockDataFactory != null) {
+                minuteFundDirectionsStockDataFactory.decoratorDataTableString(stringBuilder);
+            }
+            //4.4 自定义-大单分钟资金量
+            if (minuteFundsStockDataFactory != null) {
+                minuteFundsStockDataFactory.decoratorDataTableString(stringBuilder);
+            }
             return new MinuteData(guInfo.getCode(),minutePriceData,stringBuilder.toString());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

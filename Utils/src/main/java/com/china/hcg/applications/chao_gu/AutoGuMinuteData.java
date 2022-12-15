@@ -48,7 +48,7 @@ public class AutoGuMinuteData {
                 //todo：有报错要照样打印啊
                 try {
                     logger.error("定时器"+DateUtil.dateToString(new Date(System.currentTimeMillis()),"yyyy-MM-dd HH:mm:ss"));
-                    GuMinuteData.MinuteData minuteDataObj = GuMinuteData.minuteData(guInfo,new StockDataTypes[]{StockDataTypes.MinuteFundDirections,StockDataTypes.MinuteFunds});
+                    GuMinuteData.MinuteData minuteDataObj = GuMinuteData.minuteData(guInfo,new StockDataTypes[]{StockDataTypes.MinuteFundDirections,StockDataTypes.ThsMinuteFunds});
                     JSONArray minuteData = minuteDataObj.minutePriceData;
                     GuMinuteDataNoticeUtils guMinuteDataNoticeUtils = new GuMinuteDataNoticeUtils(guInfo);
                     guMinuteDataNoticeUtils.priceNotice(minuteData);

@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  * @date 2022-12-9
  * @description
  */
-public class MinuteFundDirectionsStockDataFactory extends StockDataFactory {
+public class MinuteFundDirectionsStockDataFactory extends AbstractStockDataFactory {
     JSONObject minuteFundDirectionData;
     Future<JSONObject> future = null;
 
