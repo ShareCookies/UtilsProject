@@ -15,6 +15,7 @@ import com.china.hcg.applications.chao_gu.utilscommon.TextTable;
 import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataUtils;
 import com.china.hcg.io.file.FileUtils;
 import com.china.hcg.utils.date.DateUtil;
+import com.china.hcg.utils.timer.JavaTimer;
 import org.apache.log4j.Logger;
 
 import javax.validation.constraints.NotNull;
@@ -29,29 +30,33 @@ import java.util.concurrent.*;
  */
 public class GuMinuteData {
     private static Logger logger = Logger.getLogger(GuMinuteData.class);
-
-    public static void main(String[] args) {
-        List<GuInfo> list = new ArrayList();
+    public List<GuInfo> list = new ArrayList();
+    public GuMinuteData() {
         list.add(new GuInfo("002241","歌尔股份","sz"));
         list.add(new GuInfo("002415","海康威视","sz"));
         list.add(new GuInfo("002027","分众传媒","sz"));
-
         list.add(new GuInfo("000792","盐湖股份","sz"));
         list.add(new GuInfo("000776","广发证券","sz"));
         list.add(new GuInfo("600383","金地集团","sh"));
 
-        list.add(new GuInfo("601456","国联证券","sz"));
-        list.add(new GuInfo("601377","兴业证券","sz"));
-        list.add(new GuInfo("601229","上海银行","sz"));
+        list.add(new GuInfo("601456","国联证券","sh"));
+        list.add(new GuInfo("601377","兴业证券","sh"));
+        list.add(new GuInfo("601229","上海银行","sh"));
 
         list.add(new GuInfo("600276","恒瑞医药","sh"));
-        list.add(new GuInfo("601318","中国平安","sz"));
-        list.add(new GuInfo("600741","华域汽车","sz"));
+        list.add(new GuInfo("601318","中国平安","sh"));
+        list.add(new GuInfo("600741","华域汽车","sh"));
         list.add(new GuInfo("002460","赣锋锂业","sz"));
         list.add(new GuInfo("002466","天齐锂业","sz"));
         list.add(new GuInfo("000012","南玻A","sz"));
         list.add(new GuInfo("000725","京东方a","sz"));
+    }
 
+    public static void main(String[] args) {
+        GuMinuteData guMinuteData = new GuMinuteData();
+        start(guMinuteData.list);
+    }
+    public static void start(List<GuInfo> list){
         //printLatestMinuteGuInfo(list);
         outGuInfo(list,"D:/chaogu/");
 
@@ -91,7 +96,7 @@ public class GuMinuteData {
         for (int i = 0; i < list.size(); i++) {
             GuInfo guInfo = list.get(i);
             CompletableFuture<MinuteData> future1 = CompletableFuture.supplyAsync(() -> {
-                MinuteData minuteData = minuteData(guInfo,null);
+                MinuteData minuteData = minuteData(guInfo,new StockDataTypes[]{});
                 return minuteData;
             },StockThreadPoolUtil.executorService);
             allMinuteDatasFuture[i] = future1;
@@ -126,7 +131,7 @@ public class GuMinuteData {
             if (latestMinuteGuInfoJson == null){
                 continue;
             }
-            latestMinuteGuInfoTreeMap.put("guName",guInfo.name);
+            latestMinuteGuInfoTreeMap.put("guName",guInfo.getArea()+guInfo.getCode()+guInfo.getName());
             latestMinuteGuInfoTreeMap.put("datetime",latestMinuteGuInfoJson.getString("datetime"));
             latestMinuteGuInfoTreeMap.put("amount",latestMinuteGuInfoJson.getString("amount"));
             latestMinuteGuInfoTreeMap.put("局势",latestMinuteGuInfoJson.getString("局势"));

@@ -21,6 +21,9 @@ public class AutoGuMinuteData {
     private static final Logger logger= LoggerFactory.getLogger(AutoGuMinuteData.class);
 
     public static void main(String[] args) throws Exception{
+        JavaTimer.loopTask(() ->{GuMinuteData guMinuteData = new GuMinuteData();GuMinuteData.printLatestMinuteGuInfo(guMinuteData.list);},60L);
+    }
+    void autoNotice() throws Exception {
         List<GuInfo> list = new ArrayList();
 //        list.add(new GuInfo("000725","京东方a",5 * GuDataUtils.oneHundredMillion));
         //list.add(new GuInfo("002027","分众传媒",5 * GuMinuteDataUtils.oneHundredMillion,6.3F,6.18F));
