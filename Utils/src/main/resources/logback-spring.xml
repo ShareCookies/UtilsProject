@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration  scan="true" scanPeriod="10 seconds">
+    <!-- logback自定义日志格式的参数值 -->
+    <conversionRule conversionWord="serverIp" converterClass="com.china.hcg.utils.logback.CustomLogValue_IpUtil2" />
+
+
 
     <springProperty name="log_dir" source="logging.file.path" />
-    <property name="logformat_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [Line:%L] [%thread] %-5level %logger{36}  -%msg%n"/>
+    <!-- 日志格式 -->
+    <property name="logformat_pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %serverIp RJOA %-5level other %logger{36}[Line:%L] -%msg %X{requestIp} RPCid%n"/>
 
     <!-- 普通日志 info.log （INFO、WARN、DEBUG） -->
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">

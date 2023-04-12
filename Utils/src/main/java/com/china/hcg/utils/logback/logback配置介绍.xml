@@ -12,17 +12,7 @@
     	配置集中管理的属性
     	直接使用该属性的value value格式":${name}
 -->
-<!--
-日志格式化输出：
-    %-5level 级别从左显示5个字符宽度 
-    %d{yyyy-MM-dd HH:mm:ss.SSS} %d表示日期
-    %c类的完整名称（%logger？）
-    %M为method
-    %L为行号
-    %thread线程名称
-    %m或者%msg 日志消息
-    %n换行
--->
+
 <!--%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %msg：日志消息，%n是换行符-->
 <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %c [%thread] %-5level %msg%n"/>
 <!--
