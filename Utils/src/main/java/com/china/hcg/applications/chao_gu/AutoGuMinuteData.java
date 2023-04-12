@@ -21,7 +21,35 @@ public class AutoGuMinuteData {
     private static final Logger logger= LoggerFactory.getLogger(AutoGuMinuteData.class);
 
     public static void main(String[] args) throws Exception{
-        JavaTimer.loopTask(() ->{GuMinuteData guMinuteData = new GuMinuteData();GuMinuteData.printLatestMinuteGuInfo(guMinuteData.list);},60L);
+        JavaTimer.loopTask(() ->{
+            Calendar rightCalendar = Calendar.getInstance();//获取当前地区的日期信息
+            int hour = rightCalendar.get(Calendar.HOUR_OF_DAY);
+            if (!(hour >= 9 && hour < 15)){
+                System.err.println("退出");
+                return;
+            }
+            try {
+                Map<String,GuInfo> guInfoMap = new HashMap();
+                //guInfoMap.put("002241",new GuInfo("002241","歌尔股份","sz",null,null));//3.85 (20.8+20.73)-20.56 //20.67 3%  20.07 //20.22
+                guInfoMap.put("002415",new GuInfo("002415","海康威视","sz",null,null));//36.725*0.04  35.26
+                guInfoMap.put("002027",new GuInfo("002027","分众传媒","sz",null,null));//6.78 2w
+                guInfoMap.put("600276",new GuInfo("600276","恒瑞医药","sh",null,null));
+                //guInfoMap.put("600988",new GuInfo("600988","赤峰黄金","sh",null,null));
+
+                List<GuInfo> list = new ArrayList();
+                for (String s : guInfoMap.keySet()) {
+                    list.add(guInfoMap.get(s));
+                }
+                List<Map<String,String>> minute_data_price = GuMinuteData.printLatestMinuteGuInfo(list);
+                for (Map<String, String> map : minute_data_price) {
+                    //价格提醒
+                    GuMinuteDataNoticeUtils guMinuteDataNoticeUtils = new GuMinuteDataNoticeUtils(guInfoMap.get(map.get("guCode")));
+                    guMinuteDataNoticeUtils.priceNotice(Float.valueOf(map.get("price")));
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        },60L);
     }
     void autoNotice() throws Exception {
         List<GuInfo> list = new ArrayList();

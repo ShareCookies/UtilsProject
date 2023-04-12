@@ -86,7 +86,7 @@ public class MinuteFundsStockDataFactory extends AbstractStockDataFactory {
             JSONObject minutePriceData = (JSONObject)minutePriceDatas.get(i);
             String time = minutePriceData.getString("datetime").substring(6,11);//12-13 10:08
 
-            minutePriceData.put("大单成交额","");
+            minutePriceData.put("大单成交额super、big、total","");
             minutePriceDatas.set(i,minutePriceData);
             String s = null;
             for (; i1 >= 0; ) {
@@ -102,7 +102,7 @@ public class MinuteFundsStockDataFactory extends AbstractStockDataFactory {
 
                 if (time.equals(ticktime)){
                     s= "s:"+fundsData.getBigDecimal("superBigAmountTotal").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP) +"万;" +"b:"+fundsData.getBigDecimal("bigAmountTotal").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP) +"万;"+"t:"+fundsData.getBigDecimal("amountTotal").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP) +"万;" ;
-                    minutePriceData.put("大单成交额",s);
+                    minutePriceData.put("大单成交额super、big、total",s);
                 } else {
                     i++;
                     minutePriceDatas.set(i-1,minutePriceData);
@@ -120,6 +120,7 @@ public class MinuteFundsStockDataFactory extends AbstractStockDataFactory {
     @Override
     public StringBuilder decoratorDataTableString(StringBuilder tableString){
         customBigAmountStruckDeal(minuteFundsData);
+        if (minuteFundsData.size() == 0){return tableString;}
         JSONObject jsonObject = minuteFundsData.getJSONObject(0);
         String s = jsonObject.getBigDecimal("superBigAmountTotal").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP) +"万;";
         String b = jsonObject.getBigDecimal("bigAmountTotal").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP) +"万;";
@@ -191,8 +192,8 @@ public class MinuteFundsStockDataFactory extends AbstractStockDataFactory {
 
 
     public static void main(String[] args) {
-        //printBigAmountStruckDeal("sz002415");
-        GuMinuteData.printMinuteGuInfo(new GuInfo("002415","歌尔股份","sz"));
+        printBigAmountStruckDeal("sz002241");
+        //GuMinuteData.printMinuteGuInfo(new GuInfo("002241","歌尔股份","sz"));
     }
     /**
      * @description 重新构造大额成交单数组，为它们添加递归增加成交总额(超大单，大单，成交总额)

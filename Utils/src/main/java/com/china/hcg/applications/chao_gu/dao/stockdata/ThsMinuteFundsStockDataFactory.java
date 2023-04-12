@@ -69,6 +69,7 @@ public class ThsMinuteFundsStockDataFactory extends AbstractStockDataFactory {
 
     @Override
     public JSONArray decoratorData(JSONArray minutePriceData){
+        if (minuteFundsData == null){return minutePriceData;}
         GuMinuteDataUtils.minuteDataCustomFunds(minutePriceData,minuteFundsData.getString("line").split("\\|"));
         return minutePriceData;
     }

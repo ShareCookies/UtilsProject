@@ -25,19 +25,24 @@ public class GuMinuteDataNoticeUtils {
      * @return
      */
     public void priceNotice(JSONArray minuteData){
+        JSONObject minute_data_price = minuteData.getJSONObject(minuteData.size()-1);
+        priceNotice(minute_data_price.getFloat("price"));
+    }
+    public void priceNotice(Float price){
         if (guInfo.noticePriceRise == null && guInfo.noticePriceFall == null){
             return;
         }
-        JSONObject minute_data_price = minuteData.getJSONObject(minuteData.size()-1);
-        if(minute_data_price.getFloat("price") >= guInfo.noticePriceRise && guInfo.noticePriceRise != null){
+
+        if(guInfo.noticePriceRise != null && price >= guInfo.noticePriceRise){
             InfoUtil test = new InfoUtil();
-            test.show(guInfo.name+"价格提醒","涨价提醒"+guInfo.noticePriceRise+InfoUtil.breakLine+"当前价格"+minute_data_price.getFloat("price"));
+            test.show(guInfo.name+"价格提醒","涨价提醒"+guInfo.noticePriceRise+InfoUtil.breakLine+"当前价格"+price);
         }
-        if (minute_data_price.getFloat("price") <= guInfo.noticePriceFall && guInfo.noticePriceFall != null){
+        if (guInfo.noticePriceFall != null && price <= guInfo.noticePriceFall ){
             InfoUtil test = new InfoUtil();
-            test.show(guInfo.name+"价格提醒","跌价提醒" + guInfo.noticePriceFall+InfoUtil.breakLine+"当前价格"+minute_data_price.getFloat("price"));
+            test.show(guInfo.name+"价格提醒","跌价提醒" + guInfo.noticePriceFall+InfoUtil.breakLine+"当前价格"+price);
         }
     }
+
     /**
      * @description 大额资金出逃提醒
      * @author hecaigui

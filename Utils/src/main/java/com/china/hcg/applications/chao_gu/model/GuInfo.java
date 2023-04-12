@@ -47,6 +47,13 @@ public class GuInfo {
         this.name = name;
         this.totalAmountReference = totalAmountReference;
     }
+    public GuInfo(String code, String name, String area,Float noticePriceRise,Float noticePriceFall) {
+        this.code = code;
+        this.name = name;
+        this.area = area;
+        this.noticePriceRise = noticePriceRise;
+        this.noticePriceFall = noticePriceFall;
+    }
     public GuInfo(String code, String name, double totalAmountReference,Float noticePriceRise,Float noticePriceFall) {
         this.code = code;
         this.name = name;
