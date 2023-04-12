@@ -1,0 +1,2 @@
+Java HTTP连接客户端，选 HttpClient 还是 OkHttp ？
+	https://blog.csdn.net/weixin_42096792/article/details/127656486?spm=1001.2101.3001.6650.4&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EYuanLiJiHua%7EPosition-4-127656486-blog-80883189.pc_relevant_recovery_v2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EYuanLiJiHua%7EPosition-4-127656486-blog-80883189.pc_relevant_recovery_v2&utm_relevant_index=8
