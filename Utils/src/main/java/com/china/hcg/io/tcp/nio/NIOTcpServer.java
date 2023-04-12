@@ -121,6 +121,7 @@ public class NIOTcpServer
         // 把通道内容读入缓存，
         // 话说http的内容为什么可以直接读入了，底层是怎么实现的了，网络突然中断了？
         ByteBuffer buffer = ByteBuffer.allocate(256);
+        //输入1000个1了？ todo？
         int i = channel.read(buffer);
         if (i != -1)
         {
@@ -132,6 +133,7 @@ public class NIOTcpServer
         }
         else
         {
+            //？？？
             //为什么要关了？可以一直开着吗
             channel.close();
         }

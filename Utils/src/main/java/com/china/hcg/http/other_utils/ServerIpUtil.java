@@ -2,12 +2,14 @@ package com.china.hcg.http.other_utils;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -20,6 +22,7 @@ public class ServerIpUtil implements ApplicationListener<EmbeddedServletContaine
     private int serverPort;
     @Resource
     private Environment env;
+
     @Override
     public void onApplicationEvent(EmbeddedServletContainerInitializedEvent event) {
         this.serverPort = event.getEmbeddedServletContainer().getPort();
@@ -29,7 +32,7 @@ public class ServerIpUtil implements ApplicationListener<EmbeddedServletContaine
         return this.serverPort;
     }
 
-    public String getServerIp() {
+    private String getIp() {
         InetAddress address=null;
         try {
             address = InetAddress.getLocalHost();
@@ -68,9 +71,37 @@ public class ServerIpUtil implements ApplicationListener<EmbeddedServletContaine
         }
         // 例无多网卡纯粹的linux系统
         else {
-            server= this.getServerIp()+":"+env.getProperty("server.port");
+            server= this.getIp()+":"+env.getProperty("server.port");
         }
         return server;
     }
 
+    /**
+     * @description
+     *     //传入request对象，获得客户端ip
+     *     //注意，本地不行，本地会获取到0:0:0:0:0:0:0:1；服务器上是正常的
+     * @date 2023-2-3
+     * @return
+     */
+    public  String getRequestIp(HttpServletRequest request) {
+        if (request == null){
+            return null;
+        }
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            //本地会获取到0:0:0:0:0:0:0:1
+            ip = request.getRemoteAddr();
+        }
+        if (ip.contains(",")) {
+            return ip.split(",")[0];
+        } else {
+            return ip;
+        }
+    }
 }
