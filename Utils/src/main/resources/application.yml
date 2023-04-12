@@ -1,5 +1,10 @@
 server:
   port: 8811
+  tomcat:
+    max-connections: 22
+    accept-count: 0
+    max-threads: 12
+    min-spare-threads: 12
 spring:
   application:
     name: spring-cloud-config-server
