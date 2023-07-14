@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.china.hcg.applications.chao_gu.GuMinuteData;
 import com.china.hcg.applications.chao_gu.model.GuInfo;
 import com.china.hcg.applications.chao_gu.utilscommon.StockThreadPoolUtil;
+import com.china.hcg.applications.chao_gu.utilscommon.TextTableExpand;
 import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataUtils;
 import com.china.hcg.http.HttpClientUtil;
 import com.china.hcg.utils.date.DateUtil;
@@ -20,7 +21,7 @@ import java.util.concurrent.Future;
 /**
  * @autor hecaigui
  * @date 2022-12-8
- * @description
+ * @description 分钟资金数据工厂
  */
 public class MinuteFundsStockDataFactory extends AbstractStockDataFactory {
     private static final BigDecimal bigAmount = new BigDecimal(1000000);
@@ -182,6 +183,9 @@ public class MinuteFundsStockDataFactory extends AbstractStockDataFactory {
 
     private static JSONArray getMinuteFunds(@NotNull String stockAreaStockCode,@NotNull Integer amount){
         String nowDate = DateUtil.dateToString(new Date(),"yyyy-MM-dd");
+        return MinuteFundsStockDataFactory.getMinuteFunds(stockAreaStockCode,amount,nowDate);
+    }
+    private static JSONArray getMinuteFunds(@NotNull String stockAreaStockCode,@NotNull Integer amount,String nowDate){
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.USER_AGENT,"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:9.0) Gecko/20100101 Firefox/9.0");
         headers.set(HttpHeaders.REFERER,"https://vip.stock.finance.sina.com.cn/quotes_service/view/cn_bill.php?symbol="+stockAreaStockCode);
@@ -192,8 +196,9 @@ public class MinuteFundsStockDataFactory extends AbstractStockDataFactory {
 
 
     public static void main(String[] args) {
-        printBigAmountStruckDeal("sz002241");
+//        printBigAmountStruckDeal("sz002241");
         //GuMinuteData.printMinuteGuInfo(new GuInfo("002241","歌尔股份","sz"));
+        TextTableExpand.standardJsonArrayTextTable(MinuteFundsStockDataFactory.getMinuteFunds("sh"+"600741",1,"2023-06-30"));
     }
     /**
      * @description 重新构造大额成交单数组，为它们添加递归增加成交总额(超大单，大单，成交总额)

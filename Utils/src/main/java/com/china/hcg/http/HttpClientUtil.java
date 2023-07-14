@@ -124,9 +124,9 @@ public class HttpClientUtil {
         ResponseEntity<String> entity = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
 
         HttpStatus statusCode = entity.getStatusCode();
-        logger.debug("get请求状态："+statusCode.value());
+//        logger.debug("get请求状态："+statusCode.value());
         String body = entity.getBody();
-        logger.debug("get请求结果："+body);
+//        logger.debug("get请求结果："+body);
         return body;
     }
     /**
@@ -148,7 +148,7 @@ public class HttpClientUtil {
         HttpStatus statusCode = entity.getStatusCode();
         //logger.debug("get请求状态："+statusCode.value());
         String body = entity.getBody();
-        //logger.debug("get请求结果："+body);
+//        logger.debug("get请求结果："+body);
         return body;
     }
     /**

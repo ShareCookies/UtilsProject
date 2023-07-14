@@ -5,12 +5,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataUtils;
 import com.china.hcg.utils.windows.InfoUtil;
 
+import java.io.Serializable;
+
 /**
  * @autor hecaigui
  * @date 2022-10-27
  * @description
  */
-public class GuInfo {
+public class GuInfo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     public String code;
     public String name;
     //sz、sh
@@ -30,6 +34,10 @@ public class GuInfo {
     //todo：大资金买入量达到多少提醒
     //todo：大资金卖入量达到多少提醒
 
+    public GuInfo(String code) {
+        this.code = code;
+        this.name = "";
+    }
 
     public GuInfo(String code, String name) {
         this.code = code;

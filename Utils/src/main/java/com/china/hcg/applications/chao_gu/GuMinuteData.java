@@ -41,24 +41,41 @@ public class GuMinuteData {
     }
 
     public static void start(List<GuInfo> list) {
-        //printLatestMinuteGuInfo(list);
-        //outGuInfo(list,"D:/chaogu/");
+//        printMinuteGuInfo(new GuInfo("603386","603386","sz"));
+//        printMinuteGuInfo(new GuInfo("605287","605287","sz"));
+        printMinuteGuInfo(new GuInfo("001336","001336","sz"));
+//        printMinuteGuInfo(new GuInfo("605289","605289","sz"));
+
+
+
 
         //printMinuteGuInfo("0000001","上证指数");
-         //printMinuteGuInfo(new GuInfo("002415","海康威视","sz"));
+        //printMinuteGuInfo(new GuInfo("000651","格力电器","sh"));
+        //printMinuteGuInfo(new GuInfo("601933", "永辉超市", "sz"));
         //printMinuteGuInfo(new GuInfo("000792","盐湖股份","sz"));
-       printMinuteGuInfo(new GuInfo("002027", "分众传媒", "sz"));
+//        printMinuteGuInfo(new GuInfo("002241","歌尔股份","sz"));
+//        printMinuteGuInfo(new GuInfo("002415","海康威视","sz"));
+        //printMinuteGuInfo(new GuInfo("601456","国联证券","sz"));
         //printMinuteGuInfo(new GuInfo("000776","广发证券","sz"));
-        //printMinuteGuInfo(new GuInfo("002241","歌尔股份","sz"));
-//        printMinuteGuInfo(new GuInfo("601456","国联证券","sz"));
 //        printMinuteGuInfo(new GuInfo("600383","金地集团","sh"));
-       //printMinuteGuInfo(new GuInfo("600276","恒瑞医药","sh"));
-       //printMinuteGuInfo(new GuInfo("600988","赤峰黄金","sz"));
+        //printMinuteGuInfo(new GuInfo("600276","恒瑞医药","sh"));
+        //
 //        printMinuteGuInfo(new GuInfo("600741","华域汽车","sz"));
 //        printMinuteGuInfo(new GuInfo("601318","中国平安","sz"));
 //        printMinuteGuInfo(new GuInfo("000725","京东方a","sz"));
 //        printMinuteGuInfo(new GuInfo("000012","南玻A","sz"));
 //        printMinuteGuInfo(new GuInfo("000725","京东方a","sz"));
+//        printMinuteGuInfo(new GuInfo("6000229","城市传煤","sz"));
+//        printMinuteGuInfo(new GuInfo("300207","欣旺达","sz"));
+//        printMinuteGuInfo(new GuInfo("600988","赤峰黄金","sz"));
+//        printMinuteGuInfo(new GuInfo("000776","广发证券","sz"));
+//        printMinuteGuInfo(new GuInfo("600547","山东黄金","sz"));
+//        printMinuteGuInfo(new GuInfo("002001","002001","sz"));
+//        printMinuteGuInfo(new GuInfo("002415","002415","sz"));
+//        printMinuteGuInfo(new GuInfo("600803","600803","sz"));
+//        printMinuteGuInfo(new GuInfo("600226","600226","sz"));
+//        printMinuteGuInfo(new GuInfo("002001","002001","sz"));
+//        printMinuteGuInfo(new GuInfo("002838","002838","sz"));
     }
     /**
      * @description console打印股票分时详细信息table
@@ -69,7 +86,6 @@ public class GuMinuteData {
                 "小单：小于1万股或5万元的成交单。");
         MinuteData minuteData = minuteData(guInfo,new StockDataTypes[]{StockDataTypes.MinuteFundDirections,StockDataTypes.ThsMinuteFunds,StockDataTypes.MinuteFunds});
         System.err.println(minuteData);
-
     }
     /**
      * @description console打印多只股票最新价格信息

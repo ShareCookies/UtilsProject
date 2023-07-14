@@ -35,7 +35,7 @@ public class test {
     //private static Log log = LogFactory.getLog(test.class);
     static boolean  testboolean;
     public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
-
+        JSONArray.parseArray("[{\"createTime\":1611569089000,\"isDelete\":0,\"regionName\":\"健康码测试用\",\"updateTime\":1611569090000,\"id\":\"QY1353644990198456320\",\"type\":2,\"regionNo\":\"QY1353644990198456320\"}]");
         //?
 //        executorService.submit
 //        executorService.execute

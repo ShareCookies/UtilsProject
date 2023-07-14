@@ -31,6 +31,7 @@ public class TextTableExpand {
         TextTable textTable = new TextTable(columnNameList,allValues);
         return textTable;
     }
+//    public static TextTable standardJsonArrayTextTable(List<Map<String,String>> minute_data_price){
     public static TextTable standardJsonArrayTextTable(List<Map<String,String>> minute_data_price){
         //列名
         Set<String> sets = minute_data_price.get(0).keySet();
@@ -47,4 +48,8 @@ public class TextTableExpand {
         TextTable textTable = new TextTable(columnNameList,allValues);
         return textTable;
     }
+
+
+
+
 }

@@ -13,7 +13,7 @@ import java.util.concurrent.Future;
 /**
  * @autor hecaigui
  * @date 2022-12-9
- * @description
+ * @description 分钟资金流量工厂
  */
 public class MinuteFundDirectionsStockDataFactory extends AbstractStockDataFactory {
     JSONObject minuteFundDirectionData;
