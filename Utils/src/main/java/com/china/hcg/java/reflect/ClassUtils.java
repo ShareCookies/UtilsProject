@@ -83,15 +83,15 @@ public class ClassUtils {
 	/**
 	* 路径获取
 	*/
-	public static void main(String[] args) {
-        // 用户的当前工作目录 !（获得项目相对路径） F:\autoGenerateMapper
-		String currentUserWorkingPath = System.getProperty("user.dir");
-        System.out.println(System.getProperty("user.dir"));
-
-        //当前类路径
-        //Thread.currentThread().getContextClassLoader() and Class.getClassLoader() 的区别：https://blog.51cto.com/tianya23/731287
-        String path = Thread.currentThread().getContextClassLoader().getResource(".").getPath();
-        System.out.println(path);
+	public static void main(String[] args) throws Exception {
+//        // 用户的当前工作目录 !（获得项目相对路径） F:\autoGenerateMapper
+//		String currentUserWorkingPath = System.getProperty("user.dir");
+//        System.out.println(System.getProperty("user.dir"));
+//
+//        //当前类路径
+//        //Thread.currentThread().getContextClassLoader() and Class.getClassLoader() 的区别：https://blog.51cto.com/tianya23/731287
+//        String path = Thread.currentThread().getContextClassLoader().getResource(".").getPath();
+//        System.out.println(path);
     }
 
 
@@ -147,4 +147,37 @@ public class ClassUtils {
 
 	}
 
+
+	/**
+	 * @description 使用反射调用类的方法
+	 * @author hecaigui
+	 * @date 2023/5/15
+	 * @param  * @param
+	 * @return
+	 */
+	public static void invokeMethodDemo() throws Exception {
+		// 获取Class对象
+		Class<?> clazz = Person.class;
+
+		// 获取方法对象
+		// 方法名称和参数类型
+		String methodName = "sayHello";
+		Class<?>[] paramTypes = new Class<?>[]{String.class};
+		Method method = clazz.getMethod(methodName, paramTypes);
+		// 创建Person类的实例
+		Object obj = clazz.newInstance();
+		// 调用sayHello方法
+		Object result = method.invoke(obj, "John");
+		System.err.println(result);
+	}
+	// 定义一个类
+	public static class Person {
+		public Person() {
+		}
+
+		public String sayHello(String name) {
+			//System.out.println("Hello, " + name + "!");
+			return "Hello, ";
+		}
+	}
 }

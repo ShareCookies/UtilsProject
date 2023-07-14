@@ -58,12 +58,14 @@ fastJson转换：
 		String s = JSON.toJSONString(对象);
 		注：
 			java对象属性要有get set或.
-	JSON字符串转JAVA对象:
+	Jackson-JSON字符串转JAVA对象:
 	    ObjectMapper mapper = new ObjectMapper();
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-        TodoAndToReadVo todoAndToReadVo = mapper.readValue(""
-                , TodoAndToReadVo.class);
-
+		String json = "{\"name\":\"Alice\",\"age\":30}";
+		//mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+		Person person = mapper.readValue(json, Person.class);
+	FastJSON-JSON字符串转JAVA对象:
+		Person person = JSON.parseObject(json, Person.class);
+		//注意的是，FastJSON要求目标Java类必须有一个无参构造函数。如果Java类没有提供这样的构造函数，则在解析JSON时会抛出异常。
 	JSON字符串转JSON对象：
 		String s ="{\"action\":\"add\",\"id\":\"1\",\"ordinal\":8,\"organUnitFullName\":\"testJSON\",\"parent\":\"0\",\"suborderNo\":\"58961\"}";
 		JSONObject jsonObject = JSON.parseObject(s);

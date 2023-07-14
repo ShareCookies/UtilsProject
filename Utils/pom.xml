@@ -142,6 +142,37 @@
             <version>23.4-jre</version>
         </dependency>
 
+        <!-- 除了使用 Spring 框架提供的注解进行参数校验外，还可以使用 Java 标准库中的 Validation API 进行校验。 -->
+        <!--
+            1. 在 UserDto 类上使用 Validation API 进行校验.
+            2. 使用 Validator 对象对 UserDto 对象进行了校验。如果校验失败，将会抛出 ConstraintViolationException 异常，并返回给客户端相应的错误信息。
+            @Autowired
+            private Validator validator;
+            Set<ConstraintViolation<UserDto>> violations = validator.validate(userDto);
+            if (!violations.isEmpty()) {
+                throw new ConstraintViolationException(violations);
+            }
+        -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- 状态机 https://blog.csdn.net/hxyascx/article/details/105494689  -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.statemachine/spring-statemachine-core -->
+        <dependency>
+            <groupId>org.springframework.statemachine</groupId>
+            <artifactId>spring-statemachine-core</artifactId>
+            <version>2.2.0.RELEASE</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

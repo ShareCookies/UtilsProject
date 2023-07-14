@@ -40,9 +40,20 @@ public class StringUtils {
 	 * 		可以使用 String 接收 byte[] 参数的构造器来进行转换，
 	 * 		注：
 	 * 		需要注意的点是要使用的正确的编码，否则会使用平台默认编码。
+	 * 	string类型转成byte[]：
+	 *
+	 *  
+	 *
+	 * byte[] byteArray = System.Text.Encoding.Default.GetBytes ( str );
+	 * 反过来，byte[]转成string：
+	 *
+	 *  
+	 *
+	 * string str = System.Text.Encoding.Default.GetString ( byteArray );
 	 */
-	 public static void byteArrayToString() throws UnsupportedEncodingException {
-
+	 public static String byteArrayToString(byte[] bytes) throws UnsupportedEncodingException {
+		 String s = new String(bytes,"UTF-8");
+		 return s;
 	 }
 	/**
 	 * 第一个字符大写

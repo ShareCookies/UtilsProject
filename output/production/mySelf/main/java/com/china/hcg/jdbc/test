@@ -1,0 +1,35 @@
+Resources.getResourceAsStream(resource)读取文件
+public static InputStream getResourceAsStream(String resource) throws IOException {
+	return getResourceAsStream(null, resource);
+}
+//loader赋值为null
+public static InputStream getResourceAsStream(ClassLoader loader, String resource) throws IOException {
+	InputStream in = classLoaderWrapper.getResourceAsStream(resource, loader);
+	if (in == null) {
+		throw new IOException("Could not find resource " + resource);
+	}
+	return in;
+}
+//classLoader为null
+public InputStream getResourceAsStream(String resource, ClassLoader classLoader) {
+	return getResourceAsStream(resource, getClassLoaders(classLoader));
+}
+//classLoader类加载
+InputStream getResourceAsStream(String resource, ClassLoader[] classLoader) {
+	for (ClassLoader cl : classLoader) {
+		if (null != cl) {
+			//加载指定路径文件流
+			InputStream returnValue = cl.getResourceAsStream(resource);
+			// now, some class loaders want this leading "/", so we'll add it and try again if we didn't find the resource
+			if (null == returnValue) {
+				returnValue = cl.getResourceAsStream("/" + resource);
+			}
+			if (null != returnValue) {
+				return returnValue;
+			}
+		}
+	}
+	return null;
+}
+
+总结：主要是通过ClassLoader.getResourceAsStream()方法获取指定的classpath路径下的Resource 。

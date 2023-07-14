@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.Console;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -81,10 +82,18 @@ public static String handlePeriodDate;
 //        String tokenId = "1014UserCenterNewTokenid;111";
 //        //tokenId = tokenId.substring(tokenId.indexOf("0"));
 //        tokenId = tokenId.split("1014UserCenterNewTokenid;")[1];
-//        System.err.println(tokenId);
+//        JSONObject jsonObject = JSONObject.parseObject("{\"guanteeNo\":\"10388131000224700001\",\"privateKey\":\"103881310002247_abc123123-egCKpJBsENPNfPa35uhS.pfx\",\"password\":\"abc123123\",\"settleMode\":1,\"isSplit\":0,\"splitItems\":[],\"outPaymentMode\":0,\"reservedAmount\":\"0\"}");
+//        System.err.println(jsonObject);
+        System.err.println("e4d45885af5b5301f56e19a349ae02dfde1c8dd7e8f1004c0fabdcea07c873f7".toLowerCase(Locale.ROOT));
+        System.err.println("E4D45885AF5B5301F56E19A349AE02DFDE1C8DD7E8F1004C0FABDCEA07C873F7".toLowerCase(Locale.ROOT));
+        System.err.println("e4d45885af5b5301f56e19a349ae02dfde1c8dd7e8f1004c0fabdcea07c873f7".toLowerCase(Locale.ROOT).equals("E4D45885AF5B5301F56E19A349AE02DFDE1C8DD7E8F1004C0FABDCEA07C873F7".toLowerCase(Locale.ROOT)));
 
-
-
+    }
+    public static Long yuan2Feng(Double yuan) {
+        if (yuan == null) {
+            yuan = 0D;
+        }
+        return BigDecimal.valueOf(yuan).movePointRight(2).longValue();
     }
     static void   test(HashConflictObj i,String string ){
         i.integer+=1;

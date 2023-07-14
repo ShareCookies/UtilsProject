@@ -1,0 +1,359 @@
+package com.china.hcg.excel.export;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.rongji.egov.flowutil.business.model.DocOpinion;
+import com.rongji.egov.flowutil.business.service.DocOpinionMng;
+import com.rongji.egov.rjoa.urger.business.model.*;
+import com.rongji.egov.user.business.model.SecurityUser;
+import com.rongji.egov.user.business.util.SecurityUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * @autor hecaigui
+ * @date 2020-4-8
+ * @description
+ */
+public enum UrgerExportFields implements ExportFields {
+
+
+    subject("标题"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            return urger.getSubject();
+        }
+        @Override
+        public int getExcelCellsWidth(){
+            return (int)((45 + 0.72) * 256);
+        }
+    },
+    urgeStatus("督办状态"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            String status = urger.getUrgeStatus();
+            if ("1".equals(status)){
+                return "已下发";
+            } else {
+                return "未下发";
+            }
+        }
+    },
+    docSequence("收文编号"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            return urger.getDocSequence();
+        }
+    },
+    originDate("收文日期"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            Date date = urger.getOriginDate();
+            if (date != null){
+                return simpleDate.format(date);
+            }else {
+                return "";
+            }
+        }
+    },
+    originUnit("来文单位"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            return urger.getOriginUnit();
+        }
+    },
+    docMark("来文字号"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            return urger.getDocMark();
+        }
+    },
+    approveUserName("批示人（反映人）"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            return urger.getApproveUserName();
+        }
+    },
+    approveContent("批示（反映）内容"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            return urger.getApproveContent();
+        }
+        @Override
+        public int getExcelCellsWidth(){
+            return (int)((45 + 0.72) * 256);
+        }
+    },
+    urgerType("案件类型"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            return urger.getUrgerType();
+        }
+    },
+    fywtdsr("反映问题当事人"),
+    jtfysx("具体反映事项"),
+    zhclfy("最后处理法院"),
+    zhclah("最后处理案号"),
+    dbnbjy("督办拟办建议"),
+    bgsnbyj("主任意见"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            DocOpinion opinion=new DocOpinion();
+            opinion.setDocId(urger.getId());
+            opinion.setOpinionCode("bgsnbyj");
+            opinion.setStatus("1");
+            SecurityUser user = SecurityUtils.getPrincipal();
+            opinion.setSystemNo(user.getSystemNo());
+            //获取数据-按时间倒序
+            List<DocOpinion> opinionList = docOpinionMng.getDocOpinionList(opinion);
+            if (opinionList == null){
+                return "";
+            }
+            JSONArray jsonArray = new JSONArray();
+            for (DocOpinion docOpinion : opinionList){
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("意见内容",docOpinion.getOpinionContent());
+                jsonObject.put("填写人",docOpinion.getOpinionUser());
+                Date date = docOpinion.getCreateTime();
+                String dateString = "";
+                if (date !=null){
+                    dateString = simpleDate.format(date);
+                }
+                jsonObject.put("填写时间",dateString);
+                jsonArray.add(jsonObject);
+            }
+            if(jsonArray.size() == 0 ){
+                return "";
+            }
+            String htmlStr = jsonArray.toJSONString();
+            String regEx_html = "<[^>]+>";
+            String regEx_special = "\\&[a-zA-Z]{1,10};";
+            htmlStr = htmlStr.replaceAll(regEx_html,"");
+            htmlStr = htmlStr.replaceAll(regEx_special,"");
+            htmlStr = htmlStr.replace("\\n", "");
+            htmlStr = htmlStr.replace("\\t", "");
+            return htmlStr;
+        }
+        @Override
+        public int getExcelCellsWidth(){
+            return (int)((45 + 0.72) * 256);
+        }
+    },
+    yldyj("本院批示领导"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            DocOpinion opinion=new DocOpinion();
+            opinion.setDocId(urger.getId());
+            opinion.setOpinionCode("yldyj");
+            opinion.setStatus("1");
+            SecurityUser user = SecurityUtils.getPrincipal();
+            opinion.setSystemNo(user.getSystemNo());
+            //获取数据-按时间倒序
+            List<DocOpinion> opinionList = docOpinionMng.getDocOpinionList(opinion);
+            if (opinionList == null){
+                return "";
+            }
+            JSONArray jsonArray = new JSONArray();
+            for (DocOpinion docOpinion : opinionList){
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("意见内容",docOpinion.getOpinionContent());
+                jsonObject.put("填写人",docOpinion.getOpinionUser());
+                Date date = docOpinion.getCreateTime();
+                String dateString = "";
+                if (date !=null){
+                    dateString = simpleDate.format(date);
+                }
+                jsonObject.put("填写时间",dateString);
+                jsonArray.add(jsonObject);
+            }
+            if(jsonArray.size() == 0 ){
+                return "";
+            }
+            String htmlStr = jsonArray.toJSONString();
+            String regEx_html = "<[^>]+>";
+            String regEx_special = "\\&[a-zA-Z]{1,10};";
+            htmlStr = htmlStr.replaceAll(regEx_html,"");
+            htmlStr = htmlStr.replaceAll(regEx_special,"");
+            htmlStr = htmlStr.replace("\\n", "");
+            htmlStr = htmlStr.replace("\\t", "");
+            return htmlStr;
+        }
+        @Override
+        public int getExcelCellsWidth(){
+            return (int)((45 + 0.72) * 256);
+        }
+    },
+    handleUnit("承办法院或部门"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            List<UrgerTask> urgerTasks = urger.getUrgerTasks();
+            JSONArray jsonArray = new JSONArray();
+            for (UrgerTask urgerTask : urgerTasks){
+                List<UrgerTaskSignUnit> urgerTaskSignUnits = urgerTask.getUrgerTaskSignUnits();
+                for (UrgerTaskSignUnit urgerTaskSignUnit : urgerTaskSignUnits){
+                    String handleObjectName = urgerTaskSignUnit.getHandleObjectName();
+                    if (handleObjectName == null){
+                        handleObjectName = "";
+                    }
+                    jsonArray.add(handleObjectName);
+                }
+            }
+            if(jsonArray.size() == 0 ){
+                return "";
+            }
+            return jsonArray.toJSONString();
+        }
+        @Override
+        public int getExcelCellsWidth(){
+            return (int)((45 + 0.72) * 256);
+        }
+    },
+    singnUser("本件承办人"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            List<UrgerTask> urgerTasks = urger.getUrgerTasks();
+            JSONArray jsonArray = new JSONArray();
+            for (UrgerTask urgerTask : urgerTasks){
+                List<UrgerTaskSignUnit> urgerTaskSignUnits = urgerTask.getUrgerTaskSignUnits();
+                for (UrgerTaskSignUnit urgerTaskSignUnit : urgerTaskSignUnits){
+                    String signUserName = urgerTaskSignUnit.getSignUserName();
+                    if (signUserName == null){
+                        signUserName = "";
+                    }
+                    jsonArray.add(signUserName);
+                }
+            }
+            if(jsonArray.size() == 0 ){
+                return "";
+            }
+            return jsonArray.toJSONString();
+        }
+    },
+    urgeDate("本件交办日期"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            Date date = urger.getUrgeDate();
+            String dateString = "";
+            if (date !=null){
+                dateString = simpleDate.format(date);
+            }
+            return dateString;
+        }
+    },
+    jtjz("具体进展及催办情况"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            List<UrgerTask> urgerTasks = urger.getUrgerTasks();
+            JSONArray jsonArray = new JSONArray();
+            for (UrgerTask urgerTask : urgerTasks){
+                JSONObject taskJsonObject = new JSONObject();
+                taskJsonObject.put("任务标题",urgerTask.getSubject());
+
+                List<UrgerTaskNode> urgerTaskNodes = urgerTask.getUrgerTaskNodes();
+                JSONArray feedbackJsonArray = new JSONArray();
+                for (UrgerTaskNode urgerTaskNode : urgerTaskNodes){
+                    List<UrgerTaskFeedback> feedbacks = urgerTaskNode.getUrgerTaskFeedbacks();
+                    for (UrgerTaskFeedback urgerTaskFeedback : feedbacks){
+                        JSONObject feedbackJsonObject = new JSONObject();
+
+                        String feedbackContent = urgerTaskFeedback.getCompleteSituation();
+                        if (feedbackContent == null){
+                            feedbackContent = "";
+                        }
+                        Date date = urgerTaskFeedback.getFeedbackTime();
+                        String feedbackTime = "";
+                        if (date !=null){
+                            feedbackTime = simpleDate.format(date);
+                        }
+                        feedbackJsonObject.put("反馈内容",feedbackContent);
+                        feedbackJsonObject.put("反馈日期",feedbackTime);
+                        feedbackJsonArray.add(feedbackJsonObject);
+                    }
+                }
+                taskJsonObject.put("任务进展情况",feedbackJsonArray);
+                jsonArray.add(taskJsonObject);
+            }
+            if(jsonArray.size() == 0 ){
+                return "";
+            }
+            return jsonArray.toJSONString();
+        }
+        @Override
+        public int getExcelCellsWidth(){
+            return (int)((45 + 0.72) * 256);
+        }
+    },
+    docMark2("答复发文字号"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            return urger.getDocMark();
+        }
+    },
+    draftUserName("拟稿人"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            return urger.getDraftUserName();
+        }
+    },
+    qfr("签发人"),
+    dfnrgy("答复内容概要"),
+    ajjafs("案件结案方式"),
+    remark("备注"){
+        @Override
+        public String getExcelExportContentFromUrger(Urger urger){
+            return urger.getRemark();
+        }
+    };
+
+    /**
+     * @description 获取对应字段的导出内容
+     */
+    public String getExcelExportContentFromUrger(Urger urger){
+        return "";
+    }
+
+    /**
+     * @description 获取excel导出列宽
+     */
+    public int getExcelCellsWidth(){
+        return (int)((15 + 0.72) * 256);
+    }
+
+    /**
+     *  exportName 导出名
+     */
+    private String exportName;
+
+    UrgerExportFields(String exportName){
+        this.exportName = exportName;
+    }
+
+    /**
+     *  exportName 导出序号
+     */
+    private int exportSortNo;
+    SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy年MM月dd日");
+    public DocOpinionMng docOpinionMng;
+
+
+    public String getExportName() {
+        return exportName;
+    }
+
+    public void setExportName(String exportName) {
+        this.exportName = exportName;
+    }
+
+    public int getExportSortNo() {
+        return exportSortNo;
+    }
+
+    public void setExportSortNo(int exportSortNo) {
+        this.exportSortNo = exportSortNo;
+    }
+    public void setDocOpinionMng(DocOpinionMng docOpinionMng){
+        this.docOpinionMng = docOpinionMng;
+    }
+}

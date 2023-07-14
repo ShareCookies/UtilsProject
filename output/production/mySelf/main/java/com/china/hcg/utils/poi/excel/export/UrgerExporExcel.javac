@@ -1,0 +1,51 @@
+package com.china.hcg.excel.export;
+
+import com.rongji.egov.urger.business.model.Urger;
+import com.rongji.egov.utils.api.paging.PagingRequest;
+
+import java.util.List;
+
+/**
+ * @autor hecaigui
+ * @date 2020-3-31
+ * @description 督察excel导出传输对象。用来controller接收参数使用
+ */
+public class UrgerExporExcel {
+    PagingRequest<Urger> paging;
+    Urger urger;
+    String word;
+    //exportFields [{fieldName:'标题',fieldValue:'subject'}]
+    List<String> exportFields;
+
+    public PagingRequest<Urger> getPaging() {
+        return paging;
+    }
+
+    public void setPaging(PagingRequest<Urger> paging) {
+        this.paging = paging;
+    }
+
+    public Urger getUrger() {
+        return urger;
+    }
+
+    public void setUrger(Urger urger) {
+        this.urger = urger;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public List<String> getExportFields() {
+        return exportFields;
+    }
+
+    public void setExportFields(List<String> exportFields) {
+        this.exportFields = exportFields;
+    }
+}
