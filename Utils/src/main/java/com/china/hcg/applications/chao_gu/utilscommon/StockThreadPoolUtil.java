@@ -11,7 +11,7 @@ import java.util.concurrent.*;
  */
 public class StockThreadPoolUtil {
     //？核心线程是什么时候创建的
-    public static ExecutorService executorService = new ThreadPoolExecutor(0, 100, 5, TimeUnit.SECONDS, new SynchronousQueue<>(), new ThreadFactory() {
+    public static ExecutorService executorService = new ThreadPoolExecutor(0, 200, 5, TimeUnit.SECONDS, new SynchronousQueue<>(), new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
             return new Thread(r,"StockThreadPoolUtil");

@@ -36,15 +36,38 @@ public class GuMinuteData {
     }
 
     public static void main(String[] args) {
-        GuMinuteData guMinuteData = new GuMinuteData();
-        start(guMinuteData.list);
+        start();
     }
 
-    public static void start(List<GuInfo> list) {
-//        printMinuteGuInfo(new GuInfo("603386","603386","sz"));
-//        printMinuteGuInfo(new GuInfo("605287","605287","sz"));
-        printMinuteGuInfo(new GuInfo("001336","001336","sz"));
-//        printMinuteGuInfo(new GuInfo("605289","605289","sz"));
+    public static void start() {
+//        printMinuteGuInfo(new GuInfo("002821","002821","sz"));
+//        printMinuteGuInfo(new GuInfo("002285","002285","sz"));
+//        printMinuteGuInfo(new GuInfo("002635","002635","sz"));
+//        printMinuteGuInfo(new GuInfo("000786","000786","sz"));
+//        printMinuteGuInfo(new GuInfo("000560","000560","sz"));//*
+//        printMinuteGuInfo(new GuInfo("600809","600809","sz"));//-
+//        printMinuteGuInfo(new GuInfo("000893","000893","sz"));//-
+//        printMinuteGuInfo(new GuInfo("000893","000893","sz"));//-
+        printMinuteGuInfo(new GuInfo("002905","002905","sz"));//-
+    }
+    public static void start2() {
+        List<GuInfo> list = new ArrayList<>();
+        list.add(new GuInfo("001201","001201","sz"));
+        list.add(new GuInfo("600391","600391","sz"));
+//        list.add(new GuInfo("600760","600760","sz"));
+//        list.add(new GuInfo("603026","603026","sz"));
+//        list.add(new GuInfo("001201","001201","sz"));
+//        list.add(new GuInfo("600391","600391","sz"));
+//        list.add(new GuInfo("002669","002669","sz"));
+
+
+        for (GuInfo guInfo : list) {
+            printMinuteGuInfo(guInfo);
+        }
+//        printMinuteGuInfo(new GuInfo("600511","600511","sz"));
+//        printMinuteGuInfo(new GuInfo("002777","002777","sz"));
+
+//        printMinuteGuInfo(new GuInfo("603915","603915","sz"));
 
 
 
@@ -85,6 +108,7 @@ public class GuMinuteData {
                 "中单：大于等于1万股小于6万股或者大于等于5万元小于30万元的成交单。\n" +
                 "小单：小于1万股或5万元的成交单。");
         MinuteData minuteData = minuteData(guInfo,new StockDataTypes[]{StockDataTypes.MinuteFundDirections,StockDataTypes.ThsMinuteFunds,StockDataTypes.MinuteFunds});
+//        MinuteData minuteData = minuteData(guInfo,null);
         System.err.println(minuteData);
     }
     /**

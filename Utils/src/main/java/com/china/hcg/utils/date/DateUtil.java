@@ -7,6 +7,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -41,24 +43,33 @@ public class DateUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
 		return sdf.format(date);
 	}
+	//当前日期往前推n天
+	public static String curDateMinus(int day) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		// 获取当前日期
+		LocalDate currentDate = LocalDate.now();
 
+		// 往前推2天
+		LocalDate previousDate = currentDate.minusDays(day);
+		return  formatter.format(previousDate);
+	}
 	public static void main(String[] args) throws Exception{
-
-
-
-        Set<String> msgSendTypes= new HashSet<>();
-        msgSendTypes.add("1");
-        msgSendTypes.add("1");
-		Calendar rightCalendar = Calendar.getInstance();//获取当前地区的日期信息
-		System.out.println("年: " + rightCalendar.get(Calendar.YEAR));
-		Date date = new Date(1648137600000L);
-        System.err.println(date);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Timestamp timestamp = new Timestamp(1648137600000L);
-		System.err.println(sdf.format(timestamp));
-		Date handlePeriodDate=sdf.parse("2022-03-22");
-		System.err.println(handlePeriodDate);
-		System.err.println("2022-03-22".length());
+String file = "D:\\JHCERT\\billfile\\SHOP.105000957222494.20230804.20230804.20230810162410855.qE6O.zip";
+		String path = file.substring(file.lastIndexOf(".")+1,file.length());
+System.err.println(path);
+//        Set<String> msgSendTypes= new HashSet<>();
+//        msgSendTypes.add("1");
+//        msgSendTypes.add("1");
+//		Calendar rightCalendar = Calendar.getInstance();//获取当前地区的日期信息
+//		System.out.println("年: " + rightCalendar.get(Calendar.YEAR));
+//		Date date = new Date(1648137600000L);
+//        System.err.println(date);
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		Timestamp timestamp = new Timestamp(1648137600000L);
+//		System.err.println(sdf.format(timestamp));
+//		Date handlePeriodDate=sdf.parse("2022-03-22");
+//		System.err.println(handlePeriodDate);
+//		System.err.println("2022-03-22".length());
 //		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 //		Date activeDate=sdf.parse("2022-03-22 07:22:00");
 //		Date curDate = new Date();

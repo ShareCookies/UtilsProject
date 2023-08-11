@@ -1,3 +1,22 @@
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.china.hcg.http.HttpClientUtil;
+import com.china.hcg.http.utils.HttpUtil;
+import com.china.hcg.io.file.FileUtils;
+import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.springframework.http.HttpHeaders;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 //package com.china.hcg.excel;
 //
 //import org.apache.poi.hssf.usermodel.*;
@@ -20,7 +39,7 @@
 // * @date 2020-12-25
 // * @description
 // */
-//public class GenerateHSSFWorkbook {
+public class GenerateHSSFWorkbook {
 //	@GetMapping("/urger/exportExcel")
 //	public void exportExcel(UrgerExporExcel urgerExporExcel, HttpServletResponse response) throws Exception {
 //		SecurityUser securityUser = SecurityUtils.getPrincipal();
@@ -201,4 +220,173 @@
 //
 //		return wb;
 //	}
-//}
+
+
+
+
+	public  HSSFWorkbook simpleExcelExport() {
+		//创建HSSFWorkbook对象(excel的文档对象)
+		HSSFWorkbook wb = new HSSFWorkbook();
+
+		//-----------------标题--单元格样式--------------------
+		HSSFCellStyle titleStyle = wb.createCellStyle();
+		//水平垂直居中
+		titleStyle.setAlignment(HorizontalAlignment.CENTER);
+		titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		//字体
+		HSSFFont titleFont = wb.createFont();
+		titleFont.setFontName("华文中宋");
+		titleFont.setFontHeightInPoints((short) 12);
+		titleFont.setBold(true);
+		titleStyle.setFont(titleFont);
+
+		//-----------------时间范围--单元格样式-----------------
+		HSSFCellStyle dateStyle = wb.createCellStyle();
+		dateStyle.setAlignment(HorizontalAlignment.CENTER);
+		dateStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		//字体
+		HSSFFont dateFont = wb.createFont();
+		dateFont.setFontName("仿宋_GB2312");
+		dateFont.setFontHeightInPoints((short) 12);
+		dateStyle.setFont(dateFont);
+
+		//------------------字段--单元格样式-------------------
+		HSSFCellStyle fieldStyle = wb.createCellStyle();
+		fieldStyle.setAlignment(HorizontalAlignment.CENTER);
+		fieldStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		fieldStyle.setBorderBottom(BorderStyle.THIN);
+		fieldStyle.setBottomBorderColor(IndexedColors.GREEN.getIndex());
+		fieldStyle.setBorderLeft(BorderStyle.THIN);
+		fieldStyle.setBorderTop(BorderStyle.THIN);
+		fieldStyle.setBorderRight(BorderStyle.THIN);
+		//字体
+		HSSFFont fieldFont = wb.createFont();
+		fieldFont.setFontName("黑体");
+		fieldFont.setFontHeightInPoints((short) 11);
+		fieldStyle.setFont(fieldFont);
+
+		//------------------字段内容--单元格样式-------------------
+		HSSFCellStyle contentStyle = wb.createCellStyle();
+		contentStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		contentStyle.setBorderBottom(BorderStyle.THIN);
+		contentStyle.setBorderLeft(BorderStyle.THIN);
+		contentStyle.setBorderRight(BorderStyle.THIN);
+		//内容自动换行
+		contentStyle.setWrapText(true);
+		//字体
+		HSSFFont contentFont = wb.createFont();
+		contentFont.setFontName("仿宋_GB2312");
+		contentFont.setFontHeightInPoints((short) 11);
+		contentStyle.setFont(contentFont);
+
+		//建立新的sheet对象
+		HSSFSheet sheet=wb.createSheet("督查登记表");
+		//设置缺省行高\列宽
+		sheet.setDefaultRowHeightInPoints(40);
+//		for (int i = 0; i < exportFields.size(); i++){
+//			UrgerExportFields urgerExportFields = UrgerExportFields.valueOf(exportFields.get(i));
+//			sheet.setColumnWidth(i,  urgerExportFields.getExcelCellsWidth());
+//		}
+//        sheet.setColumnWidth(0,  (int)((15 + 0.72) * 256));
+//        sheet.setColumnWidth(1,  (int)((15 + 0.72) * 256));
+
+		//-----------------------在sheet里创建第一行，参数为行索引(excel的行)，可以是0～65535之间的任何一个
+
+		//------------------------第二行
+//		HSSFRow row2=sheet.createRow(1);
+//		row2.setHeightInPoints((float)14.25);
+//		HSSFCell dateCell=row2.createCell(0);
+//		dateCell.setCellValue(dateStr);
+//		sheet.addMergedRegion(new CellRangeAddress(1,1,0,exportFields.size()-1));
+//		//行设置样式
+//		dateCell.setCellStyle(dateStyle);
+
+		//------------------------在sheet里创建第三行
+		HSSFRow row3=sheet.createRow(2);
+		row3.setHeightInPoints((float)19);
+		//创建单元格并设置单元格内容
+		for (int i = 0; i < exportFields.size(); i++){
+			HSSFCell field1=row3.createCell(i);
+			field1.setCellValue(exportFields.get(i));
+			field1.setCellStyle(fieldStyle);
+		}
+
+
+		//在sheet里创建第四行
+
+		for (int i = 0; i < list.size(); i++) {
+            HSSFRow dataRow;
+            dataRow=sheet.createRow(i+3);
+            this.fieldsValue(dataRow,i);
+		}
+
+		return wb;
+	}
+
+    public static void main(String[] args) throws IOException {
+        GenerateHSSFWorkbook generateHSSFWorkbook = new GenerateHSSFWorkbook();
+        HSSFWorkbook wb = generateHSSFWorkbook.initSimpleExcelExport();
+        wb.write(new File("D:/test.xls"));
+    }
+    List<Object> list; List<String> exportFields;
+    HSSFWorkbook initSimpleExcelExport(){
+        String v1 = FileUtils.readTxtContent(new File("D:/1.json"));
+        String v2 = FileUtils.readTxtContent(new File("D:/2.json"));
+        String v3 = FileUtils.readTxtContent(new File("D:/3.json"));
+        String v4 = FileUtils.readTxtContent(new File("D:/4.json"));
+        String v5 = FileUtils.readTxtContent(new File("D:/5.json"));
+        String v6 = FileUtils.readTxtContent(new File("D:/6.json"));
+        String v7 = FileUtils.readTxtContent(new File("D:/7.json"));
+        String v8 = FileUtils.readTxtContent(new File("D:/8.json"));
+        String v9 = FileUtils.readTxtContent(new File("D:/9.json"));
+        String v10 = FileUtils.readTxtContent(new File("D:/10.json"));
+        String v11 = FileUtils.readTxtContent(new File("D:/11.json"));
+        String v12 = FileUtils.readTxtContent(new File("D:/12.json"));
+        List<String> s = new ArrayList<>();
+        s.add(v1);
+        s.add(v2);
+        s.add(v3);
+        s.add(v4);
+        s.add(v5);
+        s.add(v6);
+        s.add(v7);
+        s.add(v8);
+        s.add(v9);
+        s.add(v10);
+        s.add(v11);
+        s.add(v12);
+        JSONArray allArr = new JSONArray();
+        for (String s1 : s) {
+            JSONObject jsonObject = JSONObject.parseObject(s1);
+            JSONArray jsonArray = jsonObject.getJSONObject("result").getJSONArray("records");
+            allArr.addAll(jsonArray);
+        }
+
+
+        //列名
+        List<String> strings = new ArrayList<>();
+        strings.add("merId");
+        strings.add("subMerId");
+        strings.add("subMerName");
+        this.exportFields = strings;
+
+
+        //列值
+        this.list = allArr;
+
+        HSSFWorkbook wb = this.simpleExcelExport();
+        return wb;
+    }
+    boolean fieldsValue(HSSFRow dataRow,int i){
+        //根据需要导出对应字段内容
+        // 应用了策略模式实现改需求。根据不同的需求，同一个方法能表现出不同的行为
+        for (int j = 0; j < exportFields.size(); j++){
+            HSSFCell field1=dataRow.createCell(j);
+            JSONObject jsonObject = (JSONObject)this.list.get(i);
+            field1.setCellValue(jsonObject.getString(exportFields.get(j)));
+            //field1.setCellStyle(contentStyle);
+        }
+        return true;
+    }
+
+}

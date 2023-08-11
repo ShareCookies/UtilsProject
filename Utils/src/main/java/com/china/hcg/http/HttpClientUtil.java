@@ -265,6 +265,22 @@ public class HttpClientUtil {
         logger.debug("post请求结果："+body);
         return body;
     }
+    public static String post(String url,HttpHeaders headers, Object requestBody){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity request = new HttpEntity<>(requestBody, headers);
+        ResponseEntity<String> entity = restTemplate.postForEntity(url,request, String.class);
+        HttpStatus statusCode = entity.getStatusCode();
+        logger.debug("post请求状态："+statusCode.value());
+        String body = entity.getBody();
+        // 网页重定向自动跳转
+        if (statusCode.is3xxRedirection()){
+            String url2 = HttpUtil.getPrefix(url)+entity.getHeaders().getLocation();
+            body = HttpClientUtil.get(url2);
+        }
+        logger.debug("post请求结果："+body);
+
+        return body;
+    }
     /**
      * @description 发起post,get,put,delete请求，数据传输格式为x-www-form-urlencoded
 

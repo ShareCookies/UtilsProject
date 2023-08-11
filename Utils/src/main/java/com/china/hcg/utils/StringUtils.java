@@ -287,5 +287,10 @@ public class StringUtils {
 //
 //    }
 
-
+	//获取文件后缀
+	public static String getFileSuffix(String file){
+		//String file = "D:\\JHCERT\\billfile\\SHOP.105000957222494.20230804.20230804.20230810162410855.qE6O.zip";
+		String suffix = file.substring(file.lastIndexOf(".")+1,file.length());
+		return suffix;
+	}
 }

@@ -30,32 +30,9 @@ public class AutoGuMinuteData {
 //            }
             try {
                 Map<String,GuInfo> guInfoMap = new HashMap();
-                guInfoMap.put("600551",new GuInfo("600551","600551","sz",null,null));//36.725*0.04  35.26
-                guInfoMap.put("603386",new GuInfo("603386","603386","sz",null,null));//36.725*0.04  35.26
-                guInfoMap.put("002055",new GuInfo("002055","002055","sz",10.4f,null));//36.725*0.04  35.26
-                guInfoMap.put("605289",new GuInfo("605289","605289","sz",null,null));//36.725*0.04  35.26
-                guInfoMap.put("605287",new GuInfo("605287","605287","sz",null,null));//36.725*0.04  35.26
-                guInfoMap.put("002849",new GuInfo("002849","002849","sz",18.32f,null));//36.725*0.04  35.26
 
-
-//                guInfoMap.put("000776",new GuInfo("000776","广发证券","sz",null,null));//36.725*0.04  35.26
-//
-//                guInfoMap.put("002761",new GuInfo("002761","    ","sz",null,null));//36.725*0.04  35.26
-//                guInfoMap.put("600691",new GuInfo("600691","阳煤化工","sz",null,null));//36.725*0.04  35.26
-//                guInfoMap.put("600229",new GuInfo("600229","广发证券·","sz",null,null));//36.725*0.04  35.26
-//                guInfoMap.put("600547",new GuInfo("600547","山东黄金","sz",null,null));//36.725*0.04  35.26
-//                guInfoMap.put("300207",new GuInfo("300207","欣旺达","sz",null,null));//36.725*0.04  35.26
-//                guInfoMap.put("600988",new GuInfo("600988","赤峰黄金","sz",null,null));//36.725*0.04  35.26
-//                guInfoMap.put("600276",new GuInfo("600276","恒瑞医药","sh",null,null));
-//                guInfoMap.put("601933",new GuInfo("601933","永辉超市","sz",null,null));
-//                guInfoMap.put("000651",new GuInfo("000651","格力电器","sh",null,null));
-//                guInfoMap.put("600741",new GuInfo("600741","华域汽车","sz",null,9.21f));
-//                guInfoMap.put("600988",new GuInfo("600988","赤峰黄金","sh",null,null));
-//                guInfoMap.put("601456",new GuInfo("601456","国联证券","sz",null,null));
-//                guInfoMap.put("601318",new GuInfo("601318","中国平安","sz",null,null));
-//                guInfoMap.put("002149",new GuInfo("002149","西部材料","sz",null,null));
-//                guInfoMap.put("002027",new GuInfo("002027","分众传媒","sz",null,null));//6.78 2w
-//                guInfoMap.put("002241",new GuInfo("002241","歌尔股份","sz",null,null));//3.85 (20.8+20.73)-20.56 //20.67 3%  20.07 //20.22
+                guInfoMap.put("000893",new GuInfo("000893","","sz",null,null));//36.725*0.04  35.26
+                guInfoMap.put("601958",new GuInfo("601958","","sz",null,null));//36.725*0.04  35.26
 
                 List<GuInfo> list = new ArrayList();
                 for (String s : guInfoMap.keySet()) {
@@ -70,7 +47,7 @@ public class AutoGuMinuteData {
             } catch (Exception e){
                 e.printStackTrace();
             }
-        },60L);
+        },10L);
     }
     void autoNotice() throws Exception {
         List<GuInfo> list = new ArrayList();
