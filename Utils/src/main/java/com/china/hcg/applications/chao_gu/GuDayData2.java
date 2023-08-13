@@ -47,7 +47,7 @@ public class GuDayData2 {
 //        Thread.sleep(5000);
 //        autoRun();
 
-         List<GuInfo> list = test();
+//         List<GuInfo> list = test();
     }
     public static Set<GuInfo> Gucodes = new LinkedHashSet<GuInfo>();
     public static void autoRun(){
@@ -70,7 +70,7 @@ public class GuDayData2 {
         System.err.println(GuDayData.printLatestTwoDay(list));
         return list;
     }
-    public static ExecutorService executorService = new ThreadPoolExecutor(200, 200, 5, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), new ThreadFactory() {
+    public static ExecutorService executorService = new ThreadPoolExecutor(1, 200, 5, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), new ThreadFactory() {
         @Override
         public Thread newThread(Runnable r) {
             return new Thread(r,"Stock-concurrencyPrint");

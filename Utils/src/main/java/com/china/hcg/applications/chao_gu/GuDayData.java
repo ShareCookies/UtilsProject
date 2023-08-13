@@ -25,26 +25,49 @@ public class GuDayData {
         printDayGuInfo("000625","000625");
 //        getSZZS();
     }
+
     public static  String printLatestTwoDay(List<GuInfo> list){
         int z = 0;
         int f = 0;
         Map<String,String> console = new HashMap<>();
-        Map<String,String> zconsole = new HashMap<>();
-        Map<String,String> fconsole = new HashMap<>();
+//        Map<String,String> zconsole = new HashMap<>();
+//        Map<String,String> fconsole = new HashMap<>();
         for (GuInfo o : list) {
             JSONArray minute_data_price = GuDayData.getDayData(o.getCode());
             //System.err.println(o.getCode()+o.getName());
-            if (minute_data_price.size() <= 6) continue;
+//            if (minute_data_price.size() <= 6) continue;
+//
+//            boolean out = false;
+//            for (Object o1 : minute_data_price) {
+//                JSONObject jsonObject = (JSONObject)o1;
+//                if (jsonObject.getFloat("netChangeRatio")> 5) ;
+//            }
+//            out = true;
 
-            boolean out = false;
-            for (Object o1 : minute_data_price) {
-                JSONObject jsonObject = (JSONObject)o1;
-                if (jsonObject.getFloat("netChangeRatio")> 5) ;
-            }
-            out = true;
 
+            List l15 = minute_data_price.subList(minute_data_price.size() - 15 ,minute_data_price.size());
             JSONArray minute_data_price2 = new JSONArray();
-            minute_data_price2.addAll(minute_data_price);
+            minute_data_price2.addAll(l15);
+            float lowestPrice10 = minute_data_price2.getJSONObject(0).getFloat("avgPrice");
+            float price10 = minute_data_price2.getJSONObject(minute_data_price2.size() - 6).getFloat("avgPrice");
+            for (int i = 0; i < minute_data_price2.size() - 5; i++) {
+                float p = minute_data_price2.getJSONObject(i).getFloat("avgPrice");
+                if (lowestPrice10 > p) lowestPrice10 = p;
+                //System.err.println(p);
+            }
+            //10天内卖走势跳过//todo：没超过最低2个点跳过
+            if (lowestPrice10 == price10) continue;
+            float increase5 = 0f;
+            for (int i = minute_data_price2.size() - 5; i < minute_data_price2.size(); i++) {
+//                System.err.println(minute_data_price2.getJSONObject(i).getFloat("increase"));
+                increase5+=minute_data_price2.getJSONObject(i).getFloat("increase");
+                //todo：走势抖动太大跳过
+            }
+//            System.err.println(increase5);
+//            System.err.println(Math.abs(increase5));
+            if (Math.abs(increase5) > 3 )continue;
+            //System.err.println(lowestPrice10);
+            //System.err.println(price10);
 //            minute_data_price2.add(minute_data_price.get(minute_data_price.size()-6) );
 //            minute_data_price2.add(minute_data_price.get(minute_data_price.size()-5) );
 //            minute_data_price2.add(minute_data_price.get(minute_data_price.size()-4) );
@@ -79,7 +102,9 @@ public class GuDayData {
         for (String o : console.keySet()) {
 //            System.err.println(o);
 //            System.err.println(console.get(o));
+
             GuMinuteData.MinuteData minuteData = GuMinuteData.minuteData(new GuInfo(o),null);
+
 //            System.err.println(minuteData.toString());
             boolean add = false;
             for (int i = 0; i < minuteData.getMinutePriceData().size(); i++) {
