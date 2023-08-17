@@ -9,11 +9,15 @@ import com.china.hcg.applications.chao_gu.utilscommon.TextTable;
 import com.china.hcg.applications.chao_gu.utilscommon.TextTableExpand;
 import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataUtils;
 import com.china.hcg.http.HttpClientUtil;
+import com.china.hcg.io.file.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotNull;
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.*;
+
+import static com.china.hcg.applications.chao_gu.OthersData.getSZZS;
 
 /**
  * @autor hecaigui
@@ -22,88 +26,74 @@ import java.util.*;
  */
 public class GuDayData {
     public static void main(String[] args) {
-        printDayGuInfo("000625","000625");
+//        printDayGuInfo("000625","000625");
 //        getSZZS();
+
     }
 
-    public static  String printLatestTwoDay(List<GuInfo> list){
-        int z = 0;
-        int f = 0;
-        Map<String,String> console = new HashMap<>();
-//        Map<String,String> zconsole = new HashMap<>();
-//        Map<String,String> fconsole = new HashMap<>();
+    public static  Set<GuInfo> printLatestTwoDay(List<GuInfo> list){
+        StringBuilder stringBuilder = new StringBuilder();
+        Set<GuInfo> console = new HashSet<>();
         for (GuInfo o : list) {
             JSONArray minute_data_price = GuDayData.getDayData(o.getCode());
-            //System.err.println(o.getCode()+o.getName());
-//            if (minute_data_price.size() <= 6) continue;
-//
-//            boolean out = false;
-//            for (Object o1 : minute_data_price) {
-//                JSONObject jsonObject = (JSONObject)o1;
-//                if (jsonObject.getFloat("netChangeRatio")> 5) ;
-//            }
-//            out = true;
-
-
             List l15 = minute_data_price.subList(minute_data_price.size() - 15 ,minute_data_price.size());
             JSONArray minute_data_price2 = new JSONArray();
             minute_data_price2.addAll(l15);
             float lowestPrice10 = minute_data_price2.getJSONObject(0).getFloat("avgPrice");
+            float bigestPrice10 = minute_data_price2.getJSONObject(0).getFloat("avgPrice");
             float price10 = minute_data_price2.getJSONObject(minute_data_price2.size() - 6).getFloat("avgPrice");
             for (int i = 0; i < minute_data_price2.size() - 5; i++) {
                 float p = minute_data_price2.getJSONObject(i).getFloat("avgPrice");
                 if (lowestPrice10 > p) lowestPrice10 = p;
-                //System.err.println(p);
+                if (bigestPrice10 < p) bigestPrice10 = p;
             }
-            //10天内卖走势跳过//todo：没超过最低2个点跳过
-            if (lowestPrice10 == price10) continue;
+            //10天内卖走势跳过
+//            if (lowestPrice10 == price10) continue;
+            if ((price10 - bigestPrice10) < 0) {
+                float c = Math.abs(price10 - bigestPrice10);
+                //最新价格与最高价格差价超过2个点跳过
+                if (bigestPrice10 * 0.02 < c) continue;
+            }
+
+            boolean outFor = false;
             float increase5 = 0f;
             for (int i = minute_data_price2.size() - 5; i < minute_data_price2.size(); i++) {
 //                System.err.println(minute_data_price2.getJSONObject(i).getFloat("increase"));
-                increase5+=minute_data_price2.getJSONObject(i).getFloat("increase");
+                Float increase = minute_data_price2.getJSONObject(i).getFloat("increase");
+                Float avgPrice = minute_data_price2.getJSONObject(i).getFloat("avgPrice");
+                increase5+=increase;
+                //回落超过最近最低价 跳过
+                if (avgPrice < lowestPrice10) outFor = true;
                 //todo：走势抖动太大跳过
             }
+            if (outFor) continue;
 //            System.err.println(increase5);
 //            System.err.println(Math.abs(increase5));
             if (Math.abs(increase5) > 3 )continue;
             //System.err.println(lowestPrice10);
             //System.err.println(price10);
-//            minute_data_price2.add(minute_data_price.get(minute_data_price.size()-6) );
-//            minute_data_price2.add(minute_data_price.get(minute_data_price.size()-5) );
-//            minute_data_price2.add(minute_data_price.get(minute_data_price.size()-4) );
-//            minute_data_price2.add(minute_data_price.get(minute_data_price.size()-3) );
-//            minute_data_price2.add(minute_data_price.get(minute_data_price.size()-2) );
-//            minute_data_price2.add(minute_data_price.get(minute_data_price.size()-1) );
 
-            TextTable textTable = TextTableExpand.standardJsonArrayTextTable(jsonarrToListLinkedMap(minute_data_price2));
-
-
-            JSONObject last1day = minute_data_price.getJSONObject(minute_data_price.size()-1);
-            JSONObject last2day = minute_data_price.getJSONObject(minute_data_price.size()-2);
-            Float csa = last2day.getFloat("csa");
-//            console.put(o.getCode()+o.getName(),textTable.printTable());
+//            JSONObject last1day = minute_data_price.getJSONObject(minute_data_price.size()-1);
+//            JSONObject last2day = minute_data_price.getJSONObject(minute_data_price.size()-2);
+//            Float csa = last2day.getFloat("csa");
 //            if (last1day.getFloat("open") > last2day.getFloat("close") && (csa != null && csa > 0)){
             //if (csa != null && csa > 0){
-                console.put(o.getCode()+o.getName(),textTable.printTable());
-//                if (last1day.getString("netChangeRatio").contains("+")){
-//                    z++;
-//                } else f++;
-
-//                if (last1day.getFloat("close") > last1day.getFloat("open")){
-//                    z++;
-//                    zconsole.put(o.getCode()+o.getName(),textTable.printTable());
-//                } else {
-//                    f++;
-//                    fconsole.put(o.getCode()+o.getName(),textTable.printTable());
-//                }
+            TextTable textTable = TextTableExpand.standardJsonArrayTextTable(jsonarrToListLinkedMap(minute_data_price2));
+            console.add(o);
+            System.err.println(o.getCode()+o.getName());
+            System.err.println(textTable.printTable());
             //}
         }
+
+        return console;
+    }
+    public static String printMinuteData(List<GuInfo> list){
         StringBuilder stringBuilder = new StringBuilder();
-        for (String o : console.keySet()) {
+        for (GuInfo o : list) {
 //            System.err.println(o);
 //            System.err.println(console.get(o));
 
-            GuMinuteData.MinuteData minuteData = GuMinuteData.minuteData(new GuInfo(o),null);
+            GuMinuteData.MinuteData minuteData = GuMinuteData.minuteData(o,null);
 
 //            System.err.println(minuteData.toString());
             boolean add = false;
@@ -113,25 +103,9 @@ public class GuDayData {
                     add = true;
                 }
             }
-            if (add) stringBuilder.append(o).append("\n").append(console.get(o)).append("\n").append(minuteData.toString()).append("\n");
+            if (add) stringBuilder.append(o).append("\n").append("\n").append(minuteData.toString()).append("\n");
         }
-//        for (String o : console.keySet()) {
-//            System.err.println(o);
-//            stringBuilder.append(o).append("\n");
-//        }
         return stringBuilder.toString();
-//        for (String o : zconsole.keySet()) {
-//            System.err.println(o);
-//            System.err.println(console.get(o));
-//        }
-//        System.err.println(z);
-//        System.err.println(f);
-//        for (String o : fconsole.keySet()) {
-//            System.err.println(o);
-//            System.err.println(console.get(o));
-//        }
-//        System.err.println(z);
-//        System.err.println(f);
     }
     public static void printDayGuInfo(String guCode,String guName){
         JSONArray minute_data_price = GuDayData.getDayData(guCode);
