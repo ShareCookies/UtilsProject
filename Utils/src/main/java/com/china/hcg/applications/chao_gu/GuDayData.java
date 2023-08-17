@@ -35,8 +35,9 @@ public class GuDayData {
         StringBuilder stringBuilder = new StringBuilder();
         Set<GuInfo> console = new HashSet<>();
         for (GuInfo o : list) {
+        try {
             JSONArray minute_data_price = GuDayData.getDayData(o.getCode());
-            List l15 = minute_data_price.subList(minute_data_price.size() - 15 ,minute_data_price.size());
+            List l15 = minute_data_price.subList(minute_data_price.size() - 15, minute_data_price.size());
             JSONArray minute_data_price2 = new JSONArray();
             minute_data_price2.addAll(l15);
             float lowestPrice10 = minute_data_price2.getJSONObject(0).getFloat("avgPrice");
@@ -60,16 +61,22 @@ public class GuDayData {
             for (int i = minute_data_price2.size() - 5; i < minute_data_price2.size(); i++) {
 //                System.err.println(minute_data_price2.getJSONObject(i).getFloat("increase"));
                 Float increase = minute_data_price2.getJSONObject(i).getFloat("increase");
+                Float netChangeRatio = minute_data_price2.getJSONObject(i).getFloat("netChangeRatio");
                 Float avgPrice = minute_data_price2.getJSONObject(i).getFloat("avgPrice");
-                increase5+=increase;
+                increase5 += increase;
                 //回落超过最近最低价 跳过
                 if (avgPrice < lowestPrice10) outFor = true;
-                //todo：走势抖动太大跳过
+                //走势抖动太大跳过
+                if (netChangeRatio > 0 && Math.abs(netChangeRatio) > 5) {
+                    outFor = true;
+                } else if (netChangeRatio < 0 && Math.abs(netChangeRatio) > 3) {
+                    outFor = true;
+                }
             }
             if (outFor) continue;
 //            System.err.println(increase5);
 //            System.err.println(Math.abs(increase5));
-            if (Math.abs(increase5) > 3 )continue;
+            if (Math.abs(increase5) > 3) continue;
             //System.err.println(lowestPrice10);
             //System.err.println(price10);
 
@@ -80,9 +87,10 @@ public class GuDayData {
             //if (csa != null && csa > 0){
             TextTable textTable = TextTableExpand.standardJsonArrayTextTable(jsonarrToListLinkedMap(minute_data_price2));
             console.add(o);
-            System.err.println(o.getCode()+o.getName());
+            System.err.println(o.getCode() + o.getName());
             System.err.println(textTable.printTable());
             //}
+        }catch(Exception e){e.printStackTrace();}
         }
 
         return console;

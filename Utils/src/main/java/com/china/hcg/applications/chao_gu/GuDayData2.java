@@ -35,14 +35,15 @@ public class GuDayData2 {
     public static void main(String[] args) throws InterruptedException {
 //        List<GuInfo> list = ggzj.start("3");
 
-//        String arr = FileUtils.readTxtContent(new File("D:\\heSpace\\gu\\lt.txt"));
-//        JSONArray jsonArray = JSONArray.parseArray(arr);
-//        List<GuInfo> list = new LinkedList<>();
-//        for (Object o : jsonArray) {
-//            JSONObject jsonObject = (JSONObject) o;
-//            GuInfo guInfo = new GuInfo(jsonObject.getString("code"),jsonObject.toJSONString());
-//            list.add(guInfo);
-//        }
+        String arr = FileUtils.readTxtContent(new File("D:\\heSpace\\gu\\lt.txt"));
+        JSONArray jsonArray = JSONArray.parseArray(arr);
+        List<GuInfo> list = new LinkedList<>();
+        for (Object o : jsonArray) {
+            JSONObject jsonObject = (JSONObject) o;
+            GuInfo guInfo = new GuInfo(jsonObject.getString("code"),jsonObject.toJSONString());
+            list.add(guInfo);
+        }
+        GuDayData.printLatestTwoDay(list);
 //        concurrencyPrint(list);
 //        Thread.sleep(5000);
 //        autoRun();
