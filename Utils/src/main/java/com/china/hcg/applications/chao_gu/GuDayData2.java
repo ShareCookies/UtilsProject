@@ -83,11 +83,11 @@ public class GuDayData2 {
             l.add(guInfo);
             GuDayData2.executorService.submit(() -> {
 //                System.err.println("id"+Thread.currentThread().getId());
-                String s = GuDayData.printLatestTwoDay(l);
-                System.err.println(s);
-                if (StringUtils.isNotBlank(s)){
-                    Gucodes.addAll(l);
-                }
+//                String s = GuDayData.printLatestTwoDay(l);
+//                System.err.println(s);
+//                if (StringUtils.isNotBlank(s)){
+//                    Gucodes.addAll(l);
+//                }
             });
         }
 

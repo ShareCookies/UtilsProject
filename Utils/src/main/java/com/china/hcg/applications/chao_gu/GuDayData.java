@@ -35,7 +35,9 @@ public class GuDayData {
         StringBuilder stringBuilder = new StringBuilder();
         Set<GuInfo> console = new HashSet<>();
         for (GuInfo o : list) {
+
         try {
+            Thread.sleep(1000);
             JSONArray minute_data_price = GuDayData.getDayData(o.getCode());
             List l15 = minute_data_price.subList(minute_data_price.size() - 15, minute_data_price.size());
             JSONArray minute_data_price2 = new JSONArray();
@@ -69,9 +71,10 @@ public class GuDayData {
                 //走势抖动太大跳过
                 if (netChangeRatio > 0 && Math.abs(netChangeRatio) > 5) {
                     outFor = true;
-                } else if (netChangeRatio < 0 && Math.abs(netChangeRatio) > 3) {
+                } else if (netChangeRatio < 0 && Math.abs(netChangeRatio) > 0.5) {
                     outFor = true;
                 }
+
             }
             if (outFor) continue;
 //            System.err.println(increase5);
@@ -123,7 +126,7 @@ public class GuDayData {
         //System.err.println(guCode+guName);
     }
     private static JSONArray getDayData(@NotNull String stockCode){
-        String r = HttpClientUtil.getForHttps("https://finance.pae.baidu.com/selfselect/getstockquotation?code="+stockCode+"&all=1&ktype=1&isIndex=false&isBk=false&isBlock=false&isFutures=false&stockType=ab&group=quotation_kline_ab&finClientType=pc");
+        String r = HttpClientUtil.get("https://finance.pae.baidu.com/selfselect/getstockquotation?code="+stockCode+"&all=1&ktype=1&isIndex=false&isBk=false&isBlock=false&isFutures=false&stockType=ab&group=quotation_kline_ab&finClientType=pc");
         ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
         JSONObject rj = JSONObject.parseObject(r);
 
