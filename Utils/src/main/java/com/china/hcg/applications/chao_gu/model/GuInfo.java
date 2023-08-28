@@ -127,4 +127,18 @@ public class GuInfo implements Serializable {
     public void setNoticePriceFall(Float noticePriceFall) {
         this.noticePriceFall = noticePriceFall;
     }
+
+    @Override
+    public String toString() {
+        return "GuInfo{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", area='" + area + '\'' +
+                ", totalAmountReference=" + totalAmountReference +
+                ", noticePriceRise=" + noticePriceRise +
+                ", noticePriceFall=" + noticePriceFall +
+                ", noticeFundsInstantRun=" + noticeFundsInstantRun +
+                ", noticeFundsInstantEnter=" + noticeFundsInstantEnter +
+                '}';
+    }
 }
