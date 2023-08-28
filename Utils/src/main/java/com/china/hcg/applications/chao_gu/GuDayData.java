@@ -26,7 +26,7 @@ import static com.china.hcg.applications.chao_gu.OthersData.getSZZS;
  */
 public class GuDayData {
     public static void main(String[] args) {
-//        printDayGuInfo("000625","000625");
+        printDayGuInfo("000625","000625");
 //        getSZZS();
 
     }
@@ -110,7 +110,7 @@ public class GuDayData {
             boolean add = false;
             for (int i = 0; i < minuteData.getMinutePriceData().size(); i++) {
                 Integer oriAmount = minuteData.getMinutePriceData().getJSONObject(i).getInteger("oriAmount");
-                if (oriAmount > 3000000){
+                if (oriAmount > 2000000){
                     add = true;
                 }
             }

@@ -31,8 +31,10 @@ public class AutoGuMinuteData {
             try {
                 Map<String,GuInfo> guInfoMap = new HashMap();
 
-                guInfoMap.put("000893",new GuInfo("000893","","sz",null,null));//36.725*0.04  35.26
-                guInfoMap.put("601958",new GuInfo("601958","","sz",null,null));//36.725*0.04  35.26
+                guInfoMap.put("603215",new GuInfo("603215","","sz",20.1f,null));//36.725*0.04  35.26
+                guInfoMap.put("000068",new GuInfo("000068","","sz",3.82f,null));//36.725*0.04  35.26
+                guInfoMap.put("600028",new GuInfo("600028","","sz",null,null));//36.725*0.04  35.26
+                guInfoMap.put("001965",new GuInfo("001965","","sz",9.72f,null));//36.725*0.04  35.26
 
                 List<GuInfo> list = new ArrayList();
                 for (String s : guInfoMap.keySet()) {

@@ -69,6 +69,12 @@ fastJson转换：
 	JSON字符串转JSON对象：
 		String s ="{\"action\":\"add\",\"id\":\"1\",\"ordinal\":8,\"organUnitFullName\":\"testJSON\",\"parent\":\"0\",\"suborderNo\":\"58961\"}";
 		JSONObject jsonObject = JSON.parseObject(s);
+
+		@JsonProperty
+			这个注解提供了序列化和反序列化过程中该java属性所对应的名称
+		@JsonAlias
+			这个注解只只在反序列化时起作用，指定该java属性可以接受的更多名称
+
 	...
 	String转json数组
 		JSONArray jsArr = JSONObject.parseArray(aaa);
@@ -98,3 +104,4 @@ JS:
 附：
 	如何打印对象拥有的属性：1. toString 2. 转jsonobject 3. 反射
  */
+

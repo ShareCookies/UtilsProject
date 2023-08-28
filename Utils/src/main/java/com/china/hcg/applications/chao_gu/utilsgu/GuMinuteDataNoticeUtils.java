@@ -35,11 +35,11 @@ public class GuMinuteDataNoticeUtils {
 
         if(guInfo.noticePriceRise != null && price >= guInfo.noticePriceRise){
             InfoUtil test = new InfoUtil();
-            test.show(guInfo.name+"价格提醒","涨价提醒"+guInfo.noticePriceRise+InfoUtil.breakLine+"当前价格"+price);
+            test.show(guInfo.code+"价格提醒","涨价提醒"+guInfo.noticePriceRise+InfoUtil.breakLine+"当前价格"+price);
         }
         if (guInfo.noticePriceFall != null && price <= guInfo.noticePriceFall ){
             InfoUtil test = new InfoUtil();
-            test.show(guInfo.name+"价格提醒","跌价提醒" + guInfo.noticePriceFall+InfoUtil.breakLine+"当前价格"+price);
+            test.show(guInfo.code+"价格提醒","跌价提醒" + guInfo.noticePriceFall+InfoUtil.breakLine+"当前价格"+price);
         }
     }
 

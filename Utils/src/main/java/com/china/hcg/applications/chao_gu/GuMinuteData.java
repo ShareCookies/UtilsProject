@@ -48,7 +48,15 @@ public class GuMinuteData {
 //        printMinuteGuInfo(new GuInfo("600809","600809","sz"));//-
 //        printMinuteGuInfo(new GuInfo("000893","000893","sz"));//-
 //        printMinuteGuInfo(new GuInfo("000893","000893","sz"));//-
-        printMinuteGuInfo(new GuInfo("002905","002905","sz"));//-
+//        printMinuteGuInfo(new GuInfo("601133","601133","sz"));//-
+//        printMinuteGuInfo(new GuInfo("603679","603679","sz"));//-
+
+
+
+//        printMinuteGuInfo(new GuInfo("603679","603679","sz"));//-
+        printMinuteGuInfo(new GuInfo("600028","600028","sz"));//
+//        printMinuteGuInfo(new GuInfo("002179","002179","sz"));//-
+//        printMinuteGuInfo(new GuInfo("001965","001965","sz"));//-
     }
     public static void start2() {
         List<GuInfo> list = new ArrayList<>();
