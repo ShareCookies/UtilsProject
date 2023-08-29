@@ -33,69 +33,33 @@ public class GuDayData2 {
         });
     }
     public static void main(String[] args) throws InterruptedException {
-//        List<GuInfo> list = ggzj.start("3");
-
-        String arr = FileUtils.readTxtContent(new File("D:\\heSpace\\gu\\lt.txt"));
-        JSONArray jsonArray = JSONArray.parseArray(arr);
-        List<GuInfo> list = new LinkedList<>();
-        for (Object o : jsonArray) {
-            JSONObject jsonObject = (JSONObject) o;
-            GuInfo guInfo = new GuInfo(jsonObject.getString("code"),jsonObject.toJSONString());
-            list.add(guInfo);
-        }
-        GuDayData.printLatestTwoDay(list);
-//        concurrencyPrint(list);
-//        Thread.sleep(30000);
-//        for (GuInfo gucode : Gucodes) {
-//            System.err.println(gucode.getCode());
-//        }
-
-//        List<GuInfo> list = getLt();
-//
+//        //跑龙头
+//        String arr = FileUtils.readTxtContent(new File("D:\\heSpace\\gu\\lt.txt"));
+//        JSONArray jsonArray = JSONArray.parseArray(arr);
 //        List<GuInfo> list = new LinkedList<>();
-//        list.add(new GuInfo("002849"));
-//        System.err.println(GuDayData.printLatestTwoDay(list));
+//        for (Object o : jsonArray) {
+//            JSONObject jsonObject = (JSONObject) o;
+//            GuInfo guInfo = new GuInfo(jsonObject.getString("code"),jsonObject.toJSONString());
+//            list.add(guInfo);
+//        }
+//        GuDayData.printLatestTwoDay(list);
 
+        //跑资金榜单
 //        List<GuInfo> list = ggzj.start("3");
-        List<GuInfo> list = new LinkedList<>();
-        list.add(new GuInfo("603215"));
-        list.add(new GuInfo("603135"));
-        list.add(new GuInfo("000520"));
-        list.add(new GuInfo("002524"));
-        list.add(new GuInfo("000068"));
-        list.add(new GuInfo("603863"));
-        list.add(new GuInfo("600812"));
-        list.add(new GuInfo("603871"));
-        list.add(new GuInfo("600028"));
-        list.add(new GuInfo("001965"));
-        list.add(new GuInfo("001368"));
-        list.add(new GuInfo("001336"));
-        list.add(new GuInfo("001234"));
-        list.add(new GuInfo("600493"));
-        list.add(new GuInfo("002207"));
-        list.add(new GuInfo("603079"));
-        list.add(new GuInfo("603679"));
-        list.add(new GuInfo("002983"));
-        list.add(new GuInfo("603687"));
-        list.add(new GuInfo("002379"));
-        list.add(new GuInfo("002515"));
-        list.add(new GuInfo("002552"));
-        list.add(new GuInfo("603421"));
-        list.add(new GuInfo("600012"));
-        list.add(new GuInfo("600123"));
-        list.add(new GuInfo("002221"));
-        list.add(new GuInfo("600901"));
-        list.add(new GuInfo("000893"));
-        list.add(new GuInfo("600546"));
-        list.add(new GuInfo("000975"));
-        list.add(new GuInfo("601058"));
-        list.add(new GuInfo("002179"));
-        list.add(new GuInfo("603259"));
-        concurrencyPrint(list);
-        Thread.sleep(5000);
-        autoRun();
+//        concurrencyPrint(list);
 
-         //List<GuInfo> list = test();
+        //跑固定
+        Set<GuInfo> list = new HashSet<>();
+        list.add(new GuInfo("601158"));
+        list.add(new GuInfo("601288"));
+        list.add(new GuInfo("600919"));
+        list.add(new GuInfo("601598"));
+        list.add(new GuInfo("603979"));
+        list.add(new GuInfo("002179"));
+        list.add(new GuInfo("600028"));
+
+        GuDayData2.Gucodes = list;
+        autoRun();
     }
     public static List<GuInfo> getLt(){
         //OthersData.outLt();
