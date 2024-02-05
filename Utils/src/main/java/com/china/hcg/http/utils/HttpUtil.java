@@ -1,5 +1,9 @@
 package com.china.hcg.http.utils;
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 import java.net.URL;
 
 /**
@@ -26,6 +30,13 @@ public class HttpUtil {
             e.printStackTrace();
         }
         return pre;
+    }
+    /*
+     * spring获取当前请求
+     */
+    public static HttpServletRequest getHttpServletRequest() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        return request;
     }
     public static void main(String[] args){
         System.out.println(HttpUtil.getPrefix("https://fanyi.baidu.com:8080/"));

@@ -1,17 +1,15 @@
 package com.china.hcg.applications.chao_gu;
 
-import cn.hutool.core.date.DateTime;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.china.hcg.applications.chao_gu.dao.stockdata.StockDataTypes;
 import com.china.hcg.applications.chao_gu.model.GuInfo;
 import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataNoticeUtils;
-import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataUtils;
 import com.china.hcg.utils.date.DateUtil;
 import com.china.hcg.utils.timer.JavaTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -19,8 +17,8 @@ import java.util.*;
  * @date 2022-10-21
  * @description
  */
-public class AutoGuMinuteData {
-    private static final Logger logger= LoggerFactory.getLogger(AutoGuMinuteData.class);
+public class AutoGuMinuteData2 {
+    private static final Logger logger= LoggerFactory.getLogger(AutoGuMinuteData2.class);
 
     public static void main(String[] args) throws Exception{
         JavaTimer.loopTask(() ->{
@@ -33,19 +31,18 @@ public class AutoGuMinuteData {
             try {
                 Map<String,GuInfo> guInfoMap = new HashMap();
 
-//                guInfoMap.put("002456",new GuInfo("002456","10.16","sz",null,null));//36.725*0.04  35.26
-//                guInfoMap.put("603083",new GuInfo("603083"," 41.2","sz",41.5f,40.77f));//36.725*0.04  35.26
-                guInfoMap.put("600520",new GuInfo("600520","0.5 风险高-平行加仓","sz",19.10f,null));//36.725*0.04  35.26
+                guInfoMap.put("510300",new GuInfo("510300","7.55 风险高-平行加仓","sz",null,3.110f));//36.725*0.04  35.26
 
                 List<GuInfo> list = new ArrayList();
                 for (String s : guInfoMap.keySet()) {
                     list.add(guInfoMap.get(s));
                 }
-                List<Map<String,String>> minute_data_price = GuMinuteData.printLatestMinuteGuInfo(list);
-                for (Map<String, String> map : minute_data_price) {
+                JSONArray minute_data_price = GuMinuteData2.printLatestMinuteGuInfo(list);
+                for (Object map2 : minute_data_price) {
+                    JSONObject map = (JSONObject) map2;
                     //价格提醒
-                    GuMinuteDataNoticeUtils guMinuteDataNoticeUtils = new GuMinuteDataNoticeUtils(guInfoMap.get(map.get("guCode")));
-                    guMinuteDataNoticeUtils.priceNotice(Float.valueOf(map.get("price")));
+                    GuMinuteDataNoticeUtils guMinuteDataNoticeUtils = new GuMinuteDataNoticeUtils(guInfoMap.get(map.getString("f12")));
+                    guMinuteDataNoticeUtils.priceNotice(Float.valueOf(map.getString("f2")));
                 }
             } catch (Exception e){
                 e.printStackTrace();

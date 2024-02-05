@@ -33,7 +33,8 @@ public class GuDayData2 {
         });
     }
     public static void main(String[] args) throws InterruptedException {
-//        //跑龙头
+
+//////        跑龙头
 //        String arr = FileUtils.readTxtContent(new File("D:\\heSpace\\gu\\lt.txt"));
 //        JSONArray jsonArray = JSONArray.parseArray(arr);
 //        List<GuInfo> list = new LinkedList<>();
@@ -43,23 +44,40 @@ public class GuDayData2 {
 //            list.add(guInfo);
 //        }
 //        GuDayData.printLatestTwoDay(list);
-
         //跑资金榜单
 //        List<GuInfo> list = ggzj.start("3");
 //        concurrencyPrint(list);
 
-        //跑固定
+
+//        跑固定
         Set<GuInfo> list = new HashSet<>();
-        list.add(new GuInfo("601158"));
-        list.add(new GuInfo("601288"));
-        list.add(new GuInfo("600919"));
-        list.add(new GuInfo("601598"));
-        list.add(new GuInfo("603979"));
-        list.add(new GuInfo("002179"));
-        list.add(new GuInfo("600028"));
+
+        list.add(new GuInfo("000519"));
+        list.add(new GuInfo("601127"));
+
+        list.add(new GuInfo("002865"));
+        list.add(new GuInfo("000034"));
+
+
+        list.add(new GuInfo("601099"));
+
+        list.add(new GuInfo("002077"));
+        list.add(new GuInfo("002241"));
+
+//        list.add(new GuInfo("600733"));
+        list.add(new GuInfo("000766"));
+//        list.add(new GuInfo("002555"));
 
         GuDayData2.Gucodes = list;
         autoRun();
+//////        //打印最近10天
+//////        List<GuInfo> guInfoLinkedList = new LinkedList<>();
+//////        for (GuInfo o : list) {
+//////            guInfoLinkedList.add(o);
+//////        }
+//////        GuDayData.printLatestTwoDay(guInfoLinkedList);
+////
+
     }
     public static List<GuInfo> getLt(){
         //OthersData.outLt();

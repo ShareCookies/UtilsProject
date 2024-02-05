@@ -35,13 +35,13 @@ public class GuHistoryDayData {
         try {
 
             //https://finance.sina.com.cn/realstock/company/sz000066/hisdata/2023/10.js?d=2023-10-31
-            String gu = "sh601099";
-            String date = "2023-11-06";
+            String gu = "sh600520";
+            String date = "2024-01-02";
             String url = "https://finance.sina.com.cn/realstock/company/"+gu+"/hisdata/"+date.substring(0,4)+"/"+date.substring(5,7)+".js?d="+date;
             String r = HttpClientUtil.getForHttpsAndCookie(url);
             r = r.split("\"")[1];
             for (String s : r.split(",")) {
-                Object result = executeJavaScriptFunction("F:\\he_space\\versionControl\\step-by-step\\UtilsProject\\Utils\\src\\main\\java\\com\\china\\hcg\\applications\\chao_gu\\utilsgu\\XinLangDayHistoryDecodeUtil.js", "decode",s);
+                Object result = executeJavaScriptFunction("D:\\heSpace\\mySelf\\UtilsProject\\Utils\\src\\main\\java\\com\\china\\hcg\\applications\\chao_gu\\utilsgu\\XinLangDayHistoryDecodeUtil.js", "decode",s);
 
 
                 JSONObject jsonObject = JSONObject.parseObject(JSON.toJSONString(result));
@@ -82,7 +82,7 @@ public class GuHistoryDayData {
 
 
                     BigDecimal volumePrice = jsonObject1.getBigDecimal("volume").multiply(jsonObject1.getBigDecimal("avg_price"));
-                    jsonObject1.put("volumePrice",volumePrice.divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP).toPlainString() +"万;");
+                    jsonObject1.put("amount",volumePrice.divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP).toPlainString() +"万;");
 
                     BigDecimal w = jsonObject1.getBigDecimal("volume").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP);
                     String volume;

@@ -81,42 +81,43 @@ public class MinuteFundsStockDataFactory extends AbstractStockDataFactory {
 //    kind: "E" 中性盘
     @Override
     public JSONArray decoratorData(JSONArray minutePriceDatas){
-        customBigAmountStruckDeal(minuteFundsData);
-        int i1 = minuteFundsData.size() - 1;
-        for (int i = 0; i < minutePriceDatas.size(); ) {
-            JSONObject minutePriceData = (JSONObject)minutePriceDatas.get(i);
-            String time = minutePriceData.getString("datetime").substring(6,11);//12-13 10:08
-
-            minutePriceData.put("大单成交额super、big、total","");
-            minutePriceDatas.set(i,minutePriceData);
-            String s = null;
-            for (; i1 >= 0; ) {
-                JSONObject fundsData = (JSONObject)minuteFundsData.get(i1);
-                String ticktime = fundsData.getString("ticktime").substring(0,5);
-
-                String specialTicktime1 = "09:20;09:21;09:22;09:23;09:24;09:25;09:26;09:27;09:28;09:29;09:30";
-                if (specialTicktime1.contains(ticktime)) {ticktime = "09:30";}
-                String specialTicktime2 = "13:00;";
-                if (specialTicktime2.contains(ticktime)) {
-                    ticktime = "13:01";
-                }
-
-                if (time.equals(ticktime)){
-                    s= "s:"+fundsData.getBigDecimal("superBigAmountTotal").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP) +"万;" +"b:"+fundsData.getBigDecimal("bigAmountTotal").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP) +"万;"+"t:"+fundsData.getBigDecimal("amountTotal").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP) +"万;" ;
-                    minutePriceData.put("大单成交额super、big、total",s);
-                } else {
-                    i++;
-                    minutePriceDatas.set(i-1,minutePriceData);
-                    break;
-                }
-                i1--;
-            }
-            //为什么这里要i1 < 0在i++。因为i1数组的数量可能比i先走完，所以i就一直卡着 走不完 死循环
-            if (i1 < 0){
-                i++;
-            }
-        }
         return minutePriceDatas;
+//        customBigAmountStruckDeal(minuteFundsData);
+//        int i1 = minuteFundsData.size() - 1;
+//        for (int i = 0; i < minutePriceDatas.size(); ) {
+//            JSONObject minutePriceData = (JSONObject)minutePriceDatas.get(i);
+//            String time = minutePriceData.getString("datetime").substring(6,11);//12-13 10:08
+//
+//            minutePriceData.put("大单成交额super、big、total","");
+//            minutePriceDatas.set(i,minutePriceData);
+//            String s = null;
+//            for (; i1 >= 0; ) {
+//                JSONObject fundsData = (JSONObject)minuteFundsData.get(i1);
+//                String ticktime = fundsData.getString("ticktime").substring(0,5);
+//
+//                String specialTicktime1 = "09:20;09:21;09:22;09:23;09:24;09:25;09:26;09:27;09:28;09:29;09:30";
+//                if (specialTicktime1.contains(ticktime)) {ticktime = "09:30";}
+//                String specialTicktime2 = "13:00;";
+//                if (specialTicktime2.contains(ticktime)) {
+//                    ticktime = "13:01";
+//                }
+//
+//                if (time.equals(ticktime)){
+//                    s= "s:"+fundsData.getBigDecimal("superBigAmountTotal").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP) +"万;" +"b:"+fundsData.getBigDecimal("bigAmountTotal").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP) +"万;"+"t:"+fundsData.getBigDecimal("amountTotal").divide(new BigDecimal(GuMinuteDataUtils.tenThousand),1,BigDecimal.ROUND_HALF_UP) +"万;" ;
+//                    minutePriceData.put("大单成交额super、big、total",s);
+//                } else {
+//                    i++;
+//                    minutePriceDatas.set(i-1,minutePriceData);
+//                    break;
+//                }
+//                i1--;
+//            }
+//            //为什么这里要i1 < 0在i++。因为i1数组的数量可能比i先走完，所以i就一直卡着 走不完 死循环
+//            if (i1 < 0){
+//                i++;
+//            }
+//        }
+//        return minutePriceDatas;
     }
     @Override
     public StringBuilder decoratorDataTableString(StringBuilder tableString){

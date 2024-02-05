@@ -1,7 +1,12 @@
 package com.china.hcg.http;
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Locale;
 import java.util.concurrent.*;
 
 /**
@@ -38,4 +43,25 @@ public class AsyncHttpClientUtil {
 	public static void asyncPostForJson (String postUrl , JSONObject postObj){
 		postForJsonThreadPool.execute(new postForJsonRunnable(postUrl,postObj));
 	}
+
+
+
+//	public static ExecutorService executorService = new ThreadPoolExecutor(1, 1, 5, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), new ThreadFactory() {
+//		@Override
+//		public Thread newThread(Runnable r) {
+//			return new Thread(r,"Therad-noticeUrlSend");
+//		}
+//	});
+//	/**
+//	 * @description 支付回调url调用
+//	 * @author hecaigui
+//	 * @date 2023/8/29
+//	 * @param  * @param list
+//	 * @return
+//	 */
+//	static void noticeUrlSend(String url,OrderResult orderResult) {
+//		TerminalUtils.executorService.submit(() -> {
+//
+//		});
+//	}
 }

@@ -1,5 +1,6 @@
 package com.china.hcg.java.thread;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.china.hcg.http.HttpClientUtil;
 import org.springframework.http.HttpHeaders;
@@ -36,7 +37,7 @@ public class ControllerConcurrencyTest {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ControllerConcurrencyTest.getTodoListConcurrency();
+		ControllerConcurrencyTest.controllerConcurrency();
 	}
 
 	/**
@@ -53,12 +54,12 @@ public class ControllerConcurrencyTest {
 	public static void controllerConcurrency(){
 		ExecutorService exec= Executors.newFixedThreadPool(200);
 		//JSONArray concurrencyResult = new JSONArray();
-		String[] addresss = {"http://localhost:8888"};
+		String[] addresss = {"http://localhost:8080"};
 //        System.err.println("请输入并发测试ip");
 //        //System.in表示标准化输出，也就是键盘输出
 //        Scanner sc = new Scanner(System.in);
 //        addresss[0] = sc.next();
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 3000; i++) {
 			exec.execute(new Runnable(){
 				@Override
 				public void run(){
@@ -70,20 +71,11 @@ public class ControllerConcurrencyTest {
 					ArrayList moduleList =new ArrayList<>();
 					moduleList.add("DISPATCH");
 
-					JSONObject postObj = new JSONObject();
-					//postObj.put("tokenid","dXNlcm5hbWU9dGVzdCZkdD0yMDIwMDExNzA5NDA0NyZjb2RlPTYzZTQ4NTk1ZmIyMTY3NGY0ODZjMjUzMWFmNDBkNDcx");
-					//postObj.put("tokenid", tokenidTest.randomGeneToken());
-					postObj.put("tokenid", "dXNlcm5hbWU9c3dhZG1pbiZkdD0yMDIyMDUyNDE2MzIxNCZjb2RlPTU0MDU5YmQ4OTI0YjNlODQ2NmY5NDM4Y2EyMDEyMjA5");
-					postObj.put("stateList",toread);
-					postObj.put("moduleList",moduleList);
-					//String[] addresss = {"http://localhost:6051","http://localhost:8888","http://192.168.210.171:6051","http://192.168.210.171:8888"};
-					//String[] addresss = {"http://localhost:6051","http://localhost:8888"};
-					//String[] addresss = {"http://203.48.27.52:6081"};
-					//String[] addresss = {"http://localhost:6051"};
-					//String[] addresss = {"http://www.baidu.com"};
+					JSONObject postObj = JSONObject.parseObject("{\"billNo\":\"he15\",\"channelType\":56,\"regionNo\":\"DL1572072113190477824\",\"merchantName\":\"福建超汇信息技术有限公司(一级)\",\"payType\":1,\"id\":\"8e2ea73d2d3b42a086e88fcfb977d42b\",\"channelTypeName\":\"NZH综合收银台\",\"proxyPay\":0,\"level\":0,\"isNewOrder\":1,\"merchantNo\":\"B9lRT1yu\",\"delete\":0,\"param\":{\"privateKey\":\"103881310002247_abc123123-Aaegur0j4P95Dxc3kgYt.pfx\",\"isSplit\":0,\"reservedAmount\":\"0\",\"password\":\"abc123123\",\"settleMode\":1,\"autoDivide\":1,\"outPaymentMode\":0,\"splitItems\":[],\"guanteeNo\":\"10388131000224700001\",\"accountId\":\"fad9d13b155f4b508e7f534b6824183f\"},\"expiredSeconds\":1800,\"terminalIP\":\"10.42.1.0\",\"amount\":1,\"mchId\":\"103881310002247\",\"subPayType\":\"NATIVE\",\"updateTime\":\"2023-07-1817:49:33\",\"createTime\":\"2022-12-0515:05:33\",\"appid\":\"\",\"extendData\":\"{'onLine':1}\",\"terminal\":\"hetestLD9992109L4T000005\"}");
+
 					Random random = new Random();
 					int addressI = random.nextInt(addresss.length);
-					JSONObject jsonObject = HttpClientUtil.postOfJson2(addresss[addressI]+"/openApi/wflow/getTodoAndToRead",postObj);
+					JSONObject jsonObject = HttpClientUtil.postOfJson2(addresss[addressI]+"/api/v1/do/default/he33/6583b7d6e4b08a91f7a12he33",postObj);
 					//JSONObject jsonObject = HttpClientUtil.post2(addresss[addressI],null);
 					Date date2=new Date();
 					System.err.println(Thread.currentThread().getName()+"============耗时"+(date2.getTime()-date.getTime())+"毫秒");

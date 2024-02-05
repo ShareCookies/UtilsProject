@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.*;
 
 import static com.china.hcg.applications.chao_gu.OthersData.getSZZS;
@@ -69,9 +70,13 @@ public class GuDayData {
                 //回落超过最近最低价 跳过
                 if (avgPrice < lowestPrice10) outFor = true;
                 //走势抖动太大跳过
-                if (netChangeRatio > 0 && Math.abs(netChangeRatio) > 5) {
+                if (netChangeRatio > 0 && Math.abs(netChangeRatio) > 3) {
                     outFor = true;
                 } else if (netChangeRatio < 0 && Math.abs(netChangeRatio) > 0.5) {
+                    outFor = true;
+                }
+                BigDecimal volume = minute_data_price2.getJSONObject(i).getBigDecimal("volume");
+                if (volume.compareTo(new BigDecimal("40000000")) < 0 ){
                     outFor = true;
                 }
 

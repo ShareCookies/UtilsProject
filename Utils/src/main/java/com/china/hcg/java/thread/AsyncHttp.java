@@ -12,7 +12,7 @@ import java.util.concurrent.*;
  */
 public  class  AsyncHttp {
 	// post请求消息中心接口用的线程池
-	static ExecutorService postMessageCenterApiThreadPool = new ThreadPoolExecutor(5, 100, 0L, TimeUnit.MICROSECONDS, new SynchronousQueue<Runnable>(), new ThreadFactory() {
+	static ExecutorService postMessageCenterApiThreadPool = new ThreadPoolExecutor(5, 100, 0L, TimeUnit.MICROSECONDS, new LinkedBlockingQueue<>(), new ThreadFactory() {
 		@Override
 		public Thread newThread(Runnable r) {
 			Thread t = new Thread(r);

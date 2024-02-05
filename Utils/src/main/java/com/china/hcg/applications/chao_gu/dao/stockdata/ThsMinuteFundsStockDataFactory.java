@@ -76,22 +76,25 @@ public class ThsMinuteFundsStockDataFactory extends AbstractStockDataFactory {
     @Override
     public StringBuilder decoratorDataTableString(StringBuilder tableString){
         //分钟资金量
-        tableString.append(minuteFundsData.getJSONObject("diff"));
-        tableString.append(System.getProperty("line.separator"));
-        JSONObject diff = new JSONObject();
-        diff.put("ddje","大单净额"+minuteFundsData.getJSONObject("diff").get("ddje"));
-        diff.put("zdje","中单净额"+minuteFundsData.getJSONObject("diff").get("zdje"));
-        diff.put("xdje","小单净额"+minuteFundsData.getJSONObject("diff").get("xdje"));
-        tableString.append(guInfo.getName()+"主力流入："+minuteFundsData.getJSONObject("dde").getString("zllx"));
-        tableString.append(System.getProperty("line.separator"));
-        tableString.append(guInfo.getName()+"资金占比："+diff);
-        JSONObject diff2 = new JSONObject();
-        diff2.put("ddjb","大单占比"+minuteFundsData.getJSONObject("diff").get("ddjb"));
-        diff2.put("zdjb","中单占比"+minuteFundsData.getJSONObject("diff").get("zdjb"));
-        diff2.put("xdjb","小单占比"+minuteFundsData.getJSONObject("diff").get("xdjb"));
-        tableString.append(guInfo.getName()+"资金占比比例："+diff2);
-        tableString.append(System.getProperty("line.separator"));
-        return tableString;
+        try {
+            tableString.append(minuteFundsData.getJSONObject("diff"));
+            tableString.append(System.getProperty("line.separator"));
+            JSONObject diff = new JSONObject();
+            diff.put("ddje","大单净额"+minuteFundsData.getJSONObject("diff").get("ddje"));
+            diff.put("zdje","中单净额"+minuteFundsData.getJSONObject("diff").get("zdje"));
+            diff.put("xdje","小单净额"+minuteFundsData.getJSONObject("diff").get("xdje"));
+            tableString.append(guInfo.getName()+"主力流入："+minuteFundsData.getJSONObject("dde").getString("zllx"));
+            tableString.append(System.getProperty("line.separator"));
+            tableString.append(guInfo.getName()+"资金占比："+diff);
+            JSONObject diff2 = new JSONObject();
+            diff2.put("ddjb","大单占比"+minuteFundsData.getJSONObject("diff").get("ddjb"));
+            diff2.put("zdjb","中单占比"+minuteFundsData.getJSONObject("diff").get("zdjb"));
+            diff2.put("xdjb","小单占比"+minuteFundsData.getJSONObject("diff").get("xdjb"));
+            tableString.append(guInfo.getName()+"资金占比比例："+diff2);
+            tableString.append(System.getProperty("line.separator"));
+            return tableString;
+
+        }catch (Exception e){e.printStackTrace();return new StringBuilder();}
     }
 
     /**

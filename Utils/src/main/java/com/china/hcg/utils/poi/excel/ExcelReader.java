@@ -45,7 +45,8 @@ public class ExcelReader {
 
 
 	public static void main(String[] args) {
-		List<List<String>> result = ExcelReader.readExcel("C:\\Users\\Administrator\\Desktop\\test.xlsx");
+		List<List<String>> result = ExcelReader.readExcel("D:\\test\\plrz.xlsx");
+		System.err.println(result);
 	}
 	/**
 	 * 读取Excel文件内容

@@ -1,4 +1,4 @@
-package com.cloud.spring.demo.service.impl;
+package com.china.hcg.redis;
 
 
 import org.slf4j.Logger;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Package: com.cloud.spring.demo.service.impl
@@ -47,9 +48,11 @@ public class StringRedisTemplateTest {
      */
     public String setNameValue(String name, String value) {
         log.info("==================添加String类型的key-value========================================");
-        redisTemplate.opsForValue().set(name,value);
+        redisTemplate.opsForValue().set("test", "100",60*10, TimeUnit.SECONDS);//向redis里存入数据和设置缓存时间
+//        redisTemplate.opsForValue().set(name,value);
         return name;
     }
+
 
     /**
      * @Description 根据key删除redis的数据
@@ -131,7 +134,6 @@ public class StringRedisTemplateTest {
     public long insertHash(String key, Map<String, Object> map) {
         log.info("====================================== insert hashes into redis ========================");
         redisTemplate.opsForHash().putAll(key,map);
-        //redisTemplate.opsForValue().set("test", "100",60*10,TimeUnit.SECONDS);//向redis里存入数据和设置缓存时间
         // hash怎么设置过期时间？
         return map.size();
     }

@@ -1,38 +1,29 @@
 package com.china.hcg.applications.chao_gu;
 
-import cn.hutool.core.codec.Base64;
-import cn.hutool.core.lang.UUID;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.ParserConfig;
 import com.china.hcg.applications.chao_gu.dao.stockdata.MinuteFundDirectionsStockDataFactory;
 import com.china.hcg.applications.chao_gu.dao.stockdata.MinuteFundsStockDataFactory;
-import com.china.hcg.applications.chao_gu.dao.stockdata.ThsMinuteFundsStockDataFactory;
 import com.china.hcg.applications.chao_gu.dao.stockdata.StockDataTypes;
+import com.china.hcg.applications.chao_gu.dao.stockdata.ThsMinuteFundsStockDataFactory;
 import com.china.hcg.applications.chao_gu.model.GuInfo;
 import com.china.hcg.applications.chao_gu.utilscommon.StockThreadPoolUtil;
-import com.china.hcg.applications.chao_gu.utilscommon.TextTableExpand;
-import com.china.hcg.http.HttpClientUtil;
 import com.china.hcg.applications.chao_gu.utilscommon.TextTable;
+import com.china.hcg.applications.chao_gu.utilscommon.TextTableExpand;
 import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataUtils;
+import com.china.hcg.http.HttpClientUtil;
+import com.china.hcg.http.utils.HttpUtil;
 import com.china.hcg.io.file.FileUtils;
 import com.china.hcg.utils.date.DateUtil;
-import com.china.hcg.utils.logback.LogBackTest;
-import com.china.hcg.utils.timer.JavaTimer;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.groovy.runtime.typehandling.BigDecimalMath;
-import org.slf4j.LoggerFactory;
 
 import javax.validation.constraints.NotNull;
 import java.io.File;
-import java.math.BigDecimal;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 /**
  * @autor hecaigui
@@ -40,56 +31,37 @@ import java.util.stream.Collectors;
  * @description
  */
 @Slf4j
-public class GuMinuteData {
-    private static final org.slf4j.Logger logger= LoggerFactory.getLogger(LogBackTest.class);
+public class GuMinuteData2 {
+    private static Logger logger = Logger.getLogger(GuMinuteData2.class);
     public List<GuInfo> list = new ArrayList();
-    public GuMinuteData() {
+    public GuMinuteData2() {
 
     }
 
     public static void main(String[] args) {
-//        //提取门店汇总菜单的merchantNo
-//        String string = FileUtils.readTxtContent(new File("D:/ordersync/info-region.txt"));
-//        JSONArray t2 = JSONObject.parseObject(string).getJSONArray("object");
-//
-//        String s = "";
-//        for (Object o : t2) {
-//            JSONObject o2 = (JSONObject)o;
-//            s= s+"\""+o2.getString("merchantNo")+"\",";
-//        }
-//        System.err.println(s.substring(0,s.length()-1));
-////report_store同步语句
-//        String test = FileUtils.readTxtContent(new File("D:/ordersync/info-region.txt"));
-//        String[] t2 = test.split(";");
-//
-//        String all = "";
-//        for (String o : t2) {
-//            if (o.length() < 10) continue;
-//            if (o.startsWith("\n")){o = o.substring(1,o.length());}
-//            String merchantNo = o.substring(o.indexOf("`merchantNo` = '") +16,o.indexOf("', `date` = '"));
-//            String date = o.substring(o.indexOf("`date` = '") +10,o.indexOf(", `totalPayValue`")-1);
-//            all += o.substring(0,o.indexOf("WHERE")) + " WHERE `merchantNo` = '"+ merchantNo + "' and `date` = '"+date + "';\n";
-//        }
-//        FileUtils.writeToFile(new File("D:/ordersync/test.txt"),all);
-       start2();
-//        start();
+        String data = HttpClientUtil.get("https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&fields=f2,f3,f12&secids=1.510300");
+        System.err.println(data);
     }
     public static void start() {
 //        printMinuteGuInfo(new GuInfo("600887","伊利","sz"));
     }
     public static void start2() {
         List<GuInfo> list = new ArrayList<>();
-
-
-//        list.add(new GuInfo("600621","600621","sz"));
-//        list.add(new GuInfo("603628","603628","sz"));
-//        list.add(new GuInfo("601059","601059","sz"));
-        list.add(new GuInfo("600520","600520","sz"));
-//        list.add(new GuInfo("605117","605117","sz"));
+//        list.add(new GuInfo("510300","510300","sh"));
 
 
 
+//        list.add(new GuInfo("600775","600775","sz"));
 
+
+//        list.add(new GuInfo("600775","600775","sz"));
+
+//        list.add(new GuInfo("002229","002229","sz"));
+//        list.add(new GuInfo("002865","002865","sz"));
+//        list.add(new GuInfo("603178","603178","sz"));
+//        list.add(new GuInfo("603598","603598","sz"));
+        list.add(new GuInfo("603660","603660","sz"));
+//
 
         for (GuInfo guInfo : list) {
             printMinuteGuInfo(guInfo);
@@ -104,67 +76,18 @@ public class GuMinuteData {
                 "小单：小于1万股或5万元的成交单。");
         MinuteData minuteData = minuteData(guInfo,new StockDataTypes[]{StockDataTypes.MinuteFundDirections,StockDataTypes.ThsMinuteFunds,StockDataTypes.MinuteFunds});
 //        MinuteData minuteData = minuteData(guInfo,null);
-        logger.error(minuteData.toString());
+        System.err.println(minuteData);
 //        FileUtils.writeToFile(new File("C:\\Users\\98279\\Desktop\\gu收集\\成功案例\\"+));
     }
     /**
      * @description console打印多只股票最新价格信息
      */
-    public static List<Map<String, String>> printLatestMinuteGuInfo(List<GuInfo> list) {
+    public static JSONArray printLatestMinuteGuInfo(List<GuInfo> list) {
         //数据的并发获取
-        HashMap<String,MinuteData> allMinuteDatas = new HashMap<>();
-        CompletableFuture<MinuteData>[] allMinuteDatasFuture = new CompletableFuture[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            GuInfo guInfo = list.get(i);
-            CompletableFuture<MinuteData> future1 = CompletableFuture.supplyAsync(() -> {
-                MinuteData minuteData = minuteData(guInfo,new StockDataTypes[]{});
-                return minuteData;
-            },StockThreadPoolUtil.executorService);
-            allMinuteDatasFuture[i] = future1;
-        }
+        String data = HttpClientUtil.get("https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&fields=f2,f3,f12&secids=1.510300");
+        JSONArray diff = JSONObject.parseObject(data).getJSONObject("data").getJSONArray("diff");
 
-        for (CompletableFuture completableFuture : allMinuteDatasFuture) {
-            try {
-                Object object = completableFuture.get(10,TimeUnit.SECONDS);
-                MinuteData minuteData = (MinuteData)object;
-                allMinuteDatas.put(minuteData.getGuCode(),minuteData);
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-
-        //对数据进行重新拼接
-        List<Map<String,String>> minute_data_price = new ArrayList<>();
-        for (GuInfo guInfo : list) {
-            LinkedHashMap<String,String> latestMinuteGuInfoTreeMap = new LinkedHashMap<>();
-            System.err.println(guInfo);
-            MinuteData minuteData = allMinuteDatas.get(guInfo.code);
-            if (minuteData == null){
-                continue;
-            }
-            //
-            JSONObject latestMinuteGuInfoJson = null;
-            if (minuteData.minutePriceData.size() > 0){
-                latestMinuteGuInfoJson = minuteData.minutePriceData.getJSONObject(minuteData.minutePriceData.size() - 1);
-            }
-            if (latestMinuteGuInfoJson == null){
-                continue;
-            }
-            latestMinuteGuInfoTreeMap.put("guCode", guInfo.getCode());
-            latestMinuteGuInfoTreeMap.put("guName",guInfo.getArea()+guInfo.getCode()+guInfo.getName());
-            latestMinuteGuInfoTreeMap.put("datetime",latestMinuteGuInfoJson.getString("datetime"));
-            latestMinuteGuInfoTreeMap.put("amount",latestMinuteGuInfoJson.getString("amount"));
-            latestMinuteGuInfoTreeMap.put("局势",latestMinuteGuInfoJson.getString("局势"));
-            latestMinuteGuInfoTreeMap.put("price",latestMinuteGuInfoJson.getString("price"));
-            latestMinuteGuInfoTreeMap.put("avgPrice",latestMinuteGuInfoJson.getString("avgPrice"));
-            latestMinuteGuInfoTreeMap.put("ratio",latestMinuteGuInfoJson.getString("ratio"));
-            minute_data_price.add(latestMinuteGuInfoTreeMap);
-        }
-        TextTable textTable = TextTableExpand.standardJsonArrayTextTable(minute_data_price);
-        System.err.println(textTable.printTable());
-        return minute_data_price;
+        return diff;
     }
 
 
@@ -237,7 +160,7 @@ public class GuMinuteData {
 
         try {
             // 1. 获取请求
-            Future<JSONArray> minutePrice = GuMinuteData.asyncGetMinuteData(guInfo.getCode());
+            Future<JSONArray> minutePrice = GuMinuteData2.asyncGetMinuteData(guInfo.getCode());
             //1.1 根据需求，自定义发起异步请求获取不同的分钟扩展数据
             //1.2 自定义-分钟资金量
             ThsMinuteFundsStockDataFactory thsMinuteFundsStockDataFactory = null;

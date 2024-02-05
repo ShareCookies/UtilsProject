@@ -11,8 +11,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import javafx.collections.transformation.FilteredList;
+import lombok.Data;
 import org.apache.commons.codec.binary.Hex;
+
+import javax.xml.transform.Result;
 
 /**
  * @autor hecaigui
@@ -58,6 +64,39 @@ public class FileUtils {
 
         return traverseFolderResults;
     }
+
+    /**
+     * @description 分页读取目录文件
+     * @author hecaigui
+     * @date 2023/11/10
+     * @param  * @param filePath
+     * @param pageSize 每页的文件数量
+     * @param pageNumber  当前页数  从1开始
+     * @return
+     */
+    public static List<Path> filePagination(String  filePath,long pageSize,long pageNumber) {
+        Path directory = Paths.get(filePath);
+//        long pageSize = 100; // 每页的文件数量
+//        long pageNumber = 1; // 当前页数
+        long totalFiles = 0; // 总文件数量
+        try (Stream<Path> fs = Files.list(directory)) {
+            totalFiles = fs.count(); // 获取总文件数量
+            Stream<Path> fileStream = Files.list(directory);
+            long totalPages = (totalFiles + pageSize - 1) / pageSize; // 计算总页数
+            List<Path> filePaths = new ArrayList<>();
+            if (totalPages >= pageNumber) {
+                long startIndex = (pageNumber - 1) * pageSize; // 当前页的起始索引
+                long endIndex = Math.min(startIndex + pageSize, totalFiles); // 当前页的结束索引
+                filePaths = fileStream.skip(startIndex).limit(endIndex - startIndex).collect(Collectors.toList());// 处理当前页的文件
+                //pageNumber++; // 处理下一页
+            }
+            return filePaths;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
     /**
      * @description 递归删除指定目录。
      * @author hecaigui
@@ -93,6 +132,25 @@ public class FileUtils {
             return false;
         }
         return true;
+    }
+    /**
+     * @description 文件删除
+     */
+    public static boolean deleteFile(String fileFullPath) throws FileNotFoundException {
+        File file = new File(fileFullPath);
+//            boolean exists = file.exists();
+        if (!file.exists()){
+            throw new FileNotFoundException();
+        }
+//            boolean isFile = file.isFile();
+        if (!file.isFile()){
+            throw new RuntimeException("非文件");
+        }
+        if(file.delete()) {
+            return true;
+        } else {
+            throw new RuntimeException("文件删除失败。");
+        }
     }
     /**
      * @description 文件复制
@@ -423,13 +481,49 @@ private static void tempFileTest()throws Exception{
         return path;
     }
 
+    @Data
+    static
+    class FileInfo{
+        String filename; //"app/logs/1.log",  //string 文件名
+        long lastModified;//: 1323432432432,  //long 最后修改时间，时间戳
+        long size;//: 123213,   //int 文件大小 单位byte
+        String directUrl;//: "http://aliyun.com"  //阿里云下载地址  直传下载
+        String proxyUrl;//: "http://sp-mate"      //透传下载地址，
+    }
     public static void main(String[] args) throws Exception
     {
-        System.err.println(File.separator);
-        //        Long oneDayLong = 1000*3600*24L;
-        SimpleDateFormat ymdSdf = new SimpleDateFormat("yyyyMMdd");
-        deleteDirectoryRecursively(System.getProperty("java.io.tmpdir")+File.separator+"rjoa"+ymdSdf.format(new Date(System.currentTimeMillis())));
+        List<Path> filePaths = filePagination("D:\\test.ee",2,2);
+        List<File> directorys = new ArrayList<>();
+        List<File>  files = new ArrayList<>();
+        int length = "D:\\test.ee\\".length();
+        for (Path path : filePaths) {
+            File file = path.toFile();
+            if (file.isDirectory()) {
+                directorys.add(file);
+            } else {
+                FileInfo fileInfo = new FileInfo();
 
+                fileInfo.setFilename(file.getPath().substring(length));
+                fileInfo.setLastModified(file.lastModified());
+                fileInfo.setSize(file.length());
+                files.add(file);
+            }
+        }
+        System.err.println(File.separator);
+
+//        Path directory = Paths.get("D:\\test.ee");
+//        Stream<Path> files = Files.list(directory);
+//
+//        files.skip(2).limit(1).map(Path::getFileName).forEach(System.out::println);;
+//        files.map(Path::getFileName) // 获取文件名列表
+//                .forEach(System.out::println); // 打印每个文件名
+
+
+//        System.err.println(File.separator);
+//        //        Long oneDayLong = 1000*3600*24L;
+//        SimpleDateFormat ymdSdf = new SimpleDateFormat("yyyyMMdd");
+//        deleteDirectoryRecursively(System.getProperty("java.io.tmpdir")+File.separator+"rjoa"+ymdSdf.format(new Date(System.currentTimeMillis())));
+//
 
         //Paths.get(System.getProperty("java.io.tmpdir")+"/rjoa"+ymdSdf.format(new Date(System.currentTimeMillis() - oneDayLong))).toFile().delete();
 //        Thread.sleep(1000);

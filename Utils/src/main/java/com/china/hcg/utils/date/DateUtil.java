@@ -54,9 +54,11 @@ public class DateUtil {
 		return  formatter.format(previousDate);
 	}
 	public static void main(String[] args) throws Exception{
-String file = "D:\\JHCERT\\billfile\\SHOP.105000957222494.20230804.20230804.20230810162410855.qE6O.zip";
-		String path = file.substring(file.lastIndexOf(".")+1,file.length());
-System.err.println(path);
+		Date string = stringToDate("2023-11-07 23:00:00","yyyy-MM-dd hh:mm:ss");
+		System.err.println(string);
+//String file = "D:\\JHCERT\\billfile\\SHOP.105000957222494.20230804.20230804.20230810162410855.qE6O.zip";
+//		String path = file.substring(file.lastIndexOf(".")+1,file.length());
+//System.err.println(path);
 //        Set<String> msgSendTypes= new HashSet<>();
 //        msgSendTypes.add("1");
 //        msgSendTypes.add("1");
