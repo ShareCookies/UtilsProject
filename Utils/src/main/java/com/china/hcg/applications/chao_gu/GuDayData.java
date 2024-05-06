@@ -27,8 +27,8 @@ import static com.china.hcg.applications.chao_gu.OthersData.getSZZS;
  */
 public class GuDayData {
     public static void main(String[] args) {
-        printDayGuInfo("000625","000625");
-//        getSZZS();
+        printDayGuInfo("000960","000960");
+////        getSZZS();
 
     }
 

@@ -52,20 +52,7 @@ public class GuDayData2 {
 //        跑固定
         Set<GuInfo> list = new HashSet<>();
 
-        list.add(new GuInfo("000519"));
-        list.add(new GuInfo("601127"));
-
-        list.add(new GuInfo("002865"));
-        list.add(new GuInfo("000034"));
-
-
-        list.add(new GuInfo("601099"));
-
-        list.add(new GuInfo("002077"));
-        list.add(new GuInfo("002241"));
-
-//        list.add(new GuInfo("600733"));
-        list.add(new GuInfo("000766"));
+        list.add(new GuInfo("000960"));
 //        list.add(new GuInfo("002555"));
 
         GuDayData2.Gucodes = list;

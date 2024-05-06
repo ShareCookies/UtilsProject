@@ -7,9 +7,9 @@ import com.china.hcg.applications.chao_gu.model.GuInfo;
 import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataNoticeUtils;
 import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataUtils;
 import com.china.hcg.http.HttpClientUtil;
-import com.china.hcg.utils.StringUtils;
 import com.china.hcg.utils.date.DateUtil;
 import com.china.hcg.utils.timer.JavaTimer;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.slf4j.Logger;
@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -34,8 +35,32 @@ public class test {
     private static final Logger test= LoggerFactory.getLogger(test.class);
     //private static Log log = LogFactory.getLog(test.class);
     static boolean  testboolean;
+    public static String base64(String originalString) {
+        // 编码为Base64
+        byte[] encodedBytes = Base64.getEncoder().encode(originalString.getBytes());
+        String encodedString = new String(encodedBytes);
+        return encodedString;
+    }
+    public static List<Integer> findCheckTypes(String mchId){
+        List<Integer> checkTypes = new ArrayList<>();
+        JSONArray checkTypesJsonArray = JSONArray.parseArray("[2,23]");
+        for (Object o : checkTypesJsonArray) {
+            checkTypes.add((Integer) o);
+        }
+        if (checkTypes.size() > 0) return checkTypes;
+        return null;
+    }
     public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
-        JSONArray.parseArray("[{\"createTime\":1611569089000,\"isDelete\":0,\"regionName\":\"健康码测试用\",\"updateTime\":1611569090000,\"id\":\"QY1353644990198456320\",\"type\":2,\"regionNo\":\"QY1353644990198456320\"}]");
+
+        List<Integer>  t2 = findCheckTypes("");
+
+        String string = base64("http://www.95599.cn/cn/");
+//        JSONObject userInput = new JSONObject();
+//        userInput.put("input1","");
+//        userInput.put("input2","2215980268929-E");
+//        userInput.put("input3","赖仁枸E");
+//        String url = "https://enjoy.abchina.com/jf-web/epayItem?code=JF-EPAY2023083064523&showBill=0&userInput="+URLEncoder.encode(userInput.toJSONString(),"UTF-8");
+        JSONObject userInput2 = new JSONObject();
         //?
 //        executorService.submit
 //        executorService.execute

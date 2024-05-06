@@ -24,6 +24,10 @@ spring:
 #    username: guest
 #    password: guest
 
+  # MongoDB 连接配置
+  data:
+    mongodb:
+      uri: mongodb://admin:123456@172.20.45.172:27018/memberCenter?authMechanism=SCRAM-SHA-1
 
   #  ssl版邮箱配置
   mail:

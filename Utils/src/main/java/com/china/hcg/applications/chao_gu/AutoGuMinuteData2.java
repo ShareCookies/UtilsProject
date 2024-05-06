@@ -31,7 +31,7 @@ public class AutoGuMinuteData2 {
             try {
                 Map<String,GuInfo> guInfoMap = new HashMap();
 
-                guInfoMap.put("510300",new GuInfo("510300","7.55 风险高-平行加仓","sz",null,3.110f));//36.725*0.04  35.26
+                guInfoMap.put("603099",new GuInfo("603099","7.55 风险高-平行加仓","sz",null,3.185f));//36.725*0.04  35.26
 
                 List<GuInfo> list = new ArrayList();
                 for (String s : guInfoMap.keySet()) {

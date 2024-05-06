@@ -35,8 +35,8 @@ public class GuHistoryDayData {
         try {
 
             //https://finance.sina.com.cn/realstock/company/sz000066/hisdata/2023/10.js?d=2023-10-31
-            String gu = "sh600520";
-            String date = "2024-01-02";
+            String gu = "sz000960";
+            String date = "2024-04-02";
             String url = "https://finance.sina.com.cn/realstock/company/"+gu+"/hisdata/"+date.substring(0,4)+"/"+date.substring(5,7)+".js?d="+date;
             String r = HttpClientUtil.getForHttpsAndCookie(url);
             r = r.split("\"")[1];

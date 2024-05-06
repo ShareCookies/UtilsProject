@@ -7,6 +7,7 @@ package com.china.hcg.utils.poi.excel;
  */
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -22,9 +23,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * https://www.cnblogs.com/Dreamer-1/p/10469430.html
@@ -42,11 +41,20 @@ public class ExcelReader {
 
 	private static final String XLS = "xls";
 	private static final String XLSX = "xlsx";
+	private static  List<String> key = new ArrayList<String>();
 
 
 	public static void main(String[] args) {
-		List<List<String>> result = ExcelReader.readExcel("D:\\test\\plrz.xlsx");
-		System.err.println(result);
+		List<List<String>> result = ExcelReader.readExcel("D:\\test\\终端编号20240312.xlsx");
+		JSONArray jsonArray = new JSONArray();
+		for (List<String> strings : result) {
+			LinkedHashMap linkedHashMap = new LinkedHashMap();
+			for (int i = 0; i < key.size(); i++) {
+				linkedHashMap.put(key.get(i),strings.get(i));
+			}
+			jsonArray.add(linkedHashMap);
+		}
+		System.err.println(jsonArray);
 	}
 	/**
 	 * 读取Excel文件内容
@@ -93,6 +101,7 @@ public class ExcelReader {
 			}
 		}
 	}
+
 	/**
 	 * @description 读取excel流文件内容
 	 * @author hecaigui
@@ -160,6 +169,12 @@ public class ExcelReader {
 			// 获取第一行数据
 			int firstRowNum = sheet.getFirstRowNum();
 			Row firstRow = sheet.getRow(firstRowNum);
+
+			Iterator<Cell> iterable = firstRow.cellIterator();
+			while (iterable.hasNext()){
+				Cell cell = iterable.next();
+				key.add(convertCellValueToString(cell));
+			}
 			if (null == firstRow) {
 				logger.warn("解析Excel失败，在第一行没有读取到任何数据！");
 			}
@@ -201,8 +216,9 @@ public class ExcelReader {
 				Double doubleValue = cell.getNumericCellValue();
 
 				// 格式化科学计数法，取一位整数
-				DecimalFormat df = new DecimalFormat("0");
-				returnValue = df.format(doubleValue);
+//				DecimalFormat df = new DecimalFormat("0");
+//				returnValue = df.format(doubleValue);
+				returnValue = String.valueOf(doubleValue);
 				break;
 			case STRING:    //字符串
 				returnValue = cell.getStringCellValue();

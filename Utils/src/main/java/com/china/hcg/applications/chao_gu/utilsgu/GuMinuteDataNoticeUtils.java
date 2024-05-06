@@ -63,7 +63,8 @@ public class GuMinuteDataNoticeUtils {
                 }
             }catch (NullPointerException e){
                 //？todo：线程异常了会怎样
-                throw new Error("请在调用该方法前，提前调用minuteDataCustomZhangDieLiang，自定义数据");
+                System.err.println("请在调用该方法前，提前调用minuteDataCustomZhangDieLiang，自定义数据");
+                return;
             }
 
             JSONObject newMinute_data_price = minuteData.getJSONObject(newPosition);
@@ -77,23 +78,23 @@ public class GuMinuteDataNoticeUtils {
 
             // 大额资金出逃超过500w
             //-500
-            if (guInfo.noticeFundsInstantRun !=null && largeFundsFlow < guInfo.noticeFundsInstantRun){
-                //"当前价格"+minute_data_price.getFloat("price")
-
-                StringBuilder notice = new StringBuilder();
-                notice.append("大额资金卖出"+largeFundsFlow);
-                notice.append(InfoUtil.breakLine);
-                notice.append(InfoUtil.breakLine);
-
-                notice.append(preData[0]+"资金净额"+preMinute_data_price.getString("资金净额趋势(大单、中单、小单)"));
-                notice.append(InfoUtil.breakLine);
-                notice.append(newData[0]+"资金净额"+newMinute_data_price.getString("资金净额趋势(大单、中单、小单)"));
-                notice.append(InfoUtil.breakLine);
-
-
-                InfoUtil test = new InfoUtil();
-                test.show(guInfo.name+"大额资金出逃提醒",notice.toString());
-            }
+//            if (guInfo.noticeFundsInstantRun !=null && largeFundsFlow < guInfo.noticeFundsInstantRun){
+//                //"当前价格"+minute_data_price.getFloat("price")
+//
+//                StringBuilder notice = new StringBuilder();
+//                notice.append("大额资金卖出"+largeFundsFlow);
+//                notice.append(InfoUtil.breakLine);
+//                notice.append(InfoUtil.breakLine);
+//
+//                notice.append(preData[0]+"资金净额"+preMinute_data_price.getString("资金净额趋势(大单、中单、小单)"));
+//                notice.append(InfoUtil.breakLine);
+//                notice.append(newData[0]+"资金净额"+newMinute_data_price.getString("资金净额趋势(大单、中单、小单)"));
+//                notice.append(InfoUtil.breakLine);
+//
+//
+//                InfoUtil test = new InfoUtil();
+//                test.show(guInfo.name+"大额资金出逃提醒",notice.toString());
+//            }
             // 大额资金买入超过100w
             if (guInfo.noticeFundsInstantEnter != null && largeFundsFlow > guInfo.noticeFundsInstantEnter){
                 StringBuilder notice = new StringBuilder();
@@ -109,7 +110,7 @@ public class GuMinuteDataNoticeUtils {
                 test.show(guInfo.name+"大额资金买入提醒",notice.toString());
             }
         } catch (Exception e){
-            e.printStackTrace();
+//            e.printStackTrace();
             System.err.println("largeFundsFlowNotice报错");
         }
     }

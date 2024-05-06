@@ -150,11 +150,12 @@ public class AESUtil {
 //        System.out.println(encrypt("AES/ECB/PKCS5Padding", "1234567890123456",str));
 //    }
     public static void main(String[] args) {
-        String d = "a59cb00cb5e2af8fe43bcf771d934c130463d9f637822b86333c20195ed0770d";
+        String d = "71cf565a371132b74e311bf92087460a88985608abed8700a50601fd80d73c1d";
         System.err.println(d.toUpperCase());
-        String jm = "{\"subMerId\":\"20230105130408C\",\"amount\":0.01,\"account\":\"622908********0468\",\"accountName\":\"高*耀\",\"remark\":\"备注\",\"channelType\":2}";
-        String string = encrypt("6ed78a4c9d06b68a",jm);
+        String jm = "{\"billNo\":\"202403113397818293792\",\"merchantNo\":\"NRIORTFM\"}";
+        String string = encrypt("6ed78a4c9d060109",jm);
 //        String  string =decrypt("6ed78a4c9d06b68a","4AE94B1E944469A278A0C4C96959C9A63910D9F55CA8C85A59BD8D5DB5EB37F6DB62FCCA97232A67FB6375D2F12341A2D019FD374D9BED1F642F3C0A585CED1A4D1C440C30F3218CC20947EACF547581A975745D592F1B5F0483C5634B249564DBA689EDBAFDA79EBF526A91C94EB70175FC91E411E7FB4140EF0490DDBC3641");
         System.err.println(string);
     }
+
 }

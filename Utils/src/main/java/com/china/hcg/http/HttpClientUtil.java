@@ -5,12 +5,18 @@ package com.china.hcg.http;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.web.client.RestTemplate;
 
+import cn.hutool.core.io.FileUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.china.hcg.http.utils.HttpUtil;
 import com.china.hcg.http.utils.HttpsClientRequestFactory;
 import com.china.hcg.http.utils.RestTemplateByteArrayResource;
+import com.china.hcg.io.file.FileUtils;
 import com.china.hcg.utils.poi.excel.ExcelReader;
 import com.sun.org.apache.bcel.internal.generic.NEW;
+import io.netty.handler.codec.Headers;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -22,7 +28,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +44,7 @@ import java.util.Map;
  */
 public class HttpClientUtil {
     private static Logger logger = Logger.getLogger(HttpClientUtil.class);
+
 
     private static  RestTemplate rtSimpleFactory(){
         RestTemplate restTemplate = new RestTemplate();
@@ -312,16 +321,35 @@ public class HttpClientUtil {
         return body;
     }
     public static void main(String[] args){
-        HttpClientUtil.get("https://www.amazon.com/");
-        //HttpClientUtil.getForHttps("https://www.amazon.com/robots.txt");
-//        HttpClientUtil.getForHttpsAndCookie("https://www.amazon.com/");
-        //HttpClientUtil.getForHttps("https://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel=15180411152");
-//        MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();
-//        requestMap.set("test","testt11");
-//        HttpClientUtil.exchangeOfFormUrlencode(HttpMethod.POST,"http://localhost:8888/openApi/wflow/getTodoAndToRead",requestMap);
+        String update = FileUtils.readTxtContent(new File("D:/银行更新.txt"));
+        String bianhao = FileUtils.readTxtContent(new File("D:/银行终端号.txt"));
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.add("Content-Type", "application/json;charset=UTF-8");
+        requestHeaders.add("token", "gouc_8395a3c8c6864a39b54654b445667443");
+        requestHeaders.add("userId", "6c1a2111ae354c28807d484e9d772ff6");
+        JSONArray jsonArray = JSON.parseArray(update);
+        JSONArray bianhaoarr = JSON.parseArray(bianhao);
+        Map<String,String> bm = new HashMap<>();
+        for (int i = 0; i < bianhaoarr.size(); i++) {
+            JSONObject jsonObject = bianhaoarr.getJSONObject(i);
+            bm.put(jsonObject.getString("subMchId"),jsonObject.getString("bankTerminalNo"));
+        }
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            if (StringUtils.isBlank(jsonObject.getString("subMchId")) || StringUtils.isBlank(bm.get(jsonObject.getString("subMchId")))){
+                continue;
+            }
 
-        double m = 2573550 / 1024.0 / 1024.0;
-        MultiValueMap<String, String> requestMap = new LinkedMultiValueMap<>();
+            JSONObject param = jsonObject.getJSONObject("param");
+            param.put("bankTerminalNo",bm.get(jsonObject.getString("subMchId")));
+            jsonObject.put("param",param.toJSONString());
+
+
+            String string = post("https://gateway.51zcm.cc/sp-mate/info-user/collectionaccount/edit",requestHeaders,jsonObject.toJSONString());
+            result.append(string);
+        }
+        System.err.println(result);
     }
 }
 // 以下为一些resttemplate原生demo

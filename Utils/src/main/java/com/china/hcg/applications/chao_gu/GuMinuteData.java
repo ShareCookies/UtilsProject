@@ -12,6 +12,7 @@ import com.china.hcg.applications.chao_gu.dao.stockdata.StockDataTypes;
 import com.china.hcg.applications.chao_gu.model.GuInfo;
 import com.china.hcg.applications.chao_gu.utilscommon.StockThreadPoolUtil;
 import com.china.hcg.applications.chao_gu.utilscommon.TextTableExpand;
+import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataNoticeUtils;
 import com.china.hcg.http.HttpClientUtil;
 import com.china.hcg.applications.chao_gu.utilscommon.TextTable;
 import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataUtils;
@@ -30,6 +31,10 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -46,11 +51,20 @@ public class GuMinuteData {
     public GuMinuteData() {
 
     }
+//        LocalDate startDate = LocalDate.parse("2023-03-28");
+//        LocalDate endDate = LocalDate.parse("2023-03-28");
+//        YearMonth currentMonth = YearMonth.from(startDate);
+//        LocalDate monthStart = currentMonth.atDay(1);
+//        LocalDate monthEnd = currentMonth.atEndOfMonth();
+//        Date startDate1 = Date.from(monthStart.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+//
+//        Date endDate1 = Date.from(monthEnd.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 
-    public static void main(String[] args) {
+//        JSONObject jsonObject = JSONObject.parseObject("{\"SubmerContactCert\":\"350127197404115291\",\"CompanyCertType\":\"\",\"Address\":\"福建省福州市鼓楼区福州软件园a区17号楼\",\"Sex\":\"男\",\"SubMerSort\":\"1\",\"SubMerName\":\"个人商户_何国美\",\"PosAccount\":\"\",\"SubMerchantShortName\":\"个人商户_何国美\",\"Remark\":\"\",\"SubMerSignNo\":\"9023062823362599140\",\"Industry\":\"2005\",\"BusinessRange\":\"\",\"CompanyName\":\"\",\"EndCertificateValidity\":\"\",\"NewSubMerchantNo\":\"\",\"SubmerContactMail\":\"\",\"MerchantName\":\"福建省星云大数据应用服务有限公司\",\"SubMerchantType\":\"1\",\"NotifyUrl\":\"http://59.56.104.131:9001/api-abc/outside/applyNofity\",\"MerMobileNo\":\"13905029281\",\"Status\":\"1\",\"CertificateBegDate\":\"20060205\",\"TrxType\":\"QrySubMerchantInfo\",\"isPassed\":\"2\",\"ReturnCode\":\"9913\",\"CusNo\":\"6232111820001570589\",\"CertificateNo\":\"350127197404115291\",\"AccountRecords\":[],\"Nationality\":\"中国\",\"StatusMessage\":\"\",\"CompanyCertNo\":\"\",\"CertificateType\":\"110001\",\"SubmerContactType\":\"商户信息核实联系人\",\"ServicePhone\":\"13905029281\",\"FrCertEndDate\":\"20260205\",\"FrResidence\":\"福建省福州市鼓楼区福建省福清市三山镇虎邱村222号\",\"SubMerId\":\"1039913110A2253\",\"PosAccountName\":\"\"}");
+//        System.err.println(jsonObject);
 //        //提取门店汇总菜单的merchantNo
 //        String string = FileUtils.readTxtContent(new File("D:/ordersync/info-region.txt"));
-//        JSONArray t2 = JSONObject.parseObject(string).getJSONArray("object");
+//        JSONArray t2 =    JSONObject.parseObject(string).getJSONArray("object");
 //
 //        String s = "";
 //        for (Object o : t2) {
@@ -71,29 +85,63 @@ public class GuMinuteData {
 //            all += o.substring(0,o.indexOf("WHERE")) + " WHERE `merchantNo` = '"+ merchantNo + "' and `date` = '"+date + "';\n";
 //        }
 //        FileUtils.writeToFile(new File("D:/ordersync/test.txt"),all);
+
+    public static void main(String[] args) {
        start2();
 //        start();
     }
-    public static void start() {
-//        printMinuteGuInfo(new GuInfo("600887","伊利","sz"));
-    }
+    static ScheduledExecutorService yanchi = new ScheduledThreadPoolExecutor(1, r -> {
+        Thread t = new Thread(r);
+        t.setName("yanchi线程池");
+        t.setDaemon(true);
+        return  t;
+    });
     public static void start2() {
+
         List<GuInfo> list = new ArrayList<>();
+//////mai
+////
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
+        list.add(new GuInfo("000017","000017","sz"));
 
-
-//        list.add(new GuInfo("600621","600621","sz"));
-//        list.add(new GuInfo("603628","603628","sz"));
-//        list.add(new GuInfo("601059","601059","sz"));
-        list.add(new GuInfo("600520","600520","sz"));
-//        list.add(new GuInfo("605117","605117","sz"));
-
-
-
-
-
+//
         for (GuInfo guInfo : list) {
             printMinuteGuInfo(guInfo);
         }
+    }
+    public static void start() {
+//        printMinuteGuInfo(new GuInfo("600887","伊利","sz"));
     }
     /**
      * @description console打印股票分时详细信息table
@@ -160,6 +208,10 @@ public class GuMinuteData {
             latestMinuteGuInfoTreeMap.put("price",latestMinuteGuInfoJson.getString("price"));
             latestMinuteGuInfoTreeMap.put("avgPrice",latestMinuteGuInfoJson.getString("avgPrice"));
             latestMinuteGuInfoTreeMap.put("ratio",latestMinuteGuInfoJson.getString("ratio"));
+            latestMinuteGuInfoTreeMap.put("minuteData",latestMinuteGuInfoJson.getString("ratio"));
+
+            GuMinuteDataNoticeUtils guMinuteDataNoticeUtils = new GuMinuteDataNoticeUtils(guInfo);
+            guMinuteDataNoticeUtils.largeFundsFlowNotice(minuteData.minutePriceData);
             minute_data_price.add(latestMinuteGuInfoTreeMap);
         }
         TextTable textTable = TextTableExpand.standardJsonArrayTextTable(minute_data_price);

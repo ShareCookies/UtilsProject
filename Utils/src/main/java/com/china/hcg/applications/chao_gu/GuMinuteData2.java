@@ -39,8 +39,82 @@ public class GuMinuteData2 {
     }
 
     public static void main(String[] args) {
-        String data = HttpClientUtil.get("https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&fields=f2,f3,f12&secids=1.510300");
-        System.err.println(data);
+
+//        String data = HttpClientUtil.get("https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&fields=f2,f3,f12&secids=1.510300");
+//        System.err.println(data);
+        String url = "https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&fields=f2,f3,f12&secids=";
+        List<String> ar = guarr();
+        for (String s : ar) {
+            if (s.contains("SZ"))url+="0."+s.substring(0,6)+",";
+            if (s.contains("SH"))url+="1."+s.substring(0,6)+",";
+        }
+        String data = HttpClientUtil.get(url);
+        JSONArray dataarr = JSONObject.parseObject(data).getJSONObject("data").getJSONArray("diff");
+
+        List<String> code = new ArrayList<>();
+        for (Object o : dataarr) {
+            JSONObject j = (JSONObject) o;
+            if (j.getFloat("f3") > 0){
+                code.add(j.getString("f12"));
+
+                printMinuteGuInfo(new GuInfo(j.getString("f12"),j.getString("f12"),"sz"));
+            }
+        }
+        System.err.println(code);
+
+    }
+//    public static List<String> guarrNo(){
+//        List<String> ar = new ArrayList<>();
+//        ar.add("002572");
+//        ar.add("603126");
+//        ar.add("002728");
+//        ar.add("002668");
+//        ar.add("603929");
+//        ar.add("002050");
+//        ar.add("603611");
+//        ar.add("002130");
+//        ar.add("000690");
+//        ar.add("000612");
+//
+//
+//
+//
+//        for (int i = 0; i < ar.size(); i++) {
+//            if (ar.get(i).startsWith("00")){
+//                ar.set(i,ar.get(i)+".SZ");
+//            } else {
+//                ar.set(i,ar.get(i)+".SH");
+//            }
+//        }
+//        return ar;
+//    }
+    public static List<String> guarr(){
+        List<String> ar = new ArrayList<>();
+
+        ar.add("000957");
+        ar.add("601033");
+        ar.add("601059");
+        ar.add("603306");
+        ar.add("002457");
+        ar.add("002927");
+        ar.add("002997");
+        ar.add("600818");
+        ar.add("600389");
+        ar.add("600088");
+        ar.add("600129");
+        ar.add("600737");
+        ar.add("002922");
+        ar.add("600629");
+
+        for (int i = 0; i < ar.size(); i++) {
+            if (ar.get(i).startsWith("00")){
+                ar.set(i,ar.get(i)+".SZ");
+            } else {
+                ar.set(i,ar.get(i)+".SH");
+            }
+        }
+        return ar;
+
     }
     public static void start() {
 //        printMinuteGuInfo(new GuInfo("600887","伊利","sz"));

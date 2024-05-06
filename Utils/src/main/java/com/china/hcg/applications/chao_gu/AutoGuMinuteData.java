@@ -2,6 +2,7 @@ package com.china.hcg.applications.chao_gu;
 
 import cn.hutool.core.date.DateTime;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.china.hcg.applications.chao_gu.dao.stockdata.StockDataTypes;
 import com.china.hcg.applications.chao_gu.model.GuInfo;
 import com.china.hcg.applications.chao_gu.utilsgu.GuMinuteDataNoticeUtils;
@@ -35,7 +36,8 @@ public class AutoGuMinuteData {
 
 //                guInfoMap.put("002456",new GuInfo("002456","10.16","sz",null,null));//36.725*0.04  35.26
 //                guInfoMap.put("603083",new GuInfo("603083"," 41.2","sz",41.5f,40.77f));//36.725*0.04  35.26
-                guInfoMap.put("600520",new GuInfo("600520","0.5 风险高-平行加仓","sz",19.10f,null));//36.725*0.04  35.26
+                guInfoMap.put("000818",new GuInfo("000818","5 风险高-平行加仓","sz",null,100d));//36.725*0.04  35.26
+                guInfoMap.put("600072",new GuInfo("600072","5 风险高-平行加仓","sz",17.43f,100d));//36.725*0.04  35.26
 
                 List<GuInfo> list = new ArrayList();
                 for (String s : guInfoMap.keySet()) {
